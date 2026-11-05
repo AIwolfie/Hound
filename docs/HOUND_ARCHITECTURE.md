@@ -44,7 +44,7 @@ flowchart TD
     end
 
     subgraph INTEGRATIONS ["3. Integration & Investigation Adapters"]
-        PLANNER --> GS_ADAPTER["Geo-Sleuth Adapter<br/>(Subprocess / Library Wrapper)"]
+        PLANNER --> NATIVE_ENG["Native Intelligence Engines<br/>(OSM, DEM, Geocoding, Solar)"]
         PLANNER --> OSM_CLIENT["OSM Overpass Client<br/>(Mirror Pool, Failover, Cache)"]
         PLANNER --> TERRAIN_ENG["Elevation Service<br/>(Terrarium DEM, Horizon Tracing)"]
         PLANNER --> SUN_ENG["Solar Ephemeris<br/>(Shadows, Heading, Latitude Bands)"]
@@ -97,9 +97,6 @@ HOUND/
 │
 ├── integrations/                  # External Service Adapters & Tooling
 │   ├── __init__.py
-│   ├── geo_sleuth/                # Decoupled adapter wrapping Geo-Sleuth scripts
-│   │   ├── adapter.py             # Subprocess wrapper with encoding & timeout guards
-│   │   └── registry.py            # Geo-Sleuth tool discovery and path resolver
 │   ├── openstreetmap/             # Resilient Overpass QL generator & mirror pool
 │   ├── geocoding/                 # Nominatim, Gazetteer, and administrative boundaries
 │   ├── elevation/                 # Terrarium DEM tile downloader and horizon synthesizer
@@ -202,12 +199,12 @@ The verification engine operates adversarially against the leading hypothesis. B
 
 ---
 
-## 7. Geo-Sleuth Adapter Design
+## 7. Native Geographic Intelligence Subsystems
 
-Geo-Sleuth will be integrated as an external subsystem via `integrations/geo_sleuth/`:
-- **Subprocess Isolation:** Geo-Sleuth scripts will be invoked in controlled subprocesses with strict timeout budgets, UTF-8 environment overrides (`PYTHONUTF8=1`), and proxy support.
-- **Artifact Harmonization:** Geo-Sleuth cache (`.geo-cache/`) and output boards (`board.json`) will be mapped seamlessly into HOUND's unified SQLite database and storage structure.
-- **Non-Destructive Boundary:** The original Geo-Sleuth directory is treated as read-only upstream code. HOUND will never overwrite or mutate Geo-Sleuth files.
+HOUND executes investigations using modular, native intelligence engines:
+- **Resilient Overpass Client:** Queries OpenStreetMap infrastructure across redundant mirrors (`overpass-api.de`, `overpass.private.coffee`, `maps.mail.ru`) with automatic failover, exponential backoff, and persistent SQLite caching.
+- **Continuous Bilinear DEM Engine:** AWS Terrarium RGB tile decoder $(256R + G + B/256) - 32768$ computing continuous elevation profiles and 360-degree synthetic horizon views with atmospheric refraction.
+- **Candidate Generator & Active Falsification:** Generates multi-scale geographic hypotheses (point, building, road corridor, area) and enforces astronomical solar feasibility ceilings to permanently falsify impossible coordinates.
 
 ---
 
@@ -224,10 +221,11 @@ HOUND enforces the following hard constraints:
 
 ## 9. Phased Implementation Roadmap
 
-- [x] **Phase 0: Research & Audit** (Geo-Sleuth audit, architecture specification, dependency validation)
-- [ ] **Phase 1: Foundation** (Project structure, configuration system, rich CLI, image ingestion, EXIF extraction, SQLite schema, unit tests)
-- [ ] **Phase 2: Visual Intelligence** (RapidOCR multi-pass, image preprocessing, edge cropping, solar ephemeris, initial visual analyzer)
-- [ ] **Phase 3: Geographic Intelligence** (Resilient Overpass mirror pool, gazetteer, DEM terrain/horizon matching, Geo-Sleuth adapter)
+- [x] **Phase 0: Research & Audit** (Reference research audit, architecture specification, dependency validation)
+- [x] **Phase 1: Foundation** (Project structure, configuration system, rich CLI, image ingestion, EXIF extraction, SQLite schema, unit tests)
+- [x] **Phase 2: Visual Intelligence** (RapidOCR multi-pass, image preprocessing, edge cropping, solar ephemeris, initial visual analyzer)
+- [x] **Phase 3: Geographic Intelligence** (Resilient Overpass mirror pool, gazetteer, DEM terrain/horizon matching, candidate generator)
+- [x] **Phase 3.1: Validation & Hardening** (Solar celestial physics, bilinear DEM sub-pixel interpolation, non-circular scoring, benchmark suite)
 - [ ] **Phase 4: Autonomous Investigation** (Hypothesis engine, candidate board, task planner, evidence manager)
 - [ ] **Phase 5: Verification & Anti-Hallucination** (Contradiction engine, occlusion checks, tiered confidence engine)
 - [ ] **Phase 6: Reporting & Visuals** (Forensic reports, satellite overlay visualizer, export formats)

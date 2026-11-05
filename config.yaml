@@ -1,26 +1,25 @@
 # ==============================================================================
-# HOUND — Active Configuration
+# HOUND — Autonomous Visual Geolocation & OSINT Agent Configuration
 # ==============================================================================
 
 hound:
   version: "1.0.0"
   environment: "development"
-  log_level: "INFO"
+  log_level: "INFO" # DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 paths:
-  workspace_dir: "d:/project/Hound"
-  storage_dir: "d:/project/Hound/data/storage"
-  cache_dir: "d:/project/Hound/data/cache"
-  reports_dir: "d:/project/Hound/data/reports"
-  database_path: "d:/project/Hound/data/hound.db"
-  geo_sleuth_path: "C:/Users/mayan/Downloads/geo-sleuth-main/geo-sleuth-main"
+  workspace_dir: "."
+  storage_dir: "./data/storage"
+  cache_dir: "./data/cache"
+  reports_dir: "./data/reports"
+  database_path: "./data/hound.db"
 
 network:
   timeout_seconds: 30
   user_agent: "HOUND-OSINT/1.0 (+https://github.com/hound-osint/hound; research)"
   max_retries: 3
   backoff_factor: 1.5
-  proxy: null
+  proxy: null # e.g. "http://127.0.0.1:7890"
 
 integrations:
   openstreetmap:

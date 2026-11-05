@@ -23,9 +23,6 @@ class PathsConfig(BaseModel):
     cache_dir: Path = Field(default_factory=lambda: Path.cwd() / "data" / "cache")
     reports_dir: Path = Field(default_factory=lambda: Path.cwd() / "data" / "reports")
     database_path: Path = Field(default_factory=lambda: Path.cwd() / "data" / "hound.db")
-    geo_sleuth_path: Path = Field(
-        default_factory=lambda: Path("C:/Users/mayan/Downloads/geo-sleuth-main/geo-sleuth-main")
-    )
 
     def resolve_paths(self, base_dir: Path) -> None:
         """Resolve any relative paths against the base workspace directory."""
@@ -139,8 +136,6 @@ def load_config(config_file: Optional[Path | str] = None) -> HoundConfig:
         config.hound.log_level = os.environ["HOUND_LOG_LEVEL"].upper()
     if os.environ.get("HOUND_STORAGE_DIR"):
         config.paths.storage_dir = Path(os.environ["HOUND_STORAGE_DIR"]).resolve()
-    if os.environ.get("HOUND_GEO_SLEUTH_PATH"):
-        config.paths.geo_sleuth_path = Path(os.environ["HOUND_GEO_SLEUTH_PATH"]).resolve()
 
     _CONFIG_CACHE = config
     return config

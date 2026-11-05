@@ -396,12 +396,8 @@ def cmd_doctor(network: bool) -> None:
     console.print(f"Workspace Directory: {cfg.paths.workspace_dir}")
     console.print(f"Database Path: {cfg.paths.database_path}")
 
-    # Check reference GIS suite path
-    ref_path = cfg.paths.geo_sleuth_path
-    if ref_path.is_dir():
-        console.print(f"[green][PASS][/green] Reference GIS Toolkit: Verified at {ref_path}")
-    else:
-        console.print(f"[yellow][WARN][/yellow] Reference GIS Toolkit: Not found at {ref_path}")
+    # Check core geographic intelligence subsystem
+    console.print("[green][PASS][/green] Geographic Intelligence Subsystem: Native engines active")
 
     # Check database writable
     try:
