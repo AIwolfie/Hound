@@ -246,6 +246,36 @@ def lat_lon_to_tile(lat: float, lon: float, zoom: int) -> Tuple[int, int, int, i
     return (tile_x, tile_y, px_x, px_y)
 
 
+def lat_lon_to_subpixel_tile(
+    lat: float, lon: float, zoom: int
+) -> Tuple[int, int, int, int, float, float]:
+    """Project (lat, lon) to Web Mercator tile, integer pixel (x0, y0), and sub-pixel fractions (fx, fy).
+
+    Returns:
+        (tile_x, tile_y, x0, y0, fx, fy) where x0, y0 in [0, 255] and fx, fy in [0.0, 1.0).
+    """
+    lat_clamped = max(-85.05112878, min(85.05112878, lat))
+    lat_rad = math.radians(lat_clamped)
+    n = 2.0**zoom
+
+    x_float = ((lon + 180.0) / 360.0) * n
+    y_float = (1.0 - math.log(math.tan(lat_rad) + (1.0 / math.cos(lat_rad))) / math.pi) / 2.0 * n
+
+    tile_x = int(math.floor(x_float))
+    tile_y = int(math.floor(y_float))
+
+    raw_px_x = (x_float - tile_x) * 256.0
+    raw_px_y = (y_float - tile_y) * 256.0
+
+    x0 = min(255, max(0, int(math.floor(raw_px_x))))
+    y0 = min(255, max(0, int(math.floor(raw_px_y))))
+
+    fx = max(0.0, min(1.0, raw_px_x - x0))
+    fy = max(0.0, min(1.0, raw_px_y - y0))
+
+    return (tile_x, tile_y, x0, y0, fx, fy)
+
+
 def tile_to_bounding_box(tile_x: int, tile_y: int, zoom: int) -> BoundingBox:
     """Calculate geographic bounding box for a given Web Mercator tile."""
     n = 2.0**zoom

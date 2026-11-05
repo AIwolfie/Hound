@@ -44,6 +44,10 @@ class OsmFeatureCollection(BaseModel):
     relations: List[OsmRelation] = Field(default_factory=list)
     raw_element_count: int = 0
     query_timestamp: Optional[str] = None
+    status: str = "success"  # "success", "empty", "cached", "service_unavailable", "timeout", "error"
+    is_cached: bool = False
+    endpoint_used: Optional[str] = None
+    error_message: Optional[str] = None
 
 
 def parse_overpass_json(data: Dict[str, Any]) -> OsmFeatureCollection:

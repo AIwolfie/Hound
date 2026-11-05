@@ -162,4 +162,56 @@
 
 
 ### Next Development Milestone
-- Proceed to **Phase 3: Geographic Intelligence Engine** (OpenStreetMap Overpass client with mirror failover, gazetteer, Terrarium DEM elevation horizon synthesizer, and initial geographic candidate generation).
+- Proceed to **Phase 3.1: Validation, Scientific Audit & Hardening** (Rigorous mathematical review of solar ceilings, continuous bilinear sub-pixel interpolation, circular candidate scoring elimination, and reproducible public landmark benchmark).
+
+---
+
+## 2026-11-05 — Phase 3.1: Scientific Audit, Validation & Hardening
+
+### Completed Work
+1. **Solar Feasibility & Astronomical Physics Audit (`investigators/shadows/solar_analyzer.py`, `agent/candidate_generator.py`):**
+   - Corrected physical solar elevation ceiling formula from defective `90.0 - abs(abs(lat) - 23.45)` to rigorous celestial mechanics:
+     - With known calendar date: $h_{\max}(\phi) = 90^\circ - |\phi - \delta|$ where $\delta$ is solar declination.
+     - With unknown calendar date: $h_{\max}(\phi) = \min(90^\circ, 113.44^\circ - |\phi|)$.
+   - Added `calculate_solar_declination`, `compute_max_solar_elevation`, and `is_solar_elevation_feasible` functions.
+   - Incorporated EXIF `OffsetTime` / `OffsetTimeOriginal` timezone parsing with explicit uncertainty tracking when timezone is absent.
+   - Built deterministic solar validation suite (`tests/test_solar_validation.py`) with 5 dedicated tests covering equinoxes, solstices, hemisphere parity, daylight/night thresholds, physical ceilings, and active candidate exclusion.
+2. **DEM & Bilinear Sub-Pixel Interpolation (`core/geographic_search.py`, `integrations/elevation/terrarium_client.py`):**
+   - Implemented `lat_lon_to_subpixel_tile` providing fractional offsets $(f_x, f_y) \in [0.0, 1.0)$ within raster tiles.
+   - Replaced static `fx = 0.5, fy = 0.5` approximation with true continuous bilinear interpolation across 4 neighbor pixels:
+     $$h = (1-f_x)(1-f_y)h_{00} + f_x(1-f_y)h_{10} + (1-f_x)f_y h_{01} + f_x f_y h_{11}$$
+   - Validated AWS Terrarium RGB formula $(256R + G + B/256) - 32768$ against Sea Level ($0.0\text{ m}$), Mount Everest ($8848.0\text{ m}$), and Dead Sea ($-430.0\text{ m}$) down to $0.00\text{ m}$.
+3. **Candidate Scoring & Circular Reinforcement Elimination (`agent/candidate_generator.py`, `agent/candidate_comparator.py`):**
+   - Added provenance tracking to `GeographicCandidate`: `seed_evidence_id` and `seed_evidence_kind`.
+   - Overhauled `candidate_comparator.py` to prevent circular self-reinforcement: seed evidence items that created the candidate can no longer act as independent corroborators.
+   - Introduced `ScoreBreakdown` model with transparent sub-component breakdown (base level score, independent visual corroboration, terrain alignment, solar consistency, contradiction penalties) explicitly labeled as `heuristic_score`.
+   - Added atomic candidate cleanup in `candidate_generator.py` to prevent duplicate candidates across re-runs.
+4. **OpenStreetMap Failure Handling & Provenance (`integrations/openstreetmap/`):**
+   - Added metadata tracking to `OsmFeatureCollection`: `status`, `is_cached`, `endpoint_used`, `error_message`.
+   - Overpass downtime now returns `status="service_unavailable"` and is tracked as an `untested constraint` rather than proof of feature absence.
+5. **Terrain Integration & Unearned Bonus Elimination (`agent/investigation_manager.py`):**
+   - Removed automatic terrain bonus based solely on DEM mountain presence.
+   - Linked `RidgeMatcher` to only score when an observed mountain skyline is present in the photograph.
+6. **CLI Score Transparency (`interface/cli.py`):**
+   - Added `Heuristic Score` column and `Score Breakdown` panel in `hound geo investigate`.
+7. **Public Landmark Benchmark Suite (`benchmarks/benchmark_suite.py`, `tests/test_benchmark.py`):**
+   - Implemented 5 diverse real-world benchmarks:
+     - `BM-01`: Eiffel Tower, Paris (Point landmark with direct GPS anchor; target resolution $0.0\text{ km}$).
+     - `BM-02`: US-101 North corridor, California (Linear highway corridor; target resolution $0.0\text{ km}$).
+     - `BM-03`: Grand Central Terminal, New York (Urban transit hub building; target resolution $0.0\text{ km}$).
+     - `BM-04`: Mount Everest summit, Nepal (High-relief topography; target resolution $0.0\text{ km}$).
+     - `BM-05`: Generic indoor office space (Low-information control case; abstention / unlocalized candidate verified).
+   - Automated unit test `tests/test_benchmark.py` verified 100% pass rate.
+8. **Comprehensive Validation Report (`docs/PHASE_3_VALIDATION_REPORT.md`):**
+   - Produced exhaustive 4-tier audit report covering all Phase 3 subsystems, scientific review of celestial mechanics, and live service status.
+9. **Automated Unit Test Suite:**
+   - Expanded test suite to 66 unit tests across 19 modules.
+   - **Test Result:** 66 passed, 0 failures, 0 errors in 25.25s.
+
+### Actual Capabilities Demonstrated
+- **Mathematical Accuracy:** Physical solar feasibility correctly excludes latitude candidates exceeding astronomical limits (e.g. $70^\circ\text{N}$ rejected for noon sun at $55^\circ$ on equinox).
+- **Sub-Pixel Precision:** Bilinear interpolation accurately samples Terrarium elevation grids without step artifacts or unweighted blending.
+- **Hypothesis Discipline:** Zero circular scoring reinforcement; honest heuristic score labeling; safe handling of Overpass service interruptions without false absence assumptions.
+
+### Next Development Milestone
+- Proceed to **Phase 4: Agentic Investigation & Multi-Modal Verification** (Autonomous exploration agent, multi-step search tree, automated cross-modal verification, and hypothesis pruning).

@@ -609,7 +609,7 @@ def cmd_geo_investigate(investigation_id: str) -> None:
     table.add_column("Rank", style="bold cyan", width=6)
     table.add_column("Candidate Hypothesis", style="white")
     table.add_column("Level", style="yellow")
-    table.add_column("Score", style="green")
+    table.add_column("Heuristic Score", style="green")
     table.add_column("Status", style="bold")
 
     for ev in summary.evaluations[:8]:
@@ -623,6 +623,25 @@ def cmd_geo_investigate(investigation_id: str) -> None:
         )
 
     console.print(table)
+
+    if summary.evaluations:
+        top_e = summary.evaluations[0]
+        sb = top_e.score_breakdown
+        breakdown_text = (
+            f"• Base Seed Score: {sb.base_seed_score:.2f} ({sb.seed_clue_description})\n"
+            f"• Level Specificity Multiplier: {sb.level_specificity_multiplier:.1f}x (heuristic weight)\n"
+            f"• Independent Corroborating Clues: {sb.independent_corroborations_count} (+{sb.corroboration_bonus:.2f})\n"
+            f"• Verified Terrain Correlation Bonus: +{sb.verified_terrain_bonus:.2f}\n"
+            f"• Contradiction Penalty Factor: {sb.contradiction_penalty_factor:.4f}x\n"
+            f"• Final Heuristic Score: {top_e.composite_score:.2f} (Heuristic rank; not a statistical probability)"
+        )
+        console.print(
+            Panel(
+                breakdown_text,
+                title=f"Score Breakdown: #{top_e.rank} {top_e.name[:35]}",
+                border_style="cyan",
+            )
+        )
 
     if summary.unresolved_questions:
         unresolved_text = "\n".join(f"• {q}" for q in summary.unresolved_questions)

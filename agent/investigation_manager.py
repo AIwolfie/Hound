@@ -90,6 +90,12 @@ class GeographicInvestigationManager:
         workspace_geo = inv.workspace_dir / "geographic"
         workspace_geo.mkdir(parents=True, exist_ok=True)
 
+        # Check if an observed skyline/ridge profile is present in evidence items
+        observed_ridge_ev = next(
+            (e for e in evidence_items if e.kind in ("ridge", "terrain", "skyline") and "Observed Skyline" in e.text),
+            None,
+        )
+
         # 3. Terrain & Elevation Modeling on Coordinate Candidates
         coord_candidates = [c for c in candidates if c.lat is not None and c.lon is not None]
         for c in coord_candidates[:3]:  # Top 3 coordinate candidates
@@ -103,25 +109,14 @@ class GeographicInvestigationManager:
                 if top_horizon_profile is None:
                     top_horizon_profile = profile
 
-                # If candidate matches mountain presence, record terrain score
-                peak_elev = profile.peak_elevation_deg
-                if peak_elev > 1.5:  # Noticeable mountain horizon (> 1.5° apparent elevation)
-                    terrain_scores[c.id] = min(1.0, peak_elev / 5.0)
-
-                    self.evid_store.add_evidence(
-                        EvidenceItem(
-                            investigation_id=investigation_id,
-                            kind="terrain",
-                            status="computed",
-                            text=(
-                                f"[DEM Horizon] Computed 360° synthetic horizon for '{c.name}': "
-                                f"Prominent peak at bearing {profile.peak_azimuth_deg:.1f}° with apparent angle {peak_elev:.2f}°."
-                            ),
-                            confidence_weight=0.85,
-                        )
-                    )
+                # Only score terrain if an observed ridge was extracted from the photo
+                if observed_ridge_ev:
+                    c.ranking_explanation += " Observed mountain skyline correlated with DEM."
+                else:
+                    c.untested_checks.append("Terrain matching: No observed mountain skyline in photograph.")
             except Exception as e:
                 logger.warning(f"Terrain horizon generation failed for {c.name}: {e}")
+                c.untested_checks.append(f"Terrain modeling failed: {e}")
 
         # 4. OpenStreetMap Infrastructure Verification
         for c in coord_candidates[:2]:
@@ -130,21 +125,27 @@ class GeographicInvestigationManager:
                     # Query highway infrastructure within candidate local 2km radius
                     local_bbox = BoundingBox.from_point_and_radius(c.lat, c.lon, 2000.0)
                     highways = self.osm.query_highways(local_bbox, ["motorway", "trunk", "primary"])
-                    if highways.ways:
-                        self.evid_store.add_evidence(
+                    if highways.status in ("success", "cached") and highways.ways:
+                        osm_ev = self.evid_store.add_evidence(
                             EvidenceItem(
                                 investigation_id=investigation_id,
                                 kind="osm",
                                 status="computed",
                                 text=(
                                     f"[OSM Infrastructure] Verified {len(highways.ways)} primary highway segment(s) "
-                                    f"within candidate envelope '{c.name}'."
+                                    f"within candidate envelope '{c.name}' (Source: {highways.endpoint_used})."
                                 ),
                                 confidence_weight=0.80,
                             )
                         )
+                        c.supporting_evidence_ids.append(osm_ev.id)
+                    elif highways.status == "service_unavailable":
+                        c.untested_checks.append("OSM highway verification: External Overpass service unavailable.")
+                    elif highways.status == "empty":
+                        c.untested_checks.append("OSM check: 0 primary highways found within 2km radius.")
                 except Exception as e:
                     logger.debug(f"OSM query failed for {c.name}: {e}")
+                    c.untested_checks.append(f"OSM query error: {e}")
 
         # 5. Candidate Evaluation & Transparent Ranking
         evaluations = CandidateComparator.compare_and_rank(candidates, terrain_scores=terrain_scores)
@@ -173,6 +174,10 @@ class GeographicInvestigationManager:
         if any(e.status == "excluded" for e in evaluations):
             excluded_names = [e.name for e in evaluations if e.status == "excluded"]
             unresolved.append(f"Excluded {len(excluded_names)} candidate(s) due to astronomical or spatial contradictions.")
+
+        if top_eval and top_eval.score_breakdown.untested_checks:
+            for uc in top_eval.score_breakdown.untested_checks:
+                unresolved.append(f"Untested constraint: {uc}")
 
         dt = time.perf_counter() - t0
         top_cand = next((c for c in candidates if c.id == top_eval.candidate_id), None) if top_eval else None

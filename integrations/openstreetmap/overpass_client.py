@@ -73,7 +73,11 @@ class OverpassClient:
             cached_data = self._get_cached_response(query_hash)
             if cached_data is not None:
                 logger.debug(f"Overpass cache hit for query hash {query_hash[:12]}")
-                return parse_overpass_json(cached_data)
+                collection = parse_overpass_json(cached_data)
+                collection.status = "cached"
+                collection.is_cached = True
+                collection.endpoint_used = "sqlite_cache"
+                return collection
 
         # 2. Iterate through mirror pool with failover
         payload = urllib.parse.urlencode({"data": query_clean}).encode("utf-8")
@@ -114,7 +118,11 @@ class OverpassClient:
                         if use_cache:
                             self._save_to_cache(query_hash, query_clean, data)
 
-                        return parse_overpass_json(data)
+                        collection = parse_overpass_json(data)
+                        collection.status = "empty" if (len(collection.ways) == 0 and len(collection.nodes) == 0) else "success"
+                        collection.is_cached = False
+                        collection.endpoint_used = mirror_url
+                        return collection
 
                 except Exception as e:
                     duration_ms = (time.perf_counter() - t0) * 1000.0
@@ -131,9 +139,13 @@ class OverpassClient:
                     )
                     time.sleep(0.5 * (attempt + 1))
 
-        # If all live mirrors fail or network is unavailable, return empty collection or raise
+        # If all live mirrors fail or network is unavailable, return structured error status
         logger.error(f"All Overpass mirrors failed. Last error: {last_exception}")
-        return OsmFeatureCollection()
+        return OsmFeatureCollection(
+            status="service_unavailable",
+            is_cached=False,
+            error_message=str(last_exception) if last_exception else "Service unavailable",
+        )
 
     def query_highways(
         self,

@@ -33,8 +33,11 @@ class GeographicCandidate(BaseModel):
     radius_m: Optional[float] = None
     score: float = 1.0
     status: str = "active"  # "active", "excluded", "confirmed", "downweighted"
+    seed_evidence_id: Optional[str] = None
+    seed_evidence_kind: Optional[str] = None
     supporting_evidence_ids: List[str] = Field(default_factory=list)
     contradictory_evidence_ids: List[str] = Field(default_factory=list)
+    untested_checks: List[str] = Field(default_factory=list)
     falsification_condition: Optional[str] = None
     spatial_uncertainty_m: float = 50000.0
     ranking_explanation: str = ""
@@ -82,6 +85,8 @@ class GeographicCandidateGenerator:
                 radius_m=50.0,
                 score=10.0,
                 status="active",
+                seed_evidence_id=gps_ev.id if gps_ev else None,
+                seed_evidence_kind="gps",
                 supporting_evidence_ids=ev_ids,
                 spatial_uncertainty_m=50.0,
                 ranking_explanation="Direct embedded EXIF GPS telemetry verified in image header.",
@@ -112,6 +117,8 @@ class GeographicCandidateGenerator:
                     radius_m=15000.0,
                     score=3.5,
                     status="active",
+                    seed_evidence_id=rev.id,
+                    seed_evidence_kind="ocr",
                     supporting_evidence_ids=[rev.id],
                     spatial_uncertainty_m=15000.0,
                     ranking_explanation=f"OCR highway designation '{road_name}' geocoded to transportation corridor.",
@@ -140,6 +147,8 @@ class GeographicCandidateGenerator:
                     radius_m=8000.0,
                     score=2.8,
                     status="active",
+                    seed_evidence_id=sev.id,
+                    seed_evidence_kind="ocr",
                     supporting_evidence_ids=[sev.id],
                     spatial_uncertainty_m=8000.0,
                     ranking_explanation=f"OCR recognized street name '{st_name}' matched to gazetteer.",
@@ -166,6 +175,8 @@ class GeographicCandidateGenerator:
                             radius_m=200000.0,
                             score=3.0,
                             status="active",
+                            seed_evidence_id=pev.id,
+                            seed_evidence_kind="plate",
                             supporting_evidence_ids=[pev.id],
                             spatial_uncertainty_m=200000.0,
                             ranking_explanation="Visual recognition of British Columbia vehicle registration livery.",
@@ -175,25 +186,31 @@ class GeographicCandidateGenerator:
         # -------------------------------------------------------------
         # 5. Solar Ephemeris Latitude Band Validation
         # -------------------------------------------------------------
+        from investigators.shadows.solar_analyzer import SolarAnalyzer
+
         solar_ev = next((e for e in evidence_items if e.kind == "sun" and "Sun Elevation:" in e.text), None)
         if solar_ev:
             # Extract elevation angle e.g. "Sun Elevation: 45.2°"
             elev_match = re.search(r"Sun Elevation:\s*([-\d.]+)°", solar_ev.text)
             if elev_match:
                 observed_elev = float(elev_match.group(1))
+                day_of_year = None
+                if image_record.exif.datetime_original:
+                    day_of_year = image_record.exif.datetime_original.timetuple().tm_yday
+
                 # For any candidate with coordinates, evaluate physical solar feasibility
                 for c in candidates:
                     if c.lat is not None and c.level != "point":
-                        # Check latitude consistency: at solar noon, max elevation = 90 - |lat - decl|
-                        # If observed elevation exceeds 90 - |lat - 23.5|, the location is physically impossible!
-                        max_possible_elev = 90.0 - abs(abs(c.lat) - 23.45)
-                        if observed_elev > (max_possible_elev + 5.0):
+                        is_feasible, max_possible_elev, reason = SolarAnalyzer.is_solar_elevation_feasible(
+                            lat_deg=c.lat,
+                            observed_elev_deg=observed_elev,
+                            day_of_year=day_of_year,
+                            tolerance_deg=3.0,
+                        )
+                        if not is_feasible:
                             c.status = "excluded"
                             c.contradictory_evidence_ids.append(solar_ev.id)
-                            c.falsification_condition = (
-                                f"Observed sun elevation {observed_elev:.1f}° exceeds maximum possible "
-                                f"astronomical elevation {max_possible_elev:.1f}° at latitude {c.lat:.1f}°."
-                            )
+                            c.falsification_condition = reason
 
         # -------------------------------------------------------------
         # 6. Fallback / Default Regional Baseline
@@ -218,6 +235,11 @@ class GeographicCandidateGenerator:
 
         # Persist candidates to HOUND EvidenceStore if available
         if self.db:
+            # Clean prior candidate records for this investigation session
+            with self.db.get_connection() as conn:
+                conn.execute("DELETE FROM candidates WHERE investigation_id = ?", (investigation_id,))
+                conn.commit()
+
             evid_store = EvidenceStore(self.db)
             for c in candidates:
                 cand_item = CandidateItem(

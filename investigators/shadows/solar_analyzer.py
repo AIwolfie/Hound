@@ -49,6 +49,65 @@ class SolarAnalyzer(BaseInvestigator):
         super().__init__(name="solar_analyzer", category="shadows")
 
     @staticmethod
+    def calculate_solar_declination(day_of_year: int, hour_fraction: float = 12.0) -> float:
+        """Compute solar declination angle in degrees for given day of year."""
+        gamma = 2.0 * math.pi / 365.0 * (day_of_year - 1 + (hour_fraction - 12.0) / 24.0)
+        decl_rad = (
+            0.006918
+            - 0.399912 * math.cos(gamma)
+            + 0.070257 * math.sin(gamma)
+            - 0.006758 * math.cos(2.0 * gamma)
+            + 0.000907 * math.sin(2.0 * gamma)
+            - 0.002697 * math.cos(3.0 * gamma)
+            + 0.001480 * math.sin(3.0 * gamma)
+        )
+        return math.degrees(decl_rad)
+
+    @classmethod
+    def compute_max_solar_elevation(
+        cls, lat_deg: float, day_of_year: Optional[int] = None
+    ) -> float:
+        """Compute theoretical maximum possible solar elevation at a given latitude.
+
+        At solar noon (hour angle H=0), sin(h_max) = sin(phi)*sin(delta) + cos(phi)*cos(delta)
+        = cos(phi - delta) = sin(90° - |phi - delta|).
+        Thus h_max = 90.0° - |phi - delta|.
+
+        If day_of_year is unknown, delta can vary between -23.44° and +23.44° throughout the year:
+        - Inside tropics (|phi| <= 23.44°): sun reaches zenith (90.0°) twice a year.
+        - Outside tropics (|phi| > 23.44°): max annual elevation is 90° - (|phi| - 23.44°) = 113.44° - |phi|.
+        """
+        if day_of_year is not None:
+            decl_deg = cls.calculate_solar_declination(day_of_year, hour_fraction=12.0)
+            noon_elev = 90.0 - abs(lat_deg - decl_deg)
+            return max(0.0, min(90.0, round(noon_elev, 2)))
+
+        abs_lat = abs(lat_deg)
+        if abs_lat <= 23.44:
+            return 90.0
+        return round(113.44 - abs_lat, 2)
+
+    @classmethod
+    def is_solar_elevation_feasible(
+        cls,
+        lat_deg: float,
+        observed_elev_deg: float,
+        day_of_year: Optional[int] = None,
+        tolerance_deg: float = 3.0,
+    ) -> Tuple[bool, float, str]:
+        """Evaluate if an observed sun elevation is astronomically possible at latitude lat_deg."""
+        max_possible = cls.compute_max_solar_elevation(lat_deg, day_of_year=day_of_year)
+        if observed_elev_deg > (max_possible + tolerance_deg):
+            season_info = f"day of year {day_of_year}" if day_of_year is not None else "any time of year"
+            return (
+                False,
+                max_possible,
+                f"Observed sun elevation {observed_elev_deg:.1f}° exceeds maximum possible "
+                f"astronomical elevation {max_possible:.1f}° at latitude {lat_deg:.1f}° ({season_info}).",
+            )
+        return (True, max_possible, "")
+
+    @staticmethod
     def calculate_solar_position(
         lat_deg: float,
         lon_deg: float,
@@ -210,14 +269,34 @@ class SolarAnalyzer(BaseInvestigator):
         gps = image_record.exif.gps
 
         if dt and gps:
-            dt_utc = dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
+            dt_utc = None
+            has_tz = False
+            if image_record.exif.offset_time:
+                import re
+                from datetime import timedelta
+                m = re.match(r"([+-])(\d{2}):?(\d{2})", image_record.exif.offset_time)
+                if m:
+                    sign = -1 if m.group(1) == "-" else 1
+                    hrs, mins = int(m.group(2)), int(m.group(3))
+                    tz = timezone(sign * timedelta(hours=hrs, minutes=mins))
+                    dt_utc = dt.replace(tzinfo=tz).astimezone(timezone.utc)
+                    has_tz = True
+            if dt_utc is None:
+                if dt.tzinfo is not None:
+                    dt_utc = dt.astimezone(timezone.utc)
+                    has_tz = True
+                else:
+                    dt_utc = dt.replace(tzinfo=timezone.utc)
+                    has_tz = False
+
             pos = self.calculate_solar_position(gps.latitude, gps.longitude, dt_utc)
+            tz_note = "EXIF UTC Offset verified" if has_tz else "EXIF OffsetTime absent (UTC assumed)"
 
             pos_text = (
                 f"[Computed Solar Ephemeris] Sun Elevation: {pos.elevation_deg:.1f}°, "
                 f"Sun Azimuth: {pos.azimuth_deg:.1f}° (True North). "
                 f"Expected vertical shadow length ratio: {pos.shadow_length_ratio if pos.shadow_length_ratio else 'N/A'}x. "
-                f"Declination: {pos.declination_deg:.1f}°."
+                f"Declination: {pos.declination_deg:.1f}°. Timezone: {tz_note}."
             )
             evidence_list.append(
                 EvidenceItem(

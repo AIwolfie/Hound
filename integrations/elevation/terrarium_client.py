@@ -14,7 +14,7 @@ import numpy as np
 from PIL import Image
 
 from core.configuration import get_config
-from core.geographic_search import lat_lon_to_tile
+from core.geographic_search import lat_lon_to_subpixel_tile, lat_lon_to_tile
 from core.logger import get_logger
 
 logger = get_logger("hound.elevation.terrarium")
@@ -47,31 +47,25 @@ class TerrariumClient:
 
     def get_elevation(self, lat: float, lon: float, zoom: int = 12) -> float:
         """Get ground elevation in meters at (lat, lon) with bilinear interpolation."""
-        tile_x, tile_y, px_x, px_y = lat_lon_to_tile(lat, lon, zoom)
+        tile_x, tile_y, x0, y0, fx, fy = lat_lon_to_subpixel_tile(lat, lon, zoom)
         tile_array = self.get_tile(tile_x, tile_y, zoom)
         if tile_array is None:
             return 0.0
 
         # Sub-pixel bilinear interpolation inside the 256x256 tile
         # tile_array shape: (256, 256) float elevations
-        x0 = min(255, max(0, px_x))
-        y0 = min(255, max(0, px_y))
         x1 = min(255, x0 + 1)
         y1 = min(255, y0 + 1)
 
-        # Bilinear weights
-        fx = 0.5
-        fy = 0.5
-
-        e00 = tile_array[y0, x0]
-        e10 = tile_array[y0, x1]
-        e01 = tile_array[y1, x0]
-        e11 = tile_array[y1, x1]
+        e00 = float(tile_array[y0, x0])
+        e10 = float(tile_array[y0, x1])
+        e01 = float(tile_array[y1, x0])
+        e11 = float(tile_array[y1, x1])
 
         elev = (
-            e00 * (1 - fx) * (1 - fy)
-            + e10 * fx * (1 - fy)
-            + e01 * (1 - fx) * fy
+            e00 * (1.0 - fx) * (1.0 - fy)
+            + e10 * fx * (1.0 - fy)
+            + e01 * (1.0 - fx) * fy
             + e11 * fx * fy
         )
         return float(round(elev, 2))
