@@ -97,10 +97,59 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS ocr_observations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    investigation_id TEXT NOT NULL,
+    text TEXT NOT NULL,
+    confidence REAL NOT NULL,
+    box_x0 REAL NOT NULL,
+    box_y0 REAL NOT NULL,
+    box_x1 REAL NOT NULL,
+    box_y1 REAL NOT NULL,
+    category TEXT NOT NULL,
+    language_script TEXT,
+    pass_name TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS infrastructure_detections (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    investigation_id TEXT NOT NULL,
+    class_name TEXT NOT NULL,
+    confidence REAL NOT NULL,
+    box_x0 REAL NOT NULL,
+    box_y0 REAL NOT NULL,
+    box_x1 REAL NOT NULL,
+    box_y1 REAL NOT NULL,
+    detector_backend TEXT NOT NULL,
+    details TEXT,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS shadow_observations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    investigation_id TEXT NOT NULL,
+    base_x REAL,
+    base_y REAL,
+    tip_x REAL,
+    tip_y REAL,
+    estimated_azimuth_deg REAL,
+    uncertainty_deg REAL,
+    length_ratio REAL,
+    notes TEXT,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
+);
+
 CREATE INDEX IF NOT EXISTS idx_investigations_sha ON investigations(sha256);
 CREATE INDEX IF NOT EXISTS idx_evidence_investigation ON evidence_items(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_candidates_investigation ON candidates(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_audit_investigation ON audit_logs(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_ocr_investigation ON ocr_observations(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_infra_investigation ON infrastructure_detections(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_shadow_investigation ON shadow_observations(investigation_id);
 """
 
 
