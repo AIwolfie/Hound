@@ -1,0 +1,54 @@
+# ==============================================================================
+# HOUND — Autonomous Visual Geolocation & OSINT Agent Configuration
+# ==============================================================================
+
+hound:
+  version: "1.0.0"
+  environment: "development"
+  log_level: "INFO" # DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+paths:
+  workspace_dir: "d:/project/Hound"
+  storage_dir: "d:/project/Hound/data/storage"
+  cache_dir: "d:/project/Hound/data/cache"
+  reports_dir: "d:/project/Hound/data/reports"
+  database_path: "d:/project/Hound/data/hound.db"
+  geo_sleuth_path: "C:/Users/mayan/Downloads/geo-sleuth-main/geo-sleuth-main"
+
+network:
+  timeout_seconds: 30
+  user_agent: "HOUND-OSINT/1.0 (+https://github.com/hound-osint/hound; research)"
+  max_retries: 3
+  backoff_factor: 1.5
+  proxy: null # e.g. "http://127.0.0.1:7890"
+
+integrations:
+  openstreetmap:
+    overpass_mirrors:
+      - "https://overpass-api.de/api/interpreter"
+      - "https://overpass.private.coffee/api/interpreter"
+      - "https://maps.mail.ru/osm/tools/overpass/api/interpreter"
+    nominatim_url: "https://nominatim.openstreetmap.org/search"
+    rate_limit_delay_seconds: 1.0
+
+  elevation:
+    terrarium_tile_url: "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+    max_zoom: 15
+
+  satellite:
+    google_satellite_url: "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+    osm_tiles_url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+
+  reverse_image:
+    enabled_providers:
+      - "yandex"
+      - "baidu"
+    headless_browser: true
+    browser_timeout_ms: 30000
+
+investigation:
+  preserve_original_images: true
+  max_candidates_to_rank: 50
+  auto_falsification_enabled: true
+  min_evidence_for_high_confidence: 3
+  default_search_radius_m: 5000

@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+env/
+venv/
+
+# HOUND runtime databases and storage caches
+data/hound.db
+data/hound.db-journal
+data/storage/
+data/cache/
+.hound_cache/
+.geo-cache/
+
+# Testing & temporary
+.pytest_cache/
+*.tmp
+*.log
