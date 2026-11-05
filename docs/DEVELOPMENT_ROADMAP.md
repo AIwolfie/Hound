@@ -18,7 +18,7 @@
 - [x] Forensic CLI terminal identity (`hound intake`, `hound inspect`, `hound doctor`, `hound list`).
 - [x] 13 automated unit tests with 100% pass rate.
 
-## Phase 2: Visual Intelligence Engine (Current Milestone)
+## Phase 2: Visual Intelligence Engine
 - [x] Image preprocessing engine: 7 analysis variants (CLAHE, contrast, grayscale, edges, sharpened, 2x upscale).
 - [x] 12 coordinate-mapped spatial crops/tiles with bounding box metadata.
 - [x] Multi-pass OCR investigation engine powered by RapidOCR (ONNX Runtime).
@@ -32,14 +32,23 @@
 - [x] CLI commands: `hound preprocess`, `hound ocr`, `hound analyze`.
 - [x] 30 automated unit tests with 100% pass rate.
 
-## Phase 3: Geographic Intelligence Engine (Next Milestone)
-- [ ] OpenStreetMap Overpass client with rotating mirror pool and persistent caching.
-- [ ] Administrative boundary gazetteer and Nominatim geocoding adapter.
-- [ ] Digital elevation model (Terrarium DEM) horizon synthesizer.
-- [ ] Ridge line cross-correlation and camera roll/pitch solver.
-- [ ] Initial geographic candidate generation (Country -> Region -> City -> Area).
+## Phase 3: Geographic Intelligence Engine
+- [x] Geodetic mathematics (Haversine, forward azimuth, destination points, ray intersection, Web Mercator slippy tile math).
+- [x] OpenStreetMap Overpass client with mirror pool, health monitoring, failover, and persistent SQLite query caching (`osm_cache`).
+- [x] Domain-specific OSM geometry query builders (highways, railways, stations, power lines, waterways, named streets).
+- [x] Administrative boundary gazetteer and Nominatim geocoding with local persistent SQLite cache (`gazetteer_cache`).
+- [x] Digital elevation model (AWS Terrarium DEM) decoder with sub-pixel bilinear interpolation.
+- [x] 360-degree synthetic terrain horizon generator incorporating Earth curvature and atmospheric refraction ($k=0.13$).
+- [x] Mountain ridge line cross-correlation matcher with camera heading and pitch offset solver.
+- [x] Provider-independent satellite and map tile service with multi-tile mosaic stitching and geo-to-pixel projection.
+- [x] Multi-scale geographic candidate generator (point, building, road corridor, area, city, admin region).
+- [x] Astronomical solar elevation active falsification and latitude exclusion.
+- [x] Candidate comparator with level weighting multipliers, terrain bonuses, contradiction penalties, and transparent ranking.
+- [x] Geographic visualizer generating georeferenced candidate maps and 360° horizon skyline profiles.
+- [x] CLI commands: `hound geo doctor`, `hound geo terrain`, `hound geo investigate`, `hound geo candidates`, `hound geo map`.
+- [x] 60 automated unit tests with 100% pass rate.
 
-## Phase 4: Autonomous Investigation & Hypothesis Management
+## Phase 4: Autonomous Investigation & Hypothesis Management (Next Milestone)
 - [ ] Master agent orchestrator state machine.
 - [ ] Hypothesis engine and candidate tree management.
 - [ ] Cost-aware task planner (ordering tests from cheap to expensive).

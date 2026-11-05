@@ -478,6 +478,238 @@ def cmd_list() -> None:
     console.print(table)
 
 
+# ==============================================================================
+# Phase 3 Geographic Intelligence Commands: hound geo <subcommand>
+# ==============================================================================
+
+@cli.group("geo")
+def geo_group() -> None:
+    """Geographic Intelligence Engine commands (OSM, terrain, gazetteer, candidates)."""
+    pass
+
+
+@geo_group.command("doctor")
+def cmd_geo_doctor() -> None:
+    """Diagnose Geographic Intelligence endpoints (Overpass, Terrarium, Gazetteer)."""
+    print_banner()
+    cfg = get_config()
+    console.print("[bold]Diagnosing Geographic Intelligence Endpoints...[/bold]\n")
+
+    # 1. OpenStreetMap Overpass Mirrors
+    from integrations.openstreetmap.overpass_client import OverpassClient
+
+    osm_client = OverpassClient()
+    console.print("[bold cyan]OpenStreetMap Overpass Mirrors:[/bold cyan]")
+    for mirror in osm_client.mirrors:
+        try:
+            import urllib.request
+            t0 = time.perf_counter()
+            req = urllib.request.Request(
+                mirror.replace("/api/interpreter", "/api/status"),
+                headers={"User-Agent": cfg.network.user_agent},
+            )
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                dt_ms = (time.perf_counter() - t0) * 1000.0
+                console.print(f"  [green][PASS][/green] {mirror} (HTTP {resp.status}, {dt_ms:.0f}ms)")
+        except Exception as e:
+            console.print(f"  [yellow][WARN][/yellow] {mirror}: {e}")
+
+    # 2. Terrarium Elevation DEM
+    from integrations.elevation.terrarium_client import TerrariumClient
+
+    dem = TerrariumClient()
+    console.print("\n[bold cyan]Digital Elevation Model (DEM):[/bold cyan]")
+    try:
+        # Test elevation lookup at Mount Everest (8848m)
+        t0 = time.perf_counter()
+        elev = dem.get_elevation(27.9881, 86.9250, zoom=10)
+        dt_ms = (time.perf_counter() - t0) * 1000.0
+        console.print(
+            f"  [green][PASS][/green] AWS Terrarium Elevation: Verified (Mount Everest sample: {elev:.0f}m, {dt_ms:.0f}ms)"
+        )
+    except Exception as e:
+        console.print(f"  [red][FAIL][/red] Terrarium Elevation Tile Service: {e}")
+
+    # 3. Geocoding Service
+    from integrations.geocoding.gazetteer import GazetteerService
+
+    gazetteer = GazetteerService()
+    console.print("\n[bold cyan]Geocoding & Gazetteer Service:[/bold cyan]")
+    try:
+        res = gazetteer.forward_geocode("Paris, France", limit=1)
+        if res:
+            console.print(f"  [green][PASS][/green] Forward Geocoding: {res[0].display_name[:50]}...")
+        else:
+            console.print("  [yellow][WARN][/yellow] Geocoding returned empty results.")
+    except Exception as e:
+        console.print(f"  [red][FAIL][/red] Geocoding Service: {e}")
+
+
+@geo_group.command("terrain")
+@click.argument("latitude", type=float)
+@click.argument("longitude", type=float)
+@click.option("--distance-km", type=float, default=20.0, help="Radial horizon distance in km.")
+@click.option("--output", "-o", type=click.Path(path_type=Path), help="Output path for horizon plot.")
+def cmd_geo_terrain(latitude: float, longitude: float, distance_km: float, output: Optional[Path]) -> None:
+    """Generate 360-degree synthetic terrain horizon profile from coordinates."""
+    print_banner()
+    console.print(f"[bold cyan]Terrain Horizon Computation:[/bold cyan] ({latitude:.5f}, {longitude:.5f})\n")
+
+    from integrations.elevation.horizon_generator import HorizonGenerator
+    from reports.geographic_visualizer import GeographicVisualizer
+
+    gen = HorizonGenerator()
+    t0 = time.perf_counter()
+    profile = gen.generate_horizon(
+        lat=latitude,
+        lon=longitude,
+        max_distance_m=distance_km * 1000.0,
+        bearing_step_deg=1.0,
+    )
+    dt = time.perf_counter() - t0
+
+    console.print(f"[bold green][+][/bold green] Horizon profile generated ({dt:.2f}s)")
+    console.print(f"Ground Elevation: [yellow]{profile.observer_elevation_m:.1f} m[/yellow]")
+    console.print(
+        f"Prominent Peak: [bold cyan]{profile.peak_elevation_deg:.2f}°[/bold cyan] at bearing "
+        f"[bold yellow]{profile.peak_azimuth_deg:.1f}°[/bold yellow] (True North)"
+    )
+
+    out_file = output or Path(f"horizon_{latitude:.3f}_{longitude:.3f}.jpg")
+    GeographicVisualizer.render_horizon_profile_plot(profile, out_file)
+    console.print(f"[dim]Saved synthetic horizon profile plot to {out_file}[/dim]")
+
+
+@geo_group.command("investigate")
+@click.argument("investigation_id", type=str)
+def cmd_geo_investigate(investigation_id: str) -> None:
+    """Execute Phase 3 Geographic Intelligence pipeline on an existing investigation."""
+    print_banner()
+    console.print(f"[bold cyan]HOUND GEOGRAPHIC INVESTIGATION[/bold cyan]: [bold]{investigation_id}[/bold]\n")
+
+    from agent.investigation_manager import GeographicInvestigationManager
+
+    manager = GeographicInvestigationManager()
+    try:
+        summary = manager.run_investigation(investigation_id)
+    except Exception as e:
+        console.print(f"[bold red][!] Investigation failed:[/bold red] {e}")
+        sys.exit(1)
+
+    console.print(f"[bold green][+][/bold green] Geographic synthesis complete ({summary.execution_time_seconds:.2f}s)")
+    console.print(f"[bold green][+][/bold green] Hypotheses Generated: [bold]{summary.candidates_count}[/bold]")
+    console.print(f"[bold green][+][/bold green] Top Hypothesis: [bold cyan]{summary.top_candidate_name}[/bold cyan]")
+    console.print(f"     Level: [yellow]{summary.top_candidate_level.upper()}[/yellow] | Score: [green]{summary.top_candidate_score:.2f}[/green]")
+
+    if summary.top_candidate_coords:
+        lat, lon = summary.top_candidate_coords
+        console.print(f"     Coordinates: [bold]{lat:.6f}, {lon:.6f}[/bold]")
+
+    table = Table(title="Ranked Geographic Hypotheses", box=ROUNDED)
+    table.add_column("Rank", style="bold cyan", width=6)
+    table.add_column("Candidate Hypothesis", style="white")
+    table.add_column("Level", style="yellow")
+    table.add_column("Score", style="green")
+    table.add_column("Status", style="bold")
+
+    for ev in summary.evaluations[:8]:
+        status_style = "green" if ev.status == "active" else "red"
+        table.add_row(
+            f"#{ev.rank}",
+            ev.name[:45],
+            ev.level.upper(),
+            f"{ev.composite_score:.2f}",
+            f"[{status_style}]{ev.status.upper()}[/{status_style}]",
+        )
+
+    console.print(table)
+
+    if summary.unresolved_questions:
+        unresolved_text = "\n".join(f"• {q}" for q in summary.unresolved_questions)
+        console.print(Panel(unresolved_text, title="Unresolved Geographic Constraints", border_style="yellow"))
+
+    console.print(f"\n[bold green][+][/bold green] Visualization maps saved:")
+    for k, v in summary.artifacts.items():
+        console.print(f"  • {k}: [cyan]{v}[/cyan]")
+
+
+@geo_group.command("candidates")
+@click.argument("investigation_id", type=str)
+def cmd_geo_candidates(investigation_id: str) -> None:
+    """View detailed candidate hypotheses, scores, and supporting/contradictory evidence."""
+    print_banner()
+    cfg = get_config()
+    db_manager = DatabaseManager(cfg.paths.database_path)
+    evid_store = EvidenceStore(db_manager)
+
+    candidates = evid_store.get_candidates(investigation_id)
+    if not candidates:
+        console.print(f"[dim]No candidates recorded for investigation '{investigation_id}'.[/dim]")
+        return
+
+    table = Table(title=f"Candidate Ledger: {investigation_id}", box=ROUNDED)
+    table.add_column("ID", style="cyan")
+    table.add_column("Name", style="white")
+    table.add_column("Level", style="yellow")
+    table.add_column("Coordinates", style="dim")
+    table.add_column("Score", style="green")
+    table.add_column("Status", style="bold")
+
+    for c in candidates:
+        coord_str = f"{c.lat:.4f}, {c.lon:.4f}" if c.lat and c.lon else "N/A"
+        status_color = "green" if c.status == "active" else "red"
+        table.add_row(
+            c.id,
+            c.name[:40],
+            c.level.upper(),
+            coord_str,
+            f"{c.score:.2f}",
+            f"[{status_color}]{c.status.upper()}[/{status_color}]",
+        )
+
+    console.print(table)
+
+
+@geo_group.command("map")
+@click.argument("investigation_id", type=str)
+@click.option("--output", "-o", type=click.Path(path_type=Path), help="Output map path.")
+def cmd_geo_map(investigation_id: str, output: Optional[Path]) -> None:
+    """Generate and display geographic map for an investigation's candidate pool."""
+    print_banner()
+    from agent.candidate_generator import GeographicCandidate
+    from reports.geographic_visualizer import GeographicVisualizer
+
+    cfg = get_config()
+    db_manager = DatabaseManager(cfg.paths.database_path)
+    evid_store = EvidenceStore(db_manager)
+    inv_store = InvestigationStore(db_manager, cfg.paths.storage_dir)
+
+    inv = inv_store.get_investigation(investigation_id)
+    if not inv:
+        console.print(f"[red]Investigation '{investigation_id}' not found.[/red]")
+        sys.exit(1)
+
+    cands_raw = evid_store.get_candidates(investigation_id)
+    cands = [
+        GeographicCandidate(
+            id=c.id,
+            investigation_id=c.investigation_id,
+            level=c.level,
+            name=c.name,
+            lat=c.lat,
+            lon=c.lon,
+            radius_m=c.radius_m,
+            score=c.score,
+            status=c.status,
+        )
+        for c in cands_raw
+    ]
+
+    out_file = output or (inv.workspace_dir / "geographic" / "candidate_map.jpg")
+    GeographicVisualizer.render_candidate_map(cands, out_file)
+    console.print(f"[bold green][+][/bold green] Candidate map generated: [cyan]{out_file}[/cyan]")
+
+
 def main() -> None:
     """Main CLI entry point."""
     cli()

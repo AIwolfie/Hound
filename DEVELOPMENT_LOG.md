@@ -99,5 +99,67 @@
 - Multi-pass OCR demonstrated on `02-reading.jpg`: scanned 57 raw detections and clustered them into 16 deduplicated text clues with category tags and bounding boxes.
 - Master visual pipeline demonstrated live on `01-photo.jpg`: completed intake, preprocessing, multi-pass OCR (0 text), infrastructure detection (4 features across 2 classes), shadow analysis, and overlay artifact generation in 8.38s.
 
+---
+
+## 2026-11-05 — Phase 3: Geographic Intelligence Engine
+
+### Completed Work
+1. **Core Geodetic Mathematics (`core/geographic_search.py`):**
+   - Implemented Haversine great-circle distance on WGS-84 ellipsoid sphere.
+   - Forward true north azimuth (bearing) calculation.
+   - Great-circle destination point calculation given distance and bearing.
+   - Great-circle ray intersection solving geographic crossing coordinates.
+   - `BoundingBox` geometry: point containment, envelope intersection, radius expansion, and center point.
+   - Web Mercator tile mathematics: exact conversion between latitude/longitude, zoom level, and slippy map tile coordinates $(x, y)$.
+2. **OpenStreetMap Integration (`integrations/openstreetmap/`):**
+   - Structured Overpass JSON parser (`geometry_parser.py`) converting responses into typed `OSMNode`, `OSMWay`, `OSMRelation`, and `OSMResponse` models with bounding envelopes.
+   - Resilient Overpass API client (`overpass_client.py`) supporting mirror pool (`overpass-api.de`, `overpass.private.coffee`, `maps.mail.ru`), health scoring, automatic failover, exponential backoff, persistent SQLite caching (`osm_cache`), and query deduplication.
+   - Domain-specific query builders for primary highways, bridges, railway tracks, stations, utility power lines, waterways, and named street vectors.
+3. **Geocoding & Gazetteer Service (`integrations/geocoding/`):**
+   - Implemented forward and reverse geocoding via OpenStreetMap Nominatim.
+   - Resolves administrative hierarchies (country, state/province, county, city, district) and geographic bounding envelopes.
+   - Local persistent SQLite caching (`gazetteer_cache`) to minimize public API requests and respect usage policies.
+4. **Digital Elevation Model (DEM) & Horizon Modeling (`integrations/elevation/`):**
+   - Built AWS Terrarium tile client (`terrarium_client.py`) decoding RGB tiles to ground elevation in meters via $(256R + G + B/256) - 32768$ with sub-pixel bilinear interpolation.
+   - Implemented 360-degree synthetic terrain horizon generator (`horizon_generator.py`) casting radial rays outward across DEM tiles, factoring in Earth curvature and atmospheric refraction ($k=0.13$).
+   - Built mountain ridge cross-correlation matcher (`ridge_matcher.py`) solving camera heading (azimuth) and pitch offset by minimizing root-mean-square error (RMSE) against observed visual skylines.
+5. **Satellite & Map Tile Service (`integrations/satellite/`):**
+   - Implemented multi-provider map and satellite tile service (`tile_service.py`) with persistent disk caching.
+   - Multi-tile mosaic assembly stitching georeferenced bounding box matrices.
+   - Safe tile budget limits and adaptive zoom step-down for wide regional envelopes.
+   - Bilinear geo-to-pixel and pixel-to-WGS84 coordinate projections.
+6. **Geographic Candidate Generator & Active Falsification (`agent/candidate_generator.py`):**
+   - Generates grounded candidate hypotheses across spatial scales: point, building, road corridor, area, city, administrative region.
+   - Translates verified EXIF GPS anchors into point candidates.
+   - Translates OCR road designations (`US-101`, `Route 66`, `M4`) and street names into geocoded transportation corridors and area candidates.
+   - Incorporates regional license plate livery clues (e.g., British Columbia).
+   - Enforces astronomical solar elevation feasibility: compares observed sun elevation against theoretical maximum elevation $90^\circ - |\phi - \delta_{\text{sun}}|$, permanently falsifying and excluding physically impossible candidate latitudes.
+7. **Candidate Comparator & Transparent Ranking (`agent/candidate_comparator.py`):**
+   - Transparent mathematical scoring applying level specificity multipliers (`point`=5.0, `building`=4.0, `road`=3.0, `area`=2.5, `city`=2.0, `admin`=1.5, `region`=1.0).
+   - Terrain correlation bonus: upweights candidates matching predicted DEM horizons ($1.0 + 2.0 \cdot S_{\text{terrain}}$).
+   - Contradiction penalty: applies severe exponential down-weighting ($0.10^n$) for active physical contradictions.
+   - Generates natural-language supporting and contradictory justifications for every candidate.
+8. **Geographic Visualization (`reports/geographic_visualizer.py`):**
+   - Renders annotated candidate maps on georeferenced map mosaics with status-coded markers, uncertainty radii, and bounding envelopes.
+   - Renders 360-degree synthetic terrain horizon profiles plotting apparent vertical angles against true north azimuth bearings.
+9. **Geographic Investigation Orchestrator (`agent/investigation_manager.py`):**
+   - End-to-end Phase 3 investigation manager reading visual observations, generating multi-scale candidate hypotheses, executing DEM terrain profiling, querying OSM infrastructure, ranking candidates, and updating database lifecycle state to `geographically_analyzed`.
+10. **Forensic CLI Expansion (`interface/cli.py`):**
+    - Added `hound geo doctor`: Diagnoses Overpass mirrors, Terrarium elevation services, and Nominatim geocoding.
+    - Added `hound geo terrain <lat> <lon>`: Computes 360-degree synthetic horizon profile and saves plot.
+    - Added `hound geo investigate <inv_id>`: Executes complete Phase 3 Geographic Intelligence workflow on an investigation.
+    - Added `hound geo candidates <inv_id>`: Displays candidate hypothesis ledger, scores, and status.
+    - Added `hound geo map <inv_id>`: Renders and saves annotated geographic candidate map.
+11. **Comprehensive Documentation & Quality Assurance:**
+    - Created `docs/PHASE_3_IMPLEMENTATION.md`.
+    - Added comprehensive unit tests: `test_geographic_search.py`, `test_openstreetmap.py`, `test_geocoding.py`, `test_elevation_terrain.py`, `test_satellite_tiles.py`, `test_candidate_generator.py`, `test_candidate_comparator.py`, `test_geographic_visualizer.py`, and `test_investigation_manager.py`.
+    - Extended `test_cli.py` to cover Phase 3 commands.
+    - **Test Result:** Ran 60 tests across 18 test modules: **60 passed, 0 failures, 0 errors** in 35.99s.
+
+### Actual Capabilities Demonstrated
+- **Terrain Profiling:** Generated 360-degree synthetic terrain horizon for Mount Everest (27.9881°N, 86.9250°E) resolving ground elevation of 8715.8 m and peak apparent angle in 36.5s.
+- **End-to-End Investigation:** Executed Phase 3 pipeline on sample route image: generated 6 geographic candidate hypotheses across transportation corridors, computed DEM horizons, ranked top hypothesis (Corridor: US-101 North in California, score 26.25), and generated annotated candidate map and horizon profile plots.
+
+
 ### Next Development Milestone
 - Proceed to **Phase 3: Geographic Intelligence Engine** (OpenStreetMap Overpass client with mirror failover, gazetteer, Terrarium DEM elevation horizon synthesizer, and initial geographic candidate generation).

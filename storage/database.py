@@ -143,6 +143,20 @@ CREATE TABLE IF NOT EXISTS shadow_observations (
     FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS osm_cache (
+    query_hash TEXT PRIMARY KEY,
+    query_text TEXT NOT NULL,
+    response_json TEXT NOT NULL,
+    element_count INTEGER NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS gazetteer_cache (
+    query_key TEXT PRIMARY KEY,
+    result_json TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_investigations_sha ON investigations(sha256);
 CREATE INDEX IF NOT EXISTS idx_evidence_investigation ON evidence_items(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_candidates_investigation ON candidates(investigation_id);
@@ -150,6 +164,8 @@ CREATE INDEX IF NOT EXISTS idx_audit_investigation ON audit_logs(investigation_i
 CREATE INDEX IF NOT EXISTS idx_ocr_investigation ON ocr_observations(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_infra_investigation ON infrastructure_detections(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_shadow_investigation ON shadow_observations(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_osm_cache_hash ON osm_cache(query_hash);
+CREATE INDEX IF NOT EXISTS idx_gazetteer_cache_key ON gazetteer_cache(query_key);
 """
 
 

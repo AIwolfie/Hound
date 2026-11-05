@@ -83,6 +83,23 @@ class TestCLI(unittest.TestCase):
         self.assertIn("Text & OCR Observations", result.output)
         self.assertIn("Infrastructure Clues", result.output)
 
+    def test_cli_geo_doctor(self):
+        result = self.runner.invoke(cli, ["geo", "doctor"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("OpenStreetMap Overpass Mirrors", result.output)
+        self.assertIn("Digital Elevation Model", result.output)
+
+    def test_cli_geo_terrain(self):
+        out_plot = self.dir_path / "test_terrain_cli.jpg"
+        result = self.runner.invoke(
+            cli,
+            ["geo", "terrain", "27.9881", "86.9250", "--distance-km", "5.0", "-o", str(out_plot)],
+        )
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Horizon profile generated", result.output)
+        self.assertIn("Prominent Peak", result.output)
+        self.assertTrue(out_plot.is_file())
+
 
 if __name__ == "__main__":
     unittest.main()
