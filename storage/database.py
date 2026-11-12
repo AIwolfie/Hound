@@ -157,12 +157,65 @@ CREATE TABLE IF NOT EXISTS gazetteer_cache (
     created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS agent_sessions (
+    investigation_id TEXT PRIMARY KEY,
+    status TEXT NOT NULL,
+    iteration INTEGER NOT NULL DEFAULT 0,
+    tool_calls_count INTEGER NOT NULL DEFAULT 0,
+    external_requests_count INTEGER NOT NULL DEFAULT 0,
+    started_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    completed_at TEXT,
+    stopping_reason TEXT,
+    final_status TEXT,
+    state_json TEXT,
+    FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS investigation_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    investigation_id TEXT NOT NULL,
+    iteration INTEGER NOT NULL,
+    timestamp TEXT NOT NULL,
+    event_type TEXT NOT NULL,
+    tool_id TEXT,
+    action_summary TEXT NOT NULL,
+    result_summary TEXT NOT NULL,
+    evidence_ids TEXT,
+    duration_s REAL NOT NULL,
+    error TEXT,
+    FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS agent_hypotheses (
+    id TEXT PRIMARY KEY,
+    investigation_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    level TEXT NOT NULL,
+    lat REAL,
+    lon REAL,
+    radius_m REAL,
+    status TEXT NOT NULL,
+    heuristic_score REAL NOT NULL,
+    seed_evidence_ids TEXT,
+    supporting_evidence_ids TEXT,
+    contradictory_evidence_ids TEXT,
+    untested_constraints TEXT,
+    score_breakdown_json TEXT,
+    rejection_reason TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    FOREIGN KEY(investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
+);
+
 CREATE INDEX IF NOT EXISTS idx_investigations_sha ON investigations(sha256);
 CREATE INDEX IF NOT EXISTS idx_evidence_investigation ON evidence_items(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_candidates_investigation ON candidates(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_audit_investigation ON audit_logs(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_ocr_investigation ON ocr_observations(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_infra_investigation ON infrastructure_detections(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_events_investigation ON investigation_events(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_hypotheses_investigation ON agent_hypotheses(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_shadow_investigation ON shadow_observations(investigation_id);
 CREATE INDEX IF NOT EXISTS idx_osm_cache_hash ON osm_cache(query_hash);
 CREATE INDEX IF NOT EXISTS idx_gazetteer_cache_key ON gazetteer_cache(query_key);

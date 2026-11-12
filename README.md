@@ -18,7 +18,7 @@
 [![Status](https://img.shields.io/badge/STATUS-OPERATIONAL-00FF66?style=for-the-badge&logo=radar&logoColor=black)](https://github.com/hound-osint/hound)
 [![Python](https://img.shields.io/badge/PYTHON-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-00F0FF?style=for-the-badge&logo=python&logoColor=black)](https://python.org)
 [![License](https://img.shields.io/badge/LICENSE-MIT-FF0055?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Tests](https://img.shields.io/badge/VALIDATION-66%2F66%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
+[![Tests](https://img.shields.io/badge/VALIDATION-81%2F81%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
 [![Architecture](https://img.shields.io/badge/ENGINE-LOCAL--FIRST%20%26%20ZERO--HALLUCINATION-FFE600?style=for-the-badge&logo=databricks&logoColor=black)](docs/HOUND_ARCHITECTURE.md)
 
 [**Key Features**](#-core-capabilities) • [**Interactive Terminal**](#-terminal-experience) • [**Scientific Engine**](#-the-science-how-hound-thinks) • [**Benchmarks**](#-ground-truth-benchmarks) • [**Quickstart**](#-quickstart-in-60-seconds) • [**Ethical Code**](#-sovereign-osint--ethical-code)
@@ -254,7 +254,7 @@ HOUND is continuously verified using a deterministic 5-tier public benchmark sui
 | **BM-04** | **Mount Everest Summit** | High-relief DEM continuous terrain profiling | $27.9881^\circ\text{N}, 86.9250^\circ\text{E}$ | **$0.000\text{ km}$** | <span style="color:#00FF66">✔ **PASSED**</span> |
 | **BM-05** | **Indoor Office (Control)** | Featureless room (negative control) | Low-Information Abstention | **Honest Abstain** | <span style="color:#00FF66">✔ **PASSED**</span> |
 
-**Regression Suite:** 66 unit & integration tests passing deterministically in $<25\text{s}$.
+**Regression Suite:** 81 unit & integration tests passing deterministically.
 
 ---
 
@@ -359,6 +359,31 @@ python main.py geo map <investigation_id>
 *Outputs: stitched satellite/OSM mosaic centered on candidates with status-coded markers, bounding envelopes, and uncertainty radii.*
 </details>
 
+<details>
+<summary><b>7. Autonomous Agent Investigation</b> — Execute the autonomous observe-plan-evaluate loop</summary>
+
+```bash
+python main.py agent investigate <investigation_id> --max-iterations 15 --offline
+```
+*Outputs: autonomous action selection, information-gap detection, adversarial verification, and stopping policy evaluation.*
+</details>
+
+<details>
+<summary><b>8. Agent Session Telemetry & Dossier Report</b> — Inspect state and export forensic dossier</summary>
+
+```bash
+# View live agent telemetry and budget consumption
+python main.py agent status <investigation_id>
+
+# View competing hypotheses and rejection reasons
+python main.py agent hypotheses <investigation_id>
+
+# Export comprehensive Markdown investigation dossier
+python main.py agent report <investigation_id> -o dossier.md
+```
+*Outputs: formatted tables of session metrics, competing candidates, and exportable intelligence reports.*
+</details>
+
 ---
 
 ## 🗺️ Engineering Roadmap
@@ -369,7 +394,7 @@ python main.py geo map <investigation_id>
 [PHASE 2] Visual Intelligence & Multi-Pass OCR       [████████████████████] 100% (COMPLETE)
 [PHASE 3] Geographic Intelligence Engine & DEM       [████████████████████] 100% (COMPLETE)
 [PHASE 3.1] Validation, Scientific Audit & Hardening [████████████████████] 100% (COMPLETE)
-[PHASE 4] Autonomous Search Tree & Verification Agent[░░░░░░░░░░░░░░░░░░░░]   0% (UPCOMING)
+[PHASE 4] Autonomous Search Tree & Verification Agent[████████████████████] 100% (COMPLETE)
 [PHASE 5] Adversarial Verification & Falsification   [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
 [PHASE 6] Forensic Reporting & Visual Dossiers       [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
 [PHASE 7] Dark-Mode Web Analyst Dashboard            [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)

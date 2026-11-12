@@ -355,3 +355,23 @@ class SolarAnalyzer(BaseInvestigator):
                     conn.commit()
 
         return evidence_list
+
+
+def calculate_solar_declination(day_of_year: int, hour_fraction: float = 12.0) -> float:
+    """Module-level helper to calculate solar declination in degrees."""
+    return SolarAnalyzer.calculate_solar_declination(day_of_year, hour_fraction)
+
+
+def compute_max_solar_elevation(lat_deg: float, day_of_year: Optional[int] = None) -> float:
+    """Module-level helper to compute maximum theoretical solar elevation."""
+    return SolarAnalyzer.compute_max_solar_elevation(lat_deg, day_of_year)
+
+
+def is_solar_elevation_feasible(
+    lat_deg: float,
+    observed_elev_deg: float,
+    day_of_year: Optional[int] = None,
+    tolerance_deg: float = 3.0,
+) -> Tuple[bool, float, str]:
+    """Module-level helper evaluating solar elevation feasibility."""
+    return SolarAnalyzer.is_solar_elevation_feasible(lat_deg, observed_elev_deg, day_of_year, tolerance_deg)

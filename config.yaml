@@ -51,3 +51,19 @@ investigation:
   auto_falsification_enabled: true
   min_evidence_for_high_confidence: 3
   default_search_radius_m: 5000
+
+agent:
+  max_iterations: 15
+  max_tool_calls: 30
+  max_external_requests: 20
+  max_duration_seconds: 120
+  max_candidates: 50
+  max_retry_count: 3
+  offline_mode: false
+  enable_llm: false
+  llm_provider: "none" # "none", "generic_http", "openai"
+  llm_model: "gpt-4o-mini"
+  llm_api_key: null
+  llm_base_url: null
+  llm_timeout_seconds: 20
+  llm_max_cost_usd: 0.50

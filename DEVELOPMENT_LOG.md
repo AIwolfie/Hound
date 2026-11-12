@@ -214,4 +214,60 @@
 - **Hypothesis Discipline:** Zero circular scoring reinforcement; honest heuristic score labeling; safe handling of Overpass service interruptions without false absence assumptions.
 
 ### Next Development Milestone
-- Proceed to **Phase 4: Agentic Investigation & Multi-Modal Verification** (Autonomous exploration agent, multi-step search tree, automated cross-modal verification, and hypothesis pruning).
+- Proceed to **Phase 4: Autonomous Investigation & Multi-Modal Verification** (Autonomous exploration agent, multi-step search tree, automated cross-modal verification, and hypothesis pruning).
+
+---
+
+## 2026-11-12 — Phase 4: Autonomous Investigation & Multi-Modal Verification Engine
+
+### Completed Work
+1. **Agent Data Models (`agent/agent_models.py`):**
+   - Built typed models for `InvestigationAction`, `ToolResult`, `InvestigationEvent`, `HypothesisRecord`, `VerificationQuestion`, and `FinalInvestigationDossier`.
+   - Formalized `HypothesisStatus` (`proposed`, `active`, `supported`, `challenged`, `rejected`, `inconclusive`), `StoppingReason`, and `FinalStatus`.
+2. **Investigation State & SQLite Session Store (`agent/investigation_state.py`, `storage/database.py`):**
+   - Created `agent_sessions`, `investigation_events`, and `agent_hypotheses` tables with foreign key cascades and index optimization.
+   - Built state tracking for budget counters (iterations, tool calls, external requests, elapsed seconds), clue flags, and action deduplication signatures.
+   - Implemented database session persistence (`save_session`) and resumption (`load_session`).
+3. **Allowlisted Tool Registry (`agent/tool_registry.py`):**
+   - Implemented explicit schema-validated registry housing 14 tools across Visual, Geographic, Evidence, and Verification categories.
+   - Enforced sandboxed execution with timeout handling, error boundaries, offline detection, and audit logging.
+4. **Information-Gap Investigation Planner (`agent/planner.py`):**
+   - Built cost-aware Value-of-Information (VOI) priority engine considering uncertainty reduction $\Delta U$, source reliability $R$, evidence independence $I$, falsification potential $F$, and execution cost $C$.
+   - Prevents redundant tool calls and selects the single most informative action at each iteration.
+5. **Hypothesis Lifecycle & Non-Circular Scoring (`agent/hypothesis_manager.py`):**
+   - Managed competing candidates across scales (point, building, road corridor, area, city, region).
+   - Enforced non-circular scoring: seed clues that formed the hypothesis are barred from contributing corroboration points.
+   - Preserves all rejected candidates along with verified contradiction justifications.
+6. **Adversarial Verification Engine (`agent/verification_engine.py`):**
+   - Actively formulates challenging falsification questions targeting leading candidates.
+   - Evaluates celestial solar elevation ceilings ($h_{\max} = 90^\circ - |\phi - \delta|$), road/rail corridor presence on OpenStreetMap, and mountain skyline cross-correlation.
+   - Correctly handles service outages (`service_unavailable`) without treating missing data as contradictory evidence.
+7. **Bounded Stopping Policy & Honest Abstention (`agent/stopping_policy.py`):**
+   - Evaluates hard budget limits, evidence convergence, candidate separation, and low-information negative controls.
+   - Honestly abstains on featureless images with `insufficient_evidence` and precision `Unlocalized`.
+8. **Pluggable LLM Reasoning Provider with Offline Fallback (`agent/llm_provider.py`):**
+   - Provider-independent interface supporting OpenAI, Gemini, and generic OpenAI-compatible HTTP endpoints.
+   - Enforces structured JSON output validation while guaranteeing 100% deterministic offline fallback.
+9. **Autonomous Executive Loop (`agent/investigation_agent.py`):**
+   - Implemented controlled observe-plan-execute-evaluate loop coordinating tools, evidence, and hypotheses.
+   - Compiles comprehensive investigation dossiers separating verified facts from spatial inferences.
+10. **Forensic CLI Suite (`interface/cli.py`):**
+    - Added `hound agent investigate <id>` (with `--max-iterations`, `--offline`, `--no-llm`, `--resume`, `--verbose`).
+    - Added `hound agent status <id>`: Session telemetry and budget progress.
+    - Added `hound agent hypotheses <id>`: Competing candidates ledger and rejection reasons.
+    - Added `hound agent history <id>`: Chronological timeline of investigative events.
+    - Added `hound agent verify <id>`: Targeted adversarial verification questions.
+    - Added `hound agent report <id>`: Exportable Markdown investigation dossier.
+11. **Comprehensive Documentation & Quality Assurance:**
+    - Created `docs/PHASE_4_IMPLEMENTATION.md`.
+    - Added dedicated test modules: `tests/test_agent_architecture.py`, `tests/test_agent_scenarios.py`, and `tests/test_agent_cli.py`.
+    - Verified all 3 realistic end-to-end scenarios (Strong Evidence Convergence, Conflicting Candidates Rejection, Weak Evidence Honest Abstention).
+    - **Test Result:** 81 tests across 22 test modules: **81 passed, 0 failures, 0 errors in 41.13s**.
+
+### Actual Capabilities Demonstrated
+- **Autonomous Reasoning:** Agent autonomously selects and chains tools based on current clues, updating hypotheses dynamically.
+- **Active Falsification:** Successfully rejected candidate at 70°N when observed noon sun at 65° violated the physical ceiling.
+- **Honest Abstention:** On featureless indoor scenes, the agent halted without guessing coordinates, reporting `insufficient_evidence`.
+
+### Next Development Milestone
+- Proceed to **Phase 5: Adversarial Verification & Anti-Hallucination** (Perspective occlusion checks, corridor spacing geometry, contradictory evidence falsification).

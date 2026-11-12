@@ -89,12 +89,30 @@ class InvestigationConfig(BaseModel):
     default_search_radius_m: int = 5000
 
 
+class AgentConfig(BaseModel):
+    max_iterations: int = 15
+    max_tool_calls: int = 30
+    max_external_requests: int = 20
+    max_duration_seconds: int = 120
+    max_candidates: int = 50
+    max_retry_count: int = 3
+    offline_mode: bool = False
+    enable_llm: bool = False
+    llm_provider: str = "none"  # "none", "generic_http", "openai"
+    llm_model: str = "gpt-4o-mini"
+    llm_api_key: Optional[str] = None
+    llm_base_url: Optional[str] = None
+    llm_timeout_seconds: int = 20
+    llm_max_cost_usd: float = 0.50
+
+
 class HoundConfig(BaseModel):
     hound: HoundMetadataConfig = Field(default_factory=HoundMetadataConfig)
     paths: PathsConfig = Field(default_factory=PathsConfig)
     network: NetworkConfig = Field(default_factory=NetworkConfig)
     integrations: IntegrationsConfig = Field(default_factory=IntegrationsConfig)
     investigation: InvestigationConfig = Field(default_factory=InvestigationConfig)
+    agent: AgentConfig = Field(default_factory=AgentConfig)
 
 
 _CONFIG_CACHE: Optional[HoundConfig] = None
@@ -136,6 +154,14 @@ def load_config(config_file: Optional[Path | str] = None) -> HoundConfig:
         config.hound.log_level = os.environ["HOUND_LOG_LEVEL"].upper()
     if os.environ.get("HOUND_STORAGE_DIR"):
         config.paths.storage_dir = Path(os.environ["HOUND_STORAGE_DIR"]).resolve()
+    if os.environ.get("HOUND_OFFLINE_MODE"):
+        config.agent.offline_mode = os.environ["HOUND_OFFLINE_MODE"].lower() in ("1", "true", "yes")
+    if os.environ.get("HOUND_ENABLE_LLM"):
+        config.agent.enable_llm = os.environ["HOUND_ENABLE_LLM"].lower() in ("1", "true", "yes")
+    if os.environ.get("HOUND_LLM_API_KEY"):
+        config.agent.llm_api_key = os.environ["HOUND_LLM_API_KEY"]
+    if os.environ.get("HOUND_LLM_MODEL"):
+        config.agent.llm_model = os.environ["HOUND_LLM_MODEL"]
 
     _CONFIG_CACHE = config
     return config

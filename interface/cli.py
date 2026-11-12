@@ -725,6 +725,310 @@ def cmd_geo_map(investigation_id: str, output: Optional[Path]) -> None:
     console.print(f"[bold green][+][/bold green] Candidate map generated: [cyan]{out_file}[/cyan]")
 
 
+# ==============================================================================
+# PHASE 4: AUTONOMOUS AGENT COMMANDS
+# ==============================================================================
+
+@cli.group("agent")
+def agent_group() -> None:
+    """Phase 4 Autonomous Investigation Agent commands."""
+    pass
+
+
+@agent_group.command("investigate")
+@click.argument("investigation_id")
+@click.option("--max-iterations", "-i", type=int, default=15, help="Maximum agent planning iterations.")
+@click.option("--max-tool-calls", type=int, default=30, help="Maximum allowlisted tool calls.")
+@click.option("--max-duration", type=int, default=120, help="Maximum investigation duration in seconds.")
+@click.option("--offline", is_flag=True, help="Force offline mode (disable external network queries).")
+@click.option("--no-llm", is_flag=True, help="Disable optional LLM reasoning and use deterministic offline planner.")
+@click.option("--verbose", "-v", is_flag=True, help="Display verbose event telemetry.")
+@click.option("--resume", is_flag=True, help="Resume an existing interrupted investigation session.")
+def cmd_agent_investigate(
+    investigation_id: str,
+    max_iterations: int,
+    max_tool_calls: int,
+    max_duration: int,
+    offline: bool,
+    no_llm: bool,
+    verbose: bool,
+    resume: bool,
+) -> None:
+    """Execute autonomous multi-modal investigation on a target image."""
+    print_banner()
+    from agent.investigation_agent import InvestigationAgent
+    from core.configuration import AgentConfig, get_config
+
+    cfg = get_config()
+    agent_cfg = cfg.agent.model_copy()
+    agent_cfg.max_iterations = max_iterations
+    agent_cfg.max_tool_calls = max_tool_calls
+    agent_cfg.max_duration_seconds = max_duration
+    if offline:
+        agent_cfg.offline_mode = True
+    if no_llm:
+        agent_cfg.enable_llm = False
+
+    agent = InvestigationAgent(config=agent_cfg)
+    console.print(f"[bold cyan][*] Launching HOUND Autonomous Investigation Agent...[/bold cyan]")
+    console.print(f"Target Investigation: [bold]{investigation_id}[/bold]")
+    console.print(f"Execution Budgets: Iterations={max_iterations}, ToolCalls={max_tool_calls}, MaxTime={max_duration}s\n")
+
+    t0 = time.perf_counter()
+    try:
+        dossier = agent.investigate(
+            investigation_id=investigation_id,
+            resume=resume,
+            max_iterations=max_iterations,
+            offline=agent_cfg.offline_mode,
+            verbose=verbose,
+        )
+    except Exception as e:
+        console.print(f"[bold red][FAIL] Agent investigation failed: {e}[/bold red]")
+        sys.exit(1)
+
+    dt = time.perf_counter() - t0
+    console.print(f"\n[bold green][+] Autonomous Investigation Concluded ({dt:.2f}s)[/bold green]")
+    console.print(f"Final Status: [bold cyan]{dossier.final_status.upper()}[/bold cyan] (Reason: {dossier.stopping_reason})")
+    console.print(f"Justified Precision: [bold yellow]{dossier.geographic_precision_justified}[/bold yellow]")
+    console.print(f"Total Iterations: {dossier.total_iterations} | Tool Calls: {dossier.total_tool_calls} | Events: {dossier.events_count}")
+
+    if dossier.primary_hypothesis:
+        p = dossier.primary_hypothesis
+        console.print("\n[bold]Leading Hypothesis:[/bold]")
+        console.print(f"  • Name: [bold green]{p.name}[/bold green] (Level: {p.level})")
+        if p.lat is not None and p.lon is not None:
+            console.print(f"  • Coordinates: {p.lat:.4f}, {p.lon:.4f}")
+        console.print(f"  • Heuristic Score: [cyan]{p.heuristic_score:.2f}[/cyan] ({p.score_breakdown.score_type})")
+        console.print(f"  • Independent Corroborations: {len(p.supporting_evidence_ids)}")
+        console.print(f"  • Contradictions: {len(p.contradictory_evidence_ids)}")
+
+    if dossier.abstention_reasons:
+        console.print("\n[bold yellow]Abstention Justification:[/bold yellow]")
+        for reason in dossier.abstention_reasons:
+            console.print(f"  • {reason}")
+
+
+@agent_group.command("status")
+@click.argument("investigation_id")
+def cmd_agent_status(investigation_id: str) -> None:
+    """View active session state and budget consumption."""
+    print_banner()
+    from agent.investigation_state import InvestigationState
+
+    cfg = get_config()
+    db = DatabaseManager(cfg.paths.database_path)
+    state = InvestigationState.load_session(investigation_id, db)
+    if not state:
+        console.print(f"[yellow]No agent session recorded for '{investigation_id}'.[/yellow]")
+        return
+
+    table = Table(title=f"Agent Session Telemetry: {investigation_id}", box=ROUNDED)
+    table.add_column("Property", style="cyan")
+    table.add_column("Value", style="white")
+
+    table.add_row("Session State", f"[{'green' if state.is_completed else 'yellow'}]{'COMPLETED' if state.is_completed else 'RUNNING'}[/]")
+    table.add_row("Iterations Completed", f"{state.iteration} / {state.max_iterations}")
+    table.add_row("Tool Calls Executed", f"{state.tool_calls_count} / {state.max_tool_calls}")
+    table.add_row("External Requests", f"{state.external_requests_count} / {state.max_external_requests}")
+    table.add_row("Stopping Reason", str(state.stopping_reason or "In Progress"))
+    table.add_row("Final Status", str(state.final_status or "Evaluating"))
+    table.add_row("Active Hypotheses Count", str(len(state.hypotheses)))
+    table.add_row("Events Logged", str(len(state.events)))
+
+    console.print(table)
+
+
+@agent_group.command("hypotheses")
+@click.argument("investigation_id")
+def cmd_agent_hypotheses(investigation_id: str) -> None:
+    """Display all candidate hypotheses, status, and rejection reasons."""
+    print_banner()
+    from agent.investigation_state import InvestigationState
+
+    cfg = get_config()
+    db = DatabaseManager(cfg.paths.database_path)
+    state = InvestigationState.load_session(investigation_id, db)
+    if not state or not state.hypotheses:
+        console.print(f"[yellow]No hypotheses recorded for '{investigation_id}'.[/yellow]")
+        return
+
+    table = Table(title="Agent Competing Hypotheses Ledger", box=ROUNDED)
+    table.add_column("ID", style="dim", no_wrap=True)
+    table.add_column("Candidate Name", style="bold white")
+    table.add_column("Level", style="cyan")
+    table.add_column("Score", justify="right")
+    table.add_column("Status", justify="center")
+    table.add_column("Details / Rejection Reason", style="dim")
+
+    for h in sorted(state.hypotheses.values(), key=lambda x: x.heuristic_score, reverse=True):
+        status_style = {
+            "supported": "bold green",
+            "active": "green",
+            "proposed": "blue",
+            "challenged": "yellow",
+            "rejected": "bold red",
+            "inconclusive": "dim white",
+        }.get(h.status, "white")
+
+        details = h.rejection_reason or f"{len(h.supporting_evidence_ids)} corroborations"
+        table.add_row(
+            h.id,
+            h.name,
+            h.level,
+            f"{h.heuristic_score:.2f}",
+            f"[{status_style}]{h.status.upper()}[/{status_style}]",
+            details,
+        )
+
+    console.print(table)
+
+
+@agent_group.command("history")
+@click.argument("investigation_id")
+def cmd_agent_history(investigation_id: str) -> None:
+    """Display chronological investigation timeline of actions and results."""
+    print_banner()
+    from agent.investigation_state import InvestigationState
+
+    cfg = get_config()
+    db = DatabaseManager(cfg.paths.database_path)
+    state = InvestigationState.load_session(investigation_id, db)
+    if not state or not state.events:
+        console.print(f"[yellow]No event history recorded for '{investigation_id}'.[/yellow]")
+        return
+
+    console.print(f"[bold]Investigation Timeline ({len(state.events)} events):[/bold]\n")
+    for ev in state.events:
+        tool_tag = f"[{ev.tool_id}]" if ev.tool_id else ""
+        time_str = ev.timestamp[11:19] if len(ev.timestamp) >= 19 else ev.timestamp
+        console.print(f"[dim]{time_str}[/dim] [cyan]Iter {ev.iteration:02d}[/cyan] [bold]{tool_tag}[/bold] {ev.action_summary}")
+        if ev.result_summary:
+            console.print(f"      [dim]-> {ev.result_summary} ({ev.duration_s:.2f}s)[/dim]")
+
+
+@agent_group.command("verify")
+@click.argument("investigation_id")
+def cmd_agent_verify(investigation_id: str) -> None:
+    """Run adversarial verification checks against leading candidate hypotheses."""
+    print_banner()
+    from agent.hypothesis_manager import HypothesisManager
+    from agent.investigation_state import InvestigationState
+    from agent.verification_engine import VerificationEngine
+
+    cfg = get_config()
+    db = DatabaseManager(cfg.paths.database_path)
+    state = InvestigationState.load_session(investigation_id, db)
+    if not state or not state.hypotheses:
+        console.print(f"[yellow]No hypotheses found to verify for '{investigation_id}'.[/yellow]")
+        return
+
+    hyp_mgr = HypothesisManager(db_manager=db)
+    evid_store = EvidenceStore(db)
+    verifier = VerificationEngine(hyp_mgr, evid_store)
+
+    evidence_items = evid_store.get_evidence(investigation_id)
+    console.print("[bold]Generating Adversarial Verification Questions...[/bold]\n")
+
+    for h in sorted(state.hypotheses.values(), key=lambda x: x.heuristic_score, reverse=True)[:3]:
+        questions = verifier.generate_verification_questions(h, evidence_items)
+        console.print(f"[bold cyan]Candidate: {h.name}[/bold cyan] ({h.level}, Score: {h.heuristic_score:.2f})")
+        if not questions:
+            console.print("  [dim]No automated verification questions identified for this candidate modality.[/dim]")
+        for q in questions:
+            console.print(f"  • [{q.modality.upper()}] [bold]{q.question_text}[/bold]")
+        console.print()
+
+
+@agent_group.command("report")
+@click.argument("investigation_id")
+@click.option("--output", "-o", type=click.Path(path_type=Path), help="Output Markdown report path.")
+def cmd_agent_report(investigation_id: str, output: Optional[Path]) -> None:
+    """Generate and display comprehensive investigation report dossier."""
+    print_banner()
+    from agent.investigation_agent import InvestigationAgent
+
+    agent = InvestigationAgent()
+    inv = agent.inv_store.get_investigation(investigation_id)
+    if not inv:
+        console.print(f"[red]Investigation '{investigation_id}' not found.[/red]")
+        return
+
+    # Load session and compile dossier
+    from agent.investigation_state import InvestigationState
+    state = InvestigationState.load_session(investigation_id, agent.db)
+    if not state:
+        console.print(f"[yellow]No agent session found for '{investigation_id}'. Run 'hound agent investigate' first.[/yellow]")
+        return
+
+    dossier = agent._compile_dossier(state, inv)
+
+    # Format Markdown dossier
+    lines = [
+        f"# HOUND INVESTIGATION DOSSIER: {dossier.investigation_id}",
+        f"**Target Media:** {dossier.target_filename} (`{dossier.sha256_hash}`)",
+        f"**Final Status:** `{dossier.final_status.upper()}` | **Stopping Reason:** `{dossier.stopping_reason}`",
+        f"**Justified Precision:** **{dossier.geographic_precision_justified}**",
+        f"**Total Iterations:** {dossier.total_iterations} | **Duration:** {dossier.total_duration_s:.2f}s",
+        "",
+        "---",
+        "",
+        "## 1. Leading Geographic Hypothesis",
+    ]
+
+    if dossier.primary_hypothesis:
+        p = dossier.primary_hypothesis
+        lines.extend([
+            f"- **Target Name:** {p.name}",
+            f"- **Granularity Level:** `{p.level}`",
+            f"- **Coordinates:** `{p.lat:.4f}, {p.lon:.4f}`" if p.lat is not None and p.lon is not None else "- **Coordinates:** Unassigned",
+            f"- **Heuristic Score:** {p.heuristic_score:.2f} (`{p.score_breakdown.score_type}`)",
+            f"- **Independent Corroborations:** {len(p.supporting_evidence_ids)}",
+            f"- **Contradictions:** {len(p.contradictory_evidence_ids)}",
+        ])
+    else:
+        lines.append("*No supported candidate hypothesis. System abstained based on available evidence.*")
+
+    lines.extend([
+        "",
+        "## 2. Verified Facts vs. Deductions",
+        "### Facts (Direct Optical Observations & EXIF)",
+    ])
+    for f in dossier.facts:
+        lines.append(f"- {f}")
+
+    lines.extend([
+        "",
+        "### Inferences & Spatial Deductions",
+    ])
+    for inf in dossier.inferences:
+        lines.append(f"- {inf}")
+
+    if dossier.abstention_reasons:
+        lines.extend([
+            "",
+            "## 3. Abstention Justification",
+        ])
+        for r in dossier.abstention_reasons:
+            lines.append(f"- {r}")
+
+    lines.extend([
+        "",
+        "## 4. Competing & Rejected Candidates",
+    ])
+    for c in dossier.competing_hypotheses:
+        lines.append(f"- **{c.name}** ({c.level}) - Score: {c.heuristic_score:.2f} | Status: `{c.status}`")
+    for r in dossier.rejected_hypotheses:
+        lines.append(f"- ~~{r.name}~~ ({r.level}) - **REJECTED**: {r.rejection_reason}")
+
+    report_content = "\n".join(lines)
+    if output:
+        output.write_text(report_content, encoding="utf-8")
+        console.print(f"[bold green][+][/bold green] Dossier saved to: [cyan]{output}[/cyan]")
+    else:
+        console.print(Markdown(report_content))
+
+
 def main() -> None:
     """Main CLI entry point."""
     cli()

@@ -96,32 +96,58 @@ class GeographicCandidateGenerator:
         # -------------------------------------------------------------
         # 2. Text Clues: Road Identifiers & Named Routes
         # -------------------------------------------------------------
-        road_evs = [e for e in evidence_items if e.kind == "ocr" and "Category: road_number" in e.text]
+        road_evs = [
+            e for e in evidence_items
+            if e.kind == "ocr" and ("Category: road_number" in e.text or "road sign" in e.text.lower() or "highway" in e.text.lower())
+        ]
         for rev in road_evs:
             # Extract road string e.g. "Recognized text: "US-101 North""
             match = re.search(r'Recognized text:\s*"([^"]+)"', rev.text)
-            if not match:
-                continue
-            road_name = match.group(1).strip()
+            if match:
+                road_name = match.group(1).strip()
+            else:
+                road_m = re.search(r'(?:US|I|Route|Highway|State Route|CA)[-\s]?\d+[A-Z]?(?:\s+[A-Za-z]+)?', rev.text, re.IGNORECASE)
+                if road_m:
+                    road_name = road_m.group(0).strip()
+                else:
+                    continue
 
             # Forward geocode the road
             geo_results = self.gazetteer.forward_geocode(road_name, limit=3)
-            for g in geo_results:
+            if geo_results:
+                for g in geo_results:
+                    cand_road = GeographicCandidate(
+                        investigation_id=investigation_id,
+                        level="area",
+                        name=f"Corridor: {g.display_name}",
+                        lat=g.lat,
+                        lon=g.lon,
+                        bbox=g.bbox,
+                        radius_m=15000.0,
+                        score=3.5,
+                        status="active",
+                        seed_evidence_id=rev.id,
+                        seed_evidence_kind="ocr",
+                        supporting_evidence_ids=[rev.id],
+                        spatial_uncertainty_m=15000.0,
+                        ranking_explanation=f"OCR highway designation '{road_name}' geocoded to transportation corridor.",
+                    )
+                    candidates.append(cand_road)
+            else:
+                # Direct road corridor candidate if gazetteer query returned no results or was offline
                 cand_road = GeographicCandidate(
                     investigation_id=investigation_id,
-                    level="area",
-                    name=f"Corridor: {g.display_name}",
-                    lat=g.lat,
-                    lon=g.lon,
-                    bbox=g.bbox,
-                    radius_m=15000.0,
-                    score=3.5,
+                    level="road",
+                    name=f"Corridor: {road_name}",
+                    lat=None,
+                    lon=None,
+                    score=3.0,
                     status="active",
                     seed_evidence_id=rev.id,
                     seed_evidence_kind="ocr",
                     supporting_evidence_ids=[rev.id],
-                    spatial_uncertainty_m=15000.0,
-                    ranking_explanation=f"OCR highway designation '{road_name}' geocoded to transportation corridor.",
+                    spatial_uncertainty_m=50000.0,
+                    ranking_explanation=f"OCR highway designation '{road_name}' identified from signage.",
                 )
                 candidates.append(cand_road)
 
