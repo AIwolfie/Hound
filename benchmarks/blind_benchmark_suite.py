@@ -344,7 +344,224 @@ class BlindBenchmarkSuite:
                     description="Frankfurt Central Station, Hesse, Germany",
                 ),
             ),
+            # 11. Arid Desert Highway with Zero Text (Route 66, Northern Arizona)
+            BlindBenchmarkCase(
+                case_id="BLIND-11",
+                name="Route 66 Arid Desert Highway",
+                category="highway",
+                initial_evidence=[
+                    {
+                        "kind": "terrain",
+                        "status": "observed",
+                        "text": "[Terrain] Flat arid Colorado Plateau with red sandstone buttes on horizon",
+                        "confidence_weight": 0.85,
+                    },
+                    {
+                        "kind": "infrastructure",
+                        "status": "observed",
+                        "text": "[Infrastructure] 2-lane asphalt highway with wooden telegraph poles",
+                        "confidence_weight": 0.82,
+                    },
+                ],
+                ground_truth=GroundTruth(
+                    is_negative_control=False,
+                    expected_abstention=False,
+                    country="United States",
+                    state_or_region="Arizona",
+                    target_lat=35.1983,
+                    target_lon=-111.6513,
+                    point_tolerance_km=50.0,
+                    description="Historic Route 66 corridor near Flagstaff, Arizona",
+                ),
+            ),
+            # 12. Pure Alpine Skyline Silhouette with Zero Text (Matterhorn, Valais)
+            BlindBenchmarkCase(
+                case_id="BLIND-12",
+                name="Matterhorn Alpine Ridge Silhouette",
+                category="mountain",
+                initial_evidence=[
+                    {
+                        "kind": "terrain",
+                        "status": "observed",
+                        "text": "[Terrain] Distinctive pyramid peak skyline along southern horizon",
+                        "confidence_weight": 0.92,
+                    },
+                ],
+                ground_truth=GroundTruth(
+                    is_negative_control=False,
+                    expected_abstention=False,
+                    country="Switzerland",
+                    state_or_region="Valais",
+                    target_lat=45.9765,
+                    target_lon=7.7491,
+                    point_tolerance_km=25.0,
+                    description="Matterhorn silhouette from Gornergrat, Valais, Switzerland",
+                ),
+            ),
+            # 13. Iconic Landmark Geometry with Zero Text (Eiffel Tower, Paris)
+            BlindBenchmarkCase(
+                case_id="BLIND-13",
+                name="Champ de Mars Lattice Tower",
+                category="landmark",
+                initial_evidence=[
+                    {
+                        "kind": "infrastructure",
+                        "status": "observed",
+                        "text": "[Infrastructure] 300m wrought-iron lattice observation tower with 4 arched legs",
+                        "confidence_weight": 0.94,
+                    },
+                ],
+                ground_truth=GroundTruth(
+                    is_negative_control=False,
+                    expected_abstention=False,
+                    country="France",
+                    state_or_region="Île-de-France",
+                    target_lat=48.8584,
+                    target_lon=2.2945,
+                    point_tolerance_km=15.0,
+                    description="Eiffel Tower, Champ de Mars, Paris, France",
+                ),
+            ),
+            # 14. Monotonous Featureless Sand Dunes (Negative Control 3: Natural Ambiguity)
+            BlindBenchmarkCase(
+                case_id="BLIND-14",
+                name="Featureless Sand Ripple Dunes",
+                category="negative_control",
+                initial_evidence=[
+                    {
+                        "kind": "terrain",
+                        "status": "observed",
+                        "text": "[Terrain] Monotonous sand ripples without horizon landmarks, vegetation, or structures",
+                        "confidence_weight": 0.35,
+                    },
+                ],
+                ground_truth=GroundTruth(
+                    is_negative_control=True,
+                    expected_abstention=True,
+                    description="Featureless desert dune sand ripple without distinctive landmarks or geographic anchors",
+                ),
+            ),
+            # 15. Twilight Pacific Coastal Highway (Big Sur CA-1 Corridor)
+            BlindBenchmarkCase(
+                case_id="BLIND-15",
+                name="Big Sur Twilight Coastal Curve",
+                category="coastal",
+                initial_evidence=[
+                    {
+                        "kind": "terrain",
+                        "status": "observed",
+                        "text": "[Coastal Vista] High cliffs overlooking Pacific ocean on western flank",
+                        "confidence_weight": 0.88,
+                    },
+                ],
+                ground_truth=GroundTruth(
+                    is_negative_control=False,
+                    expected_abstention=False,
+                    country="United States",
+                    state_or_region="California",
+                    target_lat=36.3714,
+                    target_lon=-121.9018,
+                    point_tolerance_km=40.0,
+                    description="Big Sur Pacific Coast Highway at twilight, California",
+                ),
+            ),
         ]
+
+    @staticmethod
+    def _create_case_image(case: BlindBenchmarkCase, img_path: Path) -> None:
+        """Construct realistic synthetic visual test frames matching the physical scene domain."""
+        import cv2
+        import numpy as np
+
+        cid = case.case_id
+        cat = case.category
+        canvas = np.zeros((480, 640, 3), dtype=np.uint8)
+
+        if cat == "negative_control" or cid in ("BLIND-06", "BLIND-07", "BLIND-09", "BLIND-14"):
+            # Uniform beige / off-white drywall or monotonous featureless sand
+            if cid == "BLIND-14":
+                # Monotonous Sahara sand ripple
+                canvas[:, :] = [130, 190, 220]  # BGR ochre
+            else:
+                # Office drywall / desk
+                canvas[:, :] = [170, 180, 190]
+            cv2.imwrite(str(img_path), canvas)
+            return
+
+        if cat == "landmark" or cid == "BLIND-13":
+            # Paris Eiffel Tower: Blue sky top, metallic tower geometry in center bottom
+            canvas[:240, :] = [210, 150, 80]  # Light blue sky (BGR)
+            canvas[240:, :] = [70, 70, 70]    # Ground/metallic base
+            # Center lattice tower triangle
+            pts = np.array([[320, 40], [280, 400], [360, 400]], np.int32)
+            cv2.polylines(canvas, [pts], isClosed=True, color=(30, 30, 30), thickness=4)
+            cv2.line(canvas, (260, 320), (380, 320), (30, 30, 30), 4)
+            cv2.line(canvas, (290, 200), (350, 200), (30, 30, 30), 4)
+
+        elif cat == "mountain" or cid in ("BLIND-02", "BLIND-12"):
+            # Alpine skyline: Pale crisp sky top, jagged mountain peaks, green valley
+            canvas[:190, :] = [230, 200, 150] # Alpine sky
+            canvas[190:330, :] = [240, 240, 240] # Snow peak body
+            canvas[330:, :] = [30, 80, 40]    # Pine forest
+            # Draw distinctive high-relief ridge silhouette
+            cv2.line(canvas, (0, 220), (320, 190), (120, 120, 130), 3)
+            cv2.line(canvas, (320, 190), (640, 230), (120, 120, 130), 3)
+
+        elif cat == "coastal" or cid in ("BLIND-03", "BLIND-15"):
+            # Coastal Highway: Pacific Ocean on left (BGR blue), coastal bluffs on right, road curving
+            canvas[:, :280] = [180, 100, 30]  # Deep Pacific ocean blue
+            canvas[:, 280:] = [40, 120, 80]   # Golden green coastal bluffs
+            canvas[:160, :] = [220, 180, 120] # Coastal sky
+            road_pts = [[260, 480], [300, 480], [360, 240], [340, 240]]
+            cv2.fillPoly(canvas, [np.array(road_pts, np.int32)], color=(60, 60, 60))
+            cv2.line(canvas, (280, 480), (350, 240), color=(255, 255, 255), thickness=2)
+
+        elif cat == "highway" or cid in ("BLIND-01", "BLIND-11"):
+            # Arid / Coastal Highway: Sky top half, terrain middle, asphalt road converging
+            canvas[:180, :] = [220, 180, 120] # Sky
+            if cid == "BLIND-11":
+                canvas[180:, :] = [40, 70, 180] # Red-brown earth (BGR)
+            else:
+                canvas[180:, :] = [60, 110, 70] # Coastal scrub
+            road_pts = [[200, 480], [440, 480], [340, 220], [300, 220]]
+            cv2.fillPoly(canvas, [np.array(road_pts, np.int32)], color=(50, 50, 50))
+            cv2.line(canvas, (320, 480), (320, 220), color=(0, 220, 240), thickness=2)
+            cv2.line(canvas, (220, 480), (305, 220), color=(240, 240, 240), thickness=2)
+            cv2.line(canvas, (420, 480), (335, 220), color=(240, 240, 240), thickness=2)
+
+        elif cat == "urban" or cid in ("BLIND-04", "BLIND-08"):
+            # Urban nightscape / high density crossing: Dark background, vertical neon banners
+            canvas[:, :] = [25, 25, 35]
+            canvas[300:, :] = [45, 45, 50]
+            cv2.rectangle(canvas, (60, 40), (120, 350), color=(200, 30, 180), thickness=-1)
+            cv2.rectangle(canvas, (240, 60), (300, 320), color=(30, 220, 220), thickness=-1)
+            cv2.rectangle(canvas, (500, 30), (560, 340), color=(40, 200, 50), thickness=-1)
+            for x in range(150, 500, 40):
+                cv2.rectangle(canvas, (x, 380), (x + 20, 460), color=(220, 220, 220), thickness=-1)
+
+        elif cat == "rural" or cid == "BLIND-05":
+            # Iowa farmstead: Pale sky, golden-green crop fields, vertical grain elevator
+            canvas[:160, :] = [220, 180, 120]
+            canvas[160:, :] = [40, 160, 180]
+            cv2.rectangle(canvas, (280, 80), (360, 300), color=(180, 180, 180), thickness=-1)
+            cv2.circle(canvas, (320, 80), 40, color=(160, 160, 160), thickness=-1)
+
+        elif cat == "railway" or cid == "BLIND-10":
+            # Railway corridor: Ballast gravel, rails, catenary masts
+            canvas[:160, :] = [210, 160, 100]
+            canvas[160:, :] = [80, 85, 95]
+            cv2.line(canvas, (180, 480), (300, 200), color=(160, 170, 180), thickness=3)
+            cv2.line(canvas, (240, 480), (315, 200), color=(160, 170, 180), thickness=3)
+            cv2.line(canvas, (400, 480), (325, 200), color=(160, 170, 180), thickness=3)
+            cv2.line(canvas, (460, 480), (340, 200), color=(160, 170, 180), thickness=3)
+            cv2.line(canvas, (140, 480), (140, 80), color=(50, 50, 50), thickness=4)
+            cv2.line(canvas, (140, 100), (320, 100), color=(70, 70, 70), thickness=2)
+
+        else:
+            canvas[:240, :] = [200, 160, 100]
+            canvas[240:, :] = [80, 80, 80]
+
+        cv2.imwrite(str(img_path), canvas)
 
     def run_benchmark(self, offline: bool = True) -> List[CaseEvaluation]:
         """Execute autonomous investigations across all blind cases and evaluate results."""
@@ -370,10 +587,9 @@ class BlindBenchmarkSuite:
             for case in manifest:
                 logger.info(f"Running blind benchmark case: {case.case_id} ({case.name})...")
 
-                # Create synthetic test image file
+                # Create synthetic test image file matching physical scene domain
                 img_path = workspace / f"{case.case_id}.jpg"
-                img = Image.new("RGB", (640, 480), color=(120, 140, 160))
-                img.save(img_path)
+                self._create_case_image(case, img_path)
 
                 img_rec = load_and_assess_image(img_path, preserve_original=False)
                 inv = inv_store.create_investigation(img_rec)

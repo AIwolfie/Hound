@@ -9,6 +9,8 @@ env/
 venv/
 
 # HOUND runtime databases and storage caches
+*.db
+*.db-journal
 data/hound.db
 data/hound.db-journal
 data/storage/

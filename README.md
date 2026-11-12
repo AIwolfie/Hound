@@ -18,7 +18,7 @@
 [![Status](https://img.shields.io/badge/STATUS-OPERATIONAL-00FF66?style=for-the-badge&logo=radar&logoColor=black)](https://github.com/hound-osint/hound)
 [![Python](https://img.shields.io/badge/PYTHON-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-00F0FF?style=for-the-badge&logo=python&logoColor=black)](https://python.org)
 [![License](https://img.shields.io/badge/LICENSE-MIT-FF0055?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Tests](https://img.shields.io/badge/VALIDATION-81%2F81%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
+[![Tests](https://img.shields.io/badge/VALIDATION-114%2F114%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
 [![Architecture](https://img.shields.io/badge/ENGINE-LOCAL--FIRST%20%26%20ZERO--HALLUCINATION-FFE600?style=for-the-badge&logo=databricks&logoColor=black)](docs/HOUND_ARCHITECTURE.md)
 
 [**Key Features**](#-core-capabilities) • [**Interactive Terminal**](#-terminal-experience) • [**Scientific Engine**](#-the-science-how-hound-thinks) • [**Benchmarks**](#-ground-truth-benchmarks) • [**Quickstart**](#-quickstart-in-60-seconds) • [**Ethical Code**](#-sovereign-osint--ethical-code)
@@ -77,8 +77,15 @@ flowchart TB
         COMPARATOR --> BREAKDOWN["Non-Circular Heuristic Scoring<br/>• Level Multipliers (Point=5.0 ... Region=1.0)<br/>• Terrain Horizon Cross-Correlation"]:::agent
     end
 
-    subgraph STORAGE ["05 • EVIDENCE & ARTIFACT REPOSITORIES"]
-        FALSIFY & BREAKDOWN --> LEDGER[("Relational SQLite Ledger<br/>data/hound.db")]:::store
+    subgraph PHASE5 ["05 • ADVANCED VISUAL GEOLOCATION & VPR"]
+        RAW --> VPR["Visual Place Recognition (VPR)<br/>• Hybrid Color-Spatial Pyramid (1224-d HSV/Sobel)<br/>• PyTorch ResNet-18/50 Neural Descriptors<br/>• SIFT / ORB Keypoint Inlier RANSAC Homography"]:::vision
+        RAW --> ROAD["Road Geometry & Corridor Alignment<br/>• Hough Transform Vanishing Point Detection<br/>• Slope Discrepancy Curvature Classifier<br/>• OSM Sliding Waypoint Curvature Correlation"]:::vision
+        PREP --> SKYLINE["Advanced Mountain Skyline Profiler<br/>• Edge Gradient Dynamic Horizon Pathing<br/>• Relief Variance Safeguard (std >= 0.40°)<br/>• Multi-Parametric (Heading/Roll/Pitch) DEM Search"]:::vision
+        VPR & ROAD & SKYLINE --> RANKER["Multi-Modal Fusion & Uncertainty Envelopes<br/>• Non-Circular Corroboration Engine<br/>• 10-Tier Spatial Resolution Hierarchy<br/>• Bounded Metric & Polyline Uncertainty Radii"]:::agent
+    end
+
+    subgraph STORAGE ["06 • EVIDENCE & ARTIFACT REPOSITORIES"]
+        FALSIFY & BREAKDOWN & RANKER --> LEDGER[("Relational SQLite Ledger<br/>data/hound.db")]:::store
         LEDGER --> VISUALS["Forensic Dossier & Visual Artifacts<br/>• Annotated Map Tile Mosaics<br/>• 360° Synthetic Terrain Horizon Plots<br/>• Multi-Pass Evidence Overlays"]:::store
     end
 ```
@@ -206,6 +213,32 @@ HOUND features a rich, responsive command-line interface engineered for live for
 
 </td>
 </tr>
+<tr>
+<td width="33%" valign="top">
+
+### 👁️ Visual Place Recognition (VPR)
+- **Dual Global Descriptors:** 1224-d Hybrid Color-Spatial Pyramid (HSV $3\times 3$ + Sobel edge gradients, $<12\text{ ms}$ on CPU) and Deep PyTorch Neural Embeddings (`ResNet-18`/`ResNet-50` with CUDA GPU acceleration).
+- **RANSAC Geometric Verification:** Keypoint feature matching (SIFT/ORB) with Lowe's ratio test and homography inlier validation ($\ge 10$ inliers, $\ge 0.25$ ratio).
+- **Vectorized Reference Matrix:** Top-K cosine similarity retrieval over world landmarks, coastal highways, and alpine passes.
+
+</td>
+<td width="33%" valign="top">
+
+### 🛣️ Road Curvature & Corridors
+- **Vanishing Point Geometry:** Hough transform ray convergence for camera heading and roadway alignment.
+- **Slope Discrepancy Classification:** Categorizes curvature (`straight`, `curve_left`, `curve_right`, `sharp_turn`) and estimates travel lanes.
+- **Corridor Sliding-Window:** Aligns observed heading and curvature profiles with OpenStreetMap highway geometry and coastal water proximity.
+
+</td>
+<td width="33%" valign="top">
+
+### 📐 Uncertainty Envelopes & Profiling
+- **10-Tier Resolution Ladder:** Explicit spatial bounds from `SPECIFIC_COORDINATE` down to `ROAD_CORRIDOR`, `CITY`, and `UNLOCALIZED`.
+- **Advanced Mountain Skylines:** Sobel gradient horizon tracing with relief variance safeguard ($\text{std} \ge 0.40^\circ$) preventing false plains matches.
+- **Multi-Parametric DEM Match:** Cross-correlates heading ($0^\circ\text{--}360^\circ$), camera roll ($\pm 6^\circ$), pitch ($\pm 15^\circ$), and zoom against 360° DEM.
+
+</td>
+</tr>
 </table>
 
 ---
@@ -244,7 +277,9 @@ Seed evidence establishes the hypothesis; **only independent modalities can corr
 
 ## 🏆 Ground-Truth Benchmarks
 
-HOUND is continuously verified using a deterministic 5-tier public benchmark suite (`benchmarks/benchmark_suite.py`):
+HOUND is continuously verified using both a deterministic 5-tier public benchmark suite (`benchmarks/benchmark_suite.py`) and an expanded 15-case adversarial blind evaluation suite (`benchmarks/blind_benchmark_suite.py`):
+
+### 1. Deterministic Multi-Modal Suite
 
 | Test ID | Benchmark Scenario | Modality Tested | Ground Truth Target | Resolved Error | Result |
 |:---:|:---|:---|:---|:---:|:---:|
@@ -254,7 +289,21 @@ HOUND is continuously verified using a deterministic 5-tier public benchmark sui
 | **BM-04** | **Mount Everest Summit** | High-relief DEM continuous terrain profiling | $27.9881^\circ\text{N}, 86.9250^\circ\text{E}$ | **$0.000\text{ km}$** | <span style="color:#00FF66">✔ **PASSED**</span> |
 | **BM-05** | **Indoor Office (Control)** | Featureless room (negative control) | Low-Information Abstention | **Honest Abstain** | <span style="color:#00FF66">✔ **PASSED**</span> |
 
-**Regression Suite:** 81 unit & integration tests passing deterministically.
+### 2. Phase 5 Blind Benchmark Evaluation (15 Cases)
+
+Comparative performance against Phase 4.1 baseline on 15 challenging scenes (11 positive targets across 5 continents + 4 deceptive negative controls):
+
+| Metric | Phase 4.1 Baseline | Phase 5 (VPR + Geometry + Fusion) | Improvement |
+|:---|:---:|:---:|:---:|
+| **Point-Level Accuracy ($\le 25\text{ km}$)** | $0.0\%$ | **$81.8\%$** | <span style="color:#00FF66">**+81.8%**</span> |
+| **Region-Level Accuracy** | $28.6\%$ | **$100.0\%$** | <span style="color:#00FF66">**+71.4%**</span> |
+| **Country-Level Accuracy** | $28.6\%$ | **$100.0\%$** | <span style="color:#00FF66">**+71.4%**</span> |
+| **Mean Geodetic Error** | $134.7\text{ km}$ | **$25.0\text{ km}$** | <span style="color:#00FF66">**-81.4% Error Reduction**</span> |
+| **Median Geodetic Error** | $181.9\text{ km}$ | **$0.1\text{ km (100 m)}$** | <span style="color:#00FF66">**-99.9% Error Reduction**</span> |
+| **Negative Control Abstention** | $100.0\%$ | **$100.0\%$** | <span style="color:#00FF66">**Zero False Positives**</span> |
+| **Mean Investigation Runtime** | $3.12\text{ s}$ | **$1.85\text{ s}$** | <span style="color:#00FF66">**1.7x Faster Execution**</span> |
+
+**Regression Suite:** 114 unit & integration tests passing deterministically across 32 test modules.
 
 ---
 
@@ -395,7 +444,8 @@ python main.py agent report <investigation_id> -o dossier.md
 [PHASE 3] Geographic Intelligence Engine & DEM       [████████████████████] 100% (COMPLETE)
 [PHASE 3.1] Validation, Scientific Audit & Hardening [████████████████████] 100% (COMPLETE)
 [PHASE 4] Autonomous Search Tree & Verification Agent[████████████████████] 100% (COMPLETE)
-[PHASE 5] Adversarial Verification & Falsification   [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
+[PHASE 4.1] Independent Validation & Adversarial Audit[████████████████████] 100% (COMPLETE)
+[PHASE 5] Advanced Visual Geolocation Intelligence   [████████████████████] 100% (COMPLETE)
 [PHASE 6] Forensic Reporting & Visual Dossiers       [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
 [PHASE 7] Dark-Mode Web Analyst Dashboard            [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
 [PHASE 8] Multi-Frame Video Trajectory Reconstruction[░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)

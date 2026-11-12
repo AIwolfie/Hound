@@ -24,14 +24,16 @@ class StoppingPolicy:
             Tuple of (should_stop, stopping_reason, final_status)
         """
         # 1. Check for Weak Evidence / Honest Abstention (Negative Control)
-        # If visual inspection (metadata, OCR, infra, solar) has run, but no clues found
+        # If visual inspection (metadata, solar, and text/visual retrieval) has run, and truly NO clues found
         if (
             state.clues["metadata_analyzed"]
-            and state.clues["ocr_executed"]
-            and state.clues["infra_executed"]
             and state.clues["solar_executed"]
+            and (state.clues["ocr_executed"] or state.clues.get("vpr_executed", False))
             and not state.clues["has_gps"]
-            and not state.clues["has_ocr_road"]
+            and not state.clues.get("has_ocr_road", False)
+            and not state.clues.get("has_ocr_text", False)
+            and not state.clues.get("has_infrastructure", False)
+            and not state.clues.get("has_vpr_match", False)
             and not state.clues.get("has_skyline", False)
             and len(state.hypotheses) <= 1
         ):
@@ -48,11 +50,14 @@ class StoppingPolicy:
         budget_exceeded, reason = state.is_budget_exhausted()
         if budget_exceeded:
             logger.info(f"Stopping condition triggered: execution budget reached ({reason}).")
-            # If we already have a strong candidate when budget hit, keep it categorized
-            active = [h for h in state.hypotheses.values() if h.status in ("proposed", "active", "supported")]
+            # If we already have a genuine localized candidate when budget hit, keep it categorized
+            active = [
+                h for h in state.hypotheses.values()
+                if h.status in ("proposed", "active", "supported") and "unlocalized" not in h.name.lower()
+            ]
             if active:
                 return True, reason, "candidates_remaining"
-            return True, reason, "insufficient_evidence" if not state.hypotheses else "investigation_limit_reached"
+            return True, reason, "insufficient_evidence"
 
         # 3. Check for Strong Convergence (Sufficient Evidence)
         active_hypotheses = [

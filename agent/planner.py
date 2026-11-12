@@ -96,8 +96,8 @@ class InvestigationPlanner:
                     InvestigationAction(
                         tool_id="image_preprocessing",
                         reason="Generate CLAHE contrast normalization, edge maps, and zoomed tile pyramids.",
-                        priority=8.0,
-                        expected_info_gain=0.6,
+                        priority=6.5,
+                        expected_info_gain=0.5,
                         cost_estimate=0.05,
                         is_external_request=False,
                     )
@@ -114,6 +114,21 @@ class InvestigationPlanner:
                         priority=9.5,
                         expected_info_gain=0.85,
                         cost_estimate=0.15,
+                        is_external_request=False,
+                    )
+                )
+
+        # GAP 3b: Visual Place Search (VPR) Reference Matching
+        if not state.clues.get("vpr_executed", False):
+            act_key = "tool:visual_place_search"
+            if not state.is_action_already_executed(act_key):
+                actions.append(
+                    InvestigationAction(
+                        tool_id="visual_place_search",
+                        reason="Query georeferenced reference index using global visual descriptors to discover candidate locations.",
+                        priority=8.9,
+                        expected_info_gain=0.85,
+                        cost_estimate=0.12,
                         is_external_request=False,
                     )
                 )
@@ -150,88 +165,139 @@ class InvestigationPlanner:
 
         # GAP 6: Geographic Candidate Generation
         # Triggered once visual intake has run and candidates haven't been synthesized
-        if not state.clues["candidates_generated"] and (state.clues["ocr_executed"] or state.clues["has_gps"]):
+        if not state.clues["candidates_generated"] and (state.clues["ocr_executed"] or state.clues["has_gps"] or state.clues.get("has_vpr_match", False)):
             act_key = "tool:candidate_generation"
             if not state.is_action_already_executed(act_key):
                 actions.append(
                     InvestigationAction(
                         tool_id="candidate_generation",
                         reason="Synthesize visual clues into multi-scale geographic candidate hypotheses.",
-                        priority=9.0,
-                        expected_info_gain=0.8,
+                        priority=9.6,
+                        expected_info_gain=0.85,
                         cost_estimate=0.20,
                         is_external_request=False,
                     )
                 )
 
-        # GAP 7: Adversarial Verification on Leading Hypotheses
-        active_candidates = [h for h in state.hypotheses.values() if h.status in ("proposed", "active", "supported")]
-        active_candidates.sort(key=lambda h: h.heuristic_score, reverse=True)
+        # GAP 7: Adversarial Verification on Leading Hypotheses (only after candidates generated)
+        if state.clues.get("candidates_generated", False):
+            active_candidates = [h for h in state.hypotheses.values() if h.status in ("proposed", "active", "supported")]
+            active_candidates.sort(key=lambda h: h.heuristic_score, reverse=True)
 
-        for cand in active_candidates[:3]:  # Top 3 candidates
-            if cand.lat is not None and cand.lon is not None:
-                # 7a. Solar Feasibility Falsification (high priority if shadow clue exists)
-                if state.clues.get("has_solar_shadow", False):
-                    solar_key = f"adversarial_solar:{cand.id}"
-                    if not state.is_action_already_executed(solar_key):
+            for cand in active_candidates[:3]:  # Top 3 candidates
+                if cand.lat is not None and cand.lon is not None:
+                    # 7a. Solar Feasibility Falsification (high priority if shadow clue exists)
+                    if state.clues.get("has_solar_shadow", False):
+                        solar_key = f"adversarial_solar_check:{cand.id}"
+                        if not state.is_action_already_executed(solar_key):
+                            actions.append(
+                                InvestigationAction(
+                                    tool_id="adversarial_solar_check",
+                                    params={"candidate_id": cand.id, "lat": cand.lat},
+                                    reason=f"Falsification test: check if candidate '{cand.name}' latitude violates solar ceiling.",
+                                    priority=9.8,
+                                    expected_info_gain=0.9,
+                                    target_hypothesis_id=cand.id,
+                                    cost_estimate=0.02,
+                                    is_external_request=False,
+                                )
+                            )
+
+                    # 7b. OSM Highway Corridor Verification
+                    osm_key = f"osm_road_search:{cand.id}"
+                    if not state.is_action_already_executed(osm_key) and not state.config.offline_mode:
                         actions.append(
                             InvestigationAction(
-                                tool_id="adversarial_solar_check",
-                                params={"candidate_id": cand.id, "lat": cand.lat},
-                                reason=f"Falsification test: check if candidate '{cand.name}' latitude violates solar ceiling.",
-                                priority=9.8,
-                                expected_info_gain=0.9,
+                                tool_id="osm_road_search",
+                                params={"lat": cand.lat, "lon": cand.lon, "radius_m": 2500.0},
+                                reason=f"Verify road network geometry near candidate '{cand.name}' via OpenStreetMap.",
+                                priority=9.5,
+                                expected_info_gain=0.85,
                                 target_hypothesis_id=cand.id,
-                                cost_estimate=0.02,
-                                is_external_request=False,
+                                cost_estimate=0.10,
+                                is_external_request=True,
                             )
                         )
 
-                # 7b. OSM Highway Corridor Verification
-                osm_key = f"osm_road:{cand.id}"
-                if not state.is_action_already_executed(osm_key) and not state.config.offline_mode:
-                    actions.append(
-                        InvestigationAction(
-                            tool_id="osm_road_search",
-                            params={"lat": cand.lat, "lon": cand.lon, "radius_m": 2500.0},
-                            reason=f"Verify road network geometry near candidate '{cand.name}' via OpenStreetMap.",
-                            priority=7.2,
-                            expected_info_gain=0.65,
-                            target_hypothesis_id=cand.id,
-                            cost_estimate=0.25,
-                            is_external_request=True,
-                        )
-                    )
-
-                # 7c. DEM 360° Terrain Horizon Profiling
-                dem_key = f"dem_horizon:{cand.id}"
-                if not state.is_action_already_executed(dem_key) and not state.config.offline_mode:
-                    actions.append(
-                        InvestigationAction(
-                            tool_id="dem_horizon_profile",
-                            params={"lat": cand.lat, "lon": cand.lon, "max_distance_m": 20000.0},
-                            reason=f"Synthesize 360° synthetic terrain horizon profile for candidate '{cand.name}'.",
-                            priority=7.8,
-                            expected_info_gain=0.7,
-                            target_hypothesis_id=cand.id,
-                            cost_estimate=0.30,
-                            is_external_request=True,
-                        )
-                    )
-
-                # 7d. Mountain Ridge Matching (if skyline is observed)
-                if state.clues.get("has_skyline", False):
-                    ridge_key = f"ridge_match:{cand.id}"
-                    if not state.is_action_already_executed(ridge_key):
+                    # 7c. DEM 360° Terrain Horizon Profiling
+                    dem_key = f"dem_horizon_profile:{cand.id}"
+                    if not state.is_action_already_executed(dem_key) and not state.config.offline_mode:
                         actions.append(
                             InvestigationAction(
-                                tool_id="ridge_matching",
-                                params={"candidate_id": cand.id, "lat": cand.lat, "lon": cand.lon},
-                                reason=f"Correlate observed mountain skyline with DEM horizon for candidate '{cand.name}'.",
-                                priority=8.5,
-                                expected_info_gain=0.8,
+                                tool_id="dem_horizon_profile",
+                                params={"lat": cand.lat, "lon": cand.lon, "max_distance_m": 20000.0},
+                                reason=f"Synthesize 360° synthetic terrain horizon profile for candidate '{cand.name}'.",
+                                priority=7.8,
+                                expected_info_gain=0.7,
                                 target_hypothesis_id=cand.id,
-                                cost_estimate=0.15,
+                                cost_estimate=0.30,
+                                is_external_request=True,
+                            )
+                        )
+
+                    # 7d. Mountain Ridge Matching (if skyline is observed)
+                    if state.clues.get("has_skyline", False):
+                        ridge_key = f"ridge_matching:{cand.id}"
+                        if not state.is_action_already_executed(ridge_key):
+                            actions.append(
+                                InvestigationAction(
+                                    tool_id="ridge_matching",
+                                    params={"candidate_id": cand.id, "lat": cand.lat, "lon": cand.lon},
+                                    reason=f"Correlate observed mountain skyline with DEM horizon for candidate '{cand.name}'.",
+                                    priority=8.5,
+                                    expected_info_gain=0.8,
+                                    target_hypothesis_id=cand.id,
+                                    cost_estimate=0.15,
+                                    is_external_request=False,
+                                )
+                            )
+
+                    # 7e. Road Geometry & Curvature Alignment
+                    if cand.level in ("road", "area") or "corridor" in cand.name.lower() or state.clues.get("has_ocr_road", False):
+                        road_key = f"road_geometry_matching:{cand.id}"
+                        if not state.is_action_already_executed(road_key):
+                            actions.append(
+                                InvestigationAction(
+                                    tool_id="road_geometry_matching",
+                                    params={"candidate_id": cand.id, "corridor_name": cand.name},
+                                    reason=f"Align visual road curvature and lane geometry against corridor '{cand.name}'.",
+                                    priority=8.7,
+                                    expected_info_gain=0.75,
+                                    target_hypothesis_id=cand.id,
+                                    cost_estimate=0.10,
+                                    is_external_request=False,
+                                )
+                            )
+
+                    # 7f. Advanced Photographic Skyline Profiling
+                    if state.clues.get("has_skyline", False):
+                        adv_skyline_key = f"advanced_skyline_profiling:{cand.id}"
+                        if not state.is_action_already_executed(adv_skyline_key):
+                            actions.append(
+                                InvestigationAction(
+                                    tool_id="advanced_skyline_profiling",
+                                    params={"candidate_id": cand.id, "lat": cand.lat, "lon": cand.lon},
+                                    reason=f"Multi-parametric horizon cross-correlation (heading, roll, pitch) for '{cand.name}'.",
+                                    priority=8.6,
+                                    expected_info_gain=0.80,
+                                    target_hypothesis_id=cand.id,
+                                    cost_estimate=0.18,
+                                    is_external_request=False,
+                                )
+                            )
+
+                    # 7g. Spatial Envelope Refinement
+                    env_key = f"spatial_envelope_refinement:{cand.id}"
+                    if not state.is_action_already_executed(env_key):
+                        actions.append(
+                            InvestigationAction(
+                                tool_id="spatial_envelope_refinement",
+                                params={"candidate_id": cand.id},
+                                reason=f"Refine spatial uncertainty envelope and multi-modal score for '{cand.name}'.",
+                                priority=7.2,
+                                expected_info_gain=0.50,
+                                target_hypothesis_id=cand.id,
+                                cost_estimate=0.05,
                                 is_external_request=False,
                             )
                         )
@@ -265,9 +331,13 @@ class InvestigationPlanner:
             "adversarial_solar_check": 0.95,
             "solar_shadow": 0.90,
             "dem_horizon_profile": 0.88,
-            "osm_road_search": 0.85,
+            "osm_road_search": 0.95,
             "ocr_extraction": 0.85,
+            "visual_place_search": 0.90,
+            "road_geometry_matching": 0.85,
+            "advanced_skyline_profiling": 0.88,
             "ridge_matching": 0.80,
+            "spatial_envelope_refinement": 0.70,
             "infrastructure_detection": 0.70,
             "candidate_generation": 0.75,
             "image_preprocessing": 0.60,

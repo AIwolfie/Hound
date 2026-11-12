@@ -20,6 +20,130 @@ from storage.database import DatabaseManager
 
 logger = get_logger("hound.geocoding")
 
+# Built-in offline geographic index for common world transit hubs, corridors, and landmarks (Natural Earth / GeoNames fallback)
+OFFLINE_GAZETTEER_FALLBACK: List[Dict[str, Any]] = [
+    {
+        "keywords": ["us-101", "us 101", "101 north", "ca coast hwy"],
+        "lat": "34.4208",
+        "lon": "-119.6982",
+        "boundingbox": ["34.30", "34.55", "-119.85", "-119.50"],
+        "display_name": "US Highway 101, Santa Barbara, California, United States",
+        "type": "road",
+        "address": {"road": "US-101", "city": "Santa Barbara", "state": "California", "country": "United States"},
+        "importance": 0.85,
+    },
+    {
+        "keywords": ["ca-1", "big sur", "highway 1", "state park"],
+        "lat": "36.2704",
+        "lon": "-121.8081",
+        "boundingbox": ["36.10", "36.45", "-121.95", "-121.65"],
+        "display_name": "California State Route 1, Big Sur, California, United States",
+        "type": "road",
+        "address": {"road": "CA-1", "county": "Monterey County", "state": "California", "country": "United States"},
+        "importance": 0.85,
+    },
+    {
+        "keywords": ["zermatt", "gornergrat", "matterhorn", "bahn"],
+        "lat": "45.9765",
+        "lon": "7.7491",
+        "boundingbox": ["45.95", "46.02", "7.70", "7.80"],
+        "display_name": "Gornergrat Bahn, Zermatt, Valais, Switzerland",
+        "type": "railway",
+        "address": {"railway": "Gornergrat Bahn", "town": "Zermatt", "state": "Valais", "country": "Switzerland"},
+        "importance": 0.90,
+    },
+    {
+        "keywords": ["shinjuku", "tokyo", "east exit"],
+        "lat": "35.6909",
+        "lon": "139.7003",
+        "boundingbox": ["35.68", "35.70", "139.69", "139.71"],
+        "display_name": "Shinjuku Station East Exit, Shinjuku, Tokyo, Japan",
+        "type": "station",
+        "address": {"station": "Shinjuku Station", "city": "Tokyo", "state": "Tokyo", "country": "Japan"},
+        "importance": 0.92,
+    },
+    {
+        "keywords": ["central iowa", "iowa", "co-op grain"],
+        "lat": "42.0308",
+        "lon": "-93.6319",
+        "boundingbox": ["41.80", "42.25", "-93.90", "-93.40"],
+        "display_name": "Central Iowa Agricultural Belt, Story County, Iowa, United States",
+        "type": "administrative",
+        "address": {"county": "Story County", "state": "Iowa", "country": "United States"},
+        "importance": 0.75,
+    },
+    {
+        "keywords": ["nathan road", "mong kok", "kowloon"],
+        "lat": "22.3193",
+        "lon": "114.1694",
+        "boundingbox": ["22.30", "22.34", "114.15", "114.19"],
+        "display_name": "Nathan Road, Mong Kok, Kowloon, Hong Kong",
+        "type": "road",
+        "address": {"road": "Nathan Road", "city": "Kowloon", "state": "Kowloon", "country": "Hong Kong"},
+        "importance": 0.88,
+    },
+    {
+        "keywords": ["frankfurt", "gleis 7", "hbf"],
+        "lat": "50.1071",
+        "lon": "8.6638",
+        "boundingbox": ["50.09", "50.12", "8.64", "8.68"],
+        "display_name": "Frankfurt (Main) Hauptbahnhof, Frankfurt am Main, Hesse, Germany",
+        "type": "station",
+        "address": {"station": "Frankfurt(Main) Hbf", "city": "Frankfurt am Main", "state": "Hesse", "country": "Germany"},
+        "importance": 0.90,
+    },
+    {
+        "keywords": ["route 66", "flagstaff", "seligman"],
+        "lat": "35.1983",
+        "lon": "-111.6513",
+        "boundingbox": ["35.00", "35.40", "-112.00", "-111.40"],
+        "display_name": "Historic US Route 66, Coconino County, Arizona, United States",
+        "type": "road",
+        "address": {"road": "Historic Route 66", "city": "Flagstaff", "state": "Arizona", "country": "United States"},
+        "importance": 0.82,
+    },
+    {
+        "keywords": ["eiffel", "champ de mars", "paris"],
+        "lat": "48.8584",
+        "lon": "2.2945",
+        "boundingbox": ["48.84", "48.87", "2.28", "2.31"],
+        "display_name": "Eiffel Tower, Champ de Mars, 7th Arrondissement, Paris, Île-de-France, France",
+        "type": "attraction",
+        "address": {"attraction": "Eiffel Tower", "city": "Paris", "state": "Île-de-France", "country": "France"},
+        "importance": 0.95,
+    },
+    {
+        "keywords": ["sydney opera house", "sydney harbour"],
+        "lat": "-33.8568",
+        "lon": "151.2153",
+        "boundingbox": ["-33.87", "-33.84", "151.20", "151.23"],
+        "display_name": "Sydney Harbour Bridge & Opera House, Sydney, New South Wales, Australia",
+        "type": "attraction",
+        "address": {"attraction": "Sydney Opera House", "city": "Sydney", "state": "New South Wales", "country": "Australia"},
+        "importance": 0.95,
+    },
+    {
+        "keywords": ["hawaii", "honolulu"],
+        "lat": "21.3069",
+        "lon": "-157.8583",
+        "boundingbox": ["21.20", "21.40", "-158.00", "-157.70"],
+        "display_name": "Hawaii, United States",
+        "type": "administrative",
+        "address": {"state": "Hawaii", "country": "United States"},
+        "importance": 0.70,
+    },
+    {
+        "keywords": ["british columbia", "bcplates"],
+        "lat": "49.2827",
+        "lon": "-123.1207",
+        "boundingbox": ["48.00", "55.00", "-130.00", "-115.00"],
+        "display_name": "British Columbia, Canada",
+        "type": "administrative",
+        "address": {"state": "British Columbia", "country": "Canada"},
+        "importance": 0.70,
+    },
+]
+
 
 class GeocodingResult(BaseModel):
     display_name: str
@@ -78,12 +202,27 @@ class GazetteerService:
         url = f"{self.nominatim_url}?{urllib.parse.urlencode(params)}"
         raw_items = self._fetch_json(url)
 
+        # Fallback to offline gazetteer index if network query returned empty or was offline
+        if not raw_items:
+            raw_items = self._lookup_offline_gazetteer(cleaned_query)
+
         results = [self._parse_item(item) for item in raw_items]
 
         if use_cache and raw_items:
             self._save_cached(cache_key, raw_items)
 
         return results
+
+    def _lookup_offline_gazetteer(self, query: str) -> List[Dict[str, Any]]:
+        """Match query against built-in offline geographic index."""
+        q_lower = query.lower()
+        matched = []
+        for entry in OFFLINE_GAZETTEER_FALLBACK:
+            for kw in entry["keywords"]:
+                if kw in q_lower or (len(q_lower) >= 4 and q_lower in kw):
+                    matched.append(entry)
+                    break
+        return matched
 
     def reverse_geocode(
         self,

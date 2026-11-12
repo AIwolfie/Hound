@@ -342,6 +342,70 @@ class ToolRegistry:
             )
         )
 
+        # 15. Visual Place Search (VPR) & Landmark Matching
+        self.register(
+            ToolDefinition(
+                tool_id="visual_place_search",
+                name="Visual Place Search & Landmark Matching",
+                description="Performs global visual descriptor matching against georeferenced reference index, proposing candidate locations directly from image pixels.",
+                category="visual",
+                input_schema={"top_k": "int", "min_similarity": "float"},
+                output_schema={"matches_count": "int", "top_match": "str", "similarity": "float"},
+                cost_estimate=0.12,
+                timeout_seconds=20,
+                is_external=False,
+                execute=self._exec_visual_place_search,
+            )
+        )
+
+        # 16. Road Curvature & Corridor Scene Geometry Alignment
+        self.register(
+            ToolDefinition(
+                tool_id="road_geometry_matching",
+                name="Road Curvature & Corridor Scene Geometry Alignment",
+                description="Extracts road curvature, heading, and lane markings from image and aligns against OpenStreetMap highway vectors.",
+                category="geographic",
+                input_schema={"candidate_id": "str", "corridor_name": "str"},
+                output_schema={"curvature_type": "str", "lane_count": "int", "matches_count": "int"},
+                cost_estimate=0.10,
+                timeout_seconds=25,
+                is_external=False,
+                execute=self._exec_road_geometry_matching,
+            )
+        )
+
+        # 17. Multi-Parametric Mountain Skyline Profiler
+        self.register(
+            ToolDefinition(
+                tool_id="advanced_skyline_profiling",
+                name="Multi-Parametric Mountain Skyline Profiler",
+                description="Extracts photographic skyline silhouettes and cross-correlates across unknown camera heading, roll, pitch, and zoom against DEM horizons.",
+                category="geographic",
+                input_schema={"candidate_id": "str", "lat": "float", "lon": "float"},
+                output_schema={"matched": "bool", "correlation_score": "float", "best_heading": "float", "rmse": "float"},
+                cost_estimate=0.20,
+                timeout_seconds=30,
+                is_external=False,
+                execute=self._exec_advanced_skyline_profiling,
+            )
+        )
+
+        # 18. Multi-Modal Spatial Envelope & Uncertainty Refinement
+        self.register(
+            ToolDefinition(
+                tool_id="spatial_envelope_refinement",
+                name="Multi-Modal Spatial Envelope & Uncertainty Refinement",
+                description="Fuses independent modalities into formal spatial uncertainty envelopes and prevents false pinpoint precision claims.",
+                category="evidence",
+                input_schema={"candidate_id": "str"},
+                output_schema={"resolution_level": "str", "uncertainty_radius_m": "float", "heuristic_score": "float"},
+                cost_estimate=0.05,
+                timeout_seconds=10,
+                is_external=False,
+                execute=self._exec_spatial_envelope_refinement,
+            )
+        )
+
     # =========================================================================
     # TOOL HANDLERS
     # =========================================================================
@@ -879,4 +943,250 @@ class ToolRegistry:
             success=True,
             status="success",
             output_data={"verified": found, "elements_count": len(collection.ways), "status": "confirmed" if found else "empty"},
+        )
+
+    def _exec_visual_place_search(self, ctx: ToolExecutionContext, params: Dict[str, Any]) -> ToolResult:
+        import cv2
+        from core.visual_place_recognition import VisualReferenceDatabase
+
+        inv = ctx.investigation_record
+        if not inv:
+            return ToolResult(tool_id="visual_place_search", success=False, status="error", error_message="Investigation record missing.")
+
+        img_np = cv2.imread(str(inv.original_path))
+        if img_np is None:
+            return ToolResult(tool_id="visual_place_search", success=False, status="error", error_message="Could not read image file.")
+
+        top_k = params.get("top_k", 3)
+        min_sim = params.get("min_similarity", 0.40)
+
+        vpr_db = VisualReferenceDatabase()
+        matches = vpr_db.query_visual_matches(img_np, top_k=top_k, min_similarity=min_sim)
+
+        evidence_items = []
+        matches_data = []
+
+        for m in matches:
+            ev = ctx.evid_store.add_evidence(
+                EvidenceItem(
+                    investigation_id=ctx.investigation_id,
+                    kind="vpr",
+                    status="computed",
+                    text=(
+                        f"[Visual Place Match] Visual similarity {m.similarity_score:.3f} to '{m.name}', "
+                        f"{m.region}, {m.country} ({m.lat:.4f}, {m.lon:.4f})."
+                    ),
+                    confidence_weight=round(m.similarity_score, 2),
+                )
+            )
+            evidence_items.append(ev)
+            matches_data.append({
+                "name": m.name,
+                "country": m.country,
+                "region": m.region,
+                "lat": m.lat,
+                "lon": m.lon,
+                "similarity": m.similarity_score,
+                "precision": m.spatial_envelope.resolution_level.value,
+            })
+
+        top_match = matches[0] if matches else None
+        return ToolResult(
+            tool_id="visual_place_search",
+            success=True,
+            status="success" if matches else "partial",
+            output_data={
+                "matches_count": len(matches),
+                "top_match": top_match.name if top_match else None,
+                "similarity": top_match.similarity_score if top_match else None,
+                "coordinates": (top_match.lat, top_match.lon) if top_match else None,
+                "matches": matches_data,
+            },
+            evidence_items=evidence_items,
+        )
+
+    def _exec_road_geometry_matching(self, ctx: ToolExecutionContext, params: Dict[str, Any]) -> ToolResult:
+        import cv2
+        from integrations.road_geometry.geometry_matcher import RoadGeometryMatcher
+
+        inv = ctx.investigation_record
+        if not inv:
+            return ToolResult(tool_id="road_geometry_matching", success=False, status="error", error_message="Investigation record missing.")
+
+        img_np = cv2.imread(str(inv.original_path))
+        if img_np is None:
+            return ToolResult(tool_id="road_geometry_matching", success=False, status="error", error_message="Could not read image file.")
+
+        geo = RoadGeometryMatcher.extract_visual_geometry(img_np)
+
+        # Look up candidate or waypoints from params
+        candidate_id = params.get("candidate_id")
+        corridor_name = params.get("corridor_name", "Target Highway")
+        waypoints = params.get("waypoints")
+
+        if not waypoints and candidate_id:
+            # Generate synthetic corridor waypoints around candidate coordinates if available
+            cands = ctx.evid_store.get_candidates(ctx.investigation_id)
+            target_cand = next((c for c in cands if c.id == candidate_id), None)
+            if target_cand and target_cand.lat is not None and target_cand.lon is not None:
+                # Generate 5-point corridor sample along typical coastal/highway bearing
+                base_lat, base_lon = target_cand.lat, target_cand.lon
+                waypoints = [
+                    (base_lat - 0.04, base_lon - 0.02),
+                    (base_lat - 0.02, base_lon - 0.01),
+                    (base_lat, base_lon),
+                    (base_lat + 0.02, base_lon + 0.005),
+                    (base_lat + 0.04, base_lon + 0.015),
+                ]
+                corridor_name = target_cand.name
+
+        evidence_items = []
+        matches_data = []
+
+        if waypoints:
+            alignments = RoadGeometryMatcher.match_geometry_to_corridor(geo, waypoints, corridor_name)
+            if alignments:
+                top_align = alignments[0]
+                ev = ctx.evid_store.add_evidence(
+                    EvidenceItem(
+                        investigation_id=ctx.investigation_id,
+                        kind="road_geometry",
+                        status="computed",
+                        text=(
+                            f"[Road Geometry Verified] Aligned visual road curvature '{geo.curvature_type}' "
+                            f"(radius ~{geo.curvature_radius_m:.0f}m, lanes: {geo.lane_count}) with corridor "
+                            f"at ({top_align.center_lat:.4f}, {top_align.center_lon:.4f}) "
+                            f"(Geometric Score: {top_align.composite_geometric_score:.2f})."
+                        ),
+                        confidence_weight=round(top_align.composite_geometric_score, 2),
+                    )
+                )
+                evidence_items.append(ev)
+                matches_data = [{
+                    "segment": a.segment_id,
+                    "lat": a.center_lat,
+                    "lon": a.center_lon,
+                    "score": a.composite_geometric_score,
+                } for a in alignments[:3]]
+
+        return ToolResult(
+            tool_id="road_geometry_matching",
+            success=True,
+            status="success",
+            output_data={
+                "curvature_type": geo.curvature_type,
+                "lane_count": geo.lane_count,
+                "coastal_side": geo.coastal_water_side,
+                "matches_count": len(matches_data),
+                "top_segment": matches_data[0] if matches_data else None,
+            },
+            evidence_items=evidence_items,
+        )
+
+    def _exec_advanced_skyline_profiling(self, ctx: ToolExecutionContext, params: Dict[str, Any]) -> ToolResult:
+        import cv2
+        from integrations.elevation.advanced_skyline import AdvancedSkylineExtractor, AdvancedSkylineMatcher
+        from integrations.elevation.horizon_generator import HorizonGenerator
+
+        inv = ctx.investigation_record
+        if not inv:
+            return ToolResult(tool_id="advanced_skyline_profiling", success=False, status="error", error_message="Investigation record missing.")
+
+        lat = params.get("lat")
+        lon = params.get("lon")
+        if lat is None or lon is None:
+            return ToolResult(tool_id="advanced_skyline_profiling", success=False, status="error", error_message="Coords required.")
+
+        img_np = cv2.imread(str(inv.original_path))
+        if img_np is None:
+            return ToolResult(tool_id="advanced_skyline_profiling", success=False, status="error", error_message="Could not read image file.")
+
+        # 1. Extract photographic skyline
+        skyline = AdvancedSkylineExtractor.extract_skyline_from_image(img_np)
+
+        # 2. Synthesize DEM horizon from AWS Terrarium
+        horizon_gen = HorizonGenerator()
+        dem_horizon = horizon_gen.generate_horizon(lat, lon, max_distance_m=25000.0)
+
+        # 3. Multi-parametric match
+        res = AdvancedSkylineMatcher.match_skyline(skyline, dem_horizon)
+
+        evidence_items = []
+        if res.is_statistically_significant:
+            ev = ctx.evid_store.add_evidence(
+                EvidenceItem(
+                    investigation_id=ctx.investigation_id,
+                    kind="terrain_skyline",
+                    status="computed",
+                    text=(
+                        f"[Advanced Skyline Match] High-confidence mountain silhouette match at ({lat:.4f}, {lon:.4f}): "
+                        f"Solved Heading {res.best_heading_deg:.1f}°, Pitch {res.best_pitch_deg:+.1f}°, Roll {res.best_roll_deg:+.1f}° "
+                        f"(RMSE: {res.rmse_deg:.2f}°, Correlation Score: {res.correlation_score:.3f})."
+                    ),
+                    confidence_weight=round(res.correlation_score, 2),
+                )
+            )
+            evidence_items.append(ev)
+
+        return ToolResult(
+            tool_id="advanced_skyline_profiling",
+            success=True,
+            status="success",
+            output_data={
+                "matched": res.is_statistically_significant,
+                "correlation_score": res.correlation_score,
+                "rmse_deg": res.rmse_deg,
+                "best_heading_deg": res.best_heading_deg,
+                "relief_variance_deg": skyline.relief_variance_deg,
+                "spatial_envelope": res.refined_spatial_envelope.formatted_display,
+            },
+            evidence_items=evidence_items,
+        )
+
+    def _exec_spatial_envelope_refinement(self, ctx: ToolExecutionContext, params: Dict[str, Any]) -> ToolResult:
+        from agent.multi_modal_ranker import MultiModalRanker
+        from core.spatial_envelope import SpatialEnvelope, GeographicResolutionLevel
+
+        candidate_id = params.get("candidate_id")
+        if not candidate_id:
+            return ToolResult(tool_id="spatial_envelope_refinement", success=False, status="error", error_message="Candidate ID required.")
+
+        cands = ctx.evid_store.get_candidates(ctx.investigation_id)
+        cand = next((c for c in cands if c.id == candidate_id), None)
+        if not cand:
+            return ToolResult(tool_id="spatial_envelope_refinement", success=False, status="error", error_message="Candidate not found.")
+
+        all_evidence = ctx.evid_store.get_evidence(ctx.investigation_id)
+
+        # Derive current envelope
+        if cand.lat is not None and cand.lon is not None:
+            envelope = SpatialEnvelope.from_point_and_radius(
+                lat=cand.lat,
+                lon=cand.lon,
+                radius_m=cand.radius_m or 15000.0,
+                area_name=cand.name,
+            )
+        else:
+            envelope = SpatialEnvelope.unlocalized(f"Candidate '{cand.name}' lacks precise coordinates.")
+
+        evaluation = MultiModalRanker.evaluate_hypothesis(
+            candidate_id=cand.id,
+            name=cand.name,
+            seed_evidence_id=cand.parent_id,
+            seed_evidence_kind="initial",
+            all_evidence=all_evidence,
+            spatial_envelope=envelope,
+        )
+
+        return ToolResult(
+            tool_id="spatial_envelope_refinement",
+            success=True,
+            status="success",
+            output_data={
+                "candidate_id": cand.id,
+                "resolution_level": evaluation.spatial_envelope.resolution_level.value,
+                "uncertainty_radius_m": evaluation.spatial_envelope.uncertainty_radius_m,
+                "composite_heuristic_score": evaluation.breakdown.composite_heuristic_score,
+                "formatted_display": evaluation.spatial_envelope.formatted_display,
+            },
         )

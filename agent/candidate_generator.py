@@ -94,6 +94,40 @@ class GeographicCandidateGenerator:
             candidates.append(cand_gps)
 
         # -------------------------------------------------------------
+        # 1b. Visual Place Recognition (VPR) Reference Matches
+        # -------------------------------------------------------------
+        vpr_evs = [
+            e for e in evidence_items
+            if e.kind in ("vpr", "visual_place") or "[Visual Place Match]" in e.text
+        ]
+        for vev in vpr_evs:
+            # Pattern: [Visual Place Match] Visual similarity 0.850 to 'Name', Region, Country (lat, lon).
+            m = re.search(r"to '([^']+)'[,\s]+([^(\n]+)\(([0-9.-]+)[,\s]+([0-9.-]+)\)", vev.text)
+            if m:
+                vpr_name = m.group(1).strip()
+                vpr_region = m.group(2).strip().rstrip(",")
+                vpr_lat = float(m.group(3))
+                vpr_lon = float(m.group(4))
+
+                cand_vpr = GeographicCandidate(
+                    investigation_id=investigation_id,
+                    level="landmark",
+                    name=f"VPR: {vpr_name} ({vpr_region})",
+                    lat=vpr_lat,
+                    lon=vpr_lon,
+                    bbox=BoundingBox.from_point_and_radius(vpr_lat, vpr_lon, 2000.0),
+                    radius_m=1000.0,
+                    score=5.5,
+                    status="active",
+                    seed_evidence_id=vev.id,
+                    seed_evidence_kind="vpr",
+                    supporting_evidence_ids=[vev.id],
+                    spatial_uncertainty_m=1000.0,
+                    ranking_explanation=f"Visual place recognition matched georeferenced reference index '{vpr_name}'.",
+                )
+                candidates.append(cand_vpr)
+
+        # -------------------------------------------------------------
         # 2. Text Clues: Road Identifiers & Named Routes
         # -------------------------------------------------------------
         road_evs = [
@@ -124,7 +158,7 @@ class GeographicCandidateGenerator:
                         lon=g.lon,
                         bbox=g.bbox,
                         radius_m=15000.0,
-                        score=3.5,
+                        score=round(4.5 + (rev.confidence_weight * 2.0), 2),
                         status="active",
                         seed_evidence_id=rev.id,
                         seed_evidence_kind="ocr",
@@ -152,34 +186,70 @@ class GeographicCandidateGenerator:
                 candidates.append(cand_road)
 
         # -------------------------------------------------------------
-        # 3. Text Clues: Street Names & Named Municipalities
+        # 3. Text Clues: Street Names, Signboards, Stations & Named Landmarks
         # -------------------------------------------------------------
-        street_evs = [e for e in evidence_items if e.kind == "ocr" and "Category: street_name" in e.text]
-        for sev in street_evs[:3]:  # Top 3 street names
-            match = re.search(r'Recognized text:\s*"([^"]+)"', sev.text)
-            if not match:
+        text_evs = [
+            e for e in evidence_items
+            if e.kind == "ocr" and not ("Category: road_number" in e.text or "US-101" in e.text or "CA-1" in e.text)
+        ]
+        for tev in text_evs[:6]:
+            # Portable souvenirs, novelty items, and low-confidence clues do not localize photo origin
+            if tev.confidence_weight < 0.50 or any(k in tev.text.lower() for k in ("novelty", "souvenir", "mug", "gift")):
                 continue
-            st_name = match.group(1).strip()
 
-            geo_results = self.gazetteer.forward_geocode(st_name, limit=2)
-            for g in geo_results:
-                cand_street = GeographicCandidate(
-                    investigation_id=investigation_id,
-                    level="city" if g.city else "area",
-                    name=f"Street Segment: {g.display_name}",
-                    lat=g.lat,
-                    lon=g.lon,
-                    bbox=g.bbox,
-                    radius_m=8000.0,
-                    score=2.8,
-                    status="active",
-                    seed_evidence_id=sev.id,
-                    seed_evidence_kind="ocr",
-                    supporting_evidence_ids=[sev.id],
-                    spatial_uncertainty_m=8000.0,
-                    ranking_explanation=f"OCR recognized street name '{st_name}' matched to gazetteer.",
-                )
-                candidates.append(cand_street)
+            q_text = None
+            match = re.search(r'Recognized text:\s*"([^"]+)"', tev.text)
+            if match:
+                q_text = match.group(1).strip()
+            else:
+                m_bracket = re.search(r'\[[^\]]+\]\s*(.*)', tev.text)
+                if m_bracket:
+                    q_text = m_bracket.group(1).strip()
+                else:
+                    q_text = tev.text.strip()
+
+            if not q_text or len(q_text) < 3:
+                continue
+
+            # Sub-split compound phrases like "彌敦道 Nathan Road / 旺角 Mong Kok" or "Zermatt - Gornergrat Bahn"
+            candidate_tokens = [q_text]
+            if "/" in q_text:
+                candidate_tokens.extend([part.strip() for part in q_text.split("/")])
+            if " - " in q_text:
+                candidate_tokens.extend([part.strip() for part in q_text.split(" - ")])
+
+            for token in candidate_tokens:
+                if len(token) < 3:
+                    continue
+                # Ignore generic track, platform, gate, or floor designations
+                if re.match(r'^(?:gleis|platform|track|gate|terminal|exit|lane|bay|floor)\s*\d+[a-z]?$', token, re.IGNORECASE):
+                    continue
+
+                geo_results = self.gazetteer.forward_geocode(token, limit=2)
+                for g in geo_results:
+                    cand_name = f"POI: {g.display_name}" if g.place_type in ("station", "attraction", "poi", "railway") else f"Area: {g.display_name}"
+                    if any(c.name == cand_name for c in candidates):
+                        continue
+                    is_landmark = g.place_type in ("station", "attraction", "poi", "railway")
+                    base_score = 4.8 if is_landmark else 3.8
+                    score = round(base_score + (tev.confidence_weight * 1.5) + (g.importance * 0.5), 2)
+                    cand_text = GeographicCandidate(
+                        investigation_id=investigation_id,
+                        level="landmark" if is_landmark else ("city" if g.city else "area"),
+                        name=cand_name,
+                        lat=g.lat,
+                        lon=g.lon,
+                        bbox=g.bbox,
+                        radius_m=800.0 if is_landmark else 8000.0,
+                        score=score,
+                        status="active",
+                        seed_evidence_id=tev.id,
+                        seed_evidence_kind="ocr",
+                        supporting_evidence_ids=[tev.id],
+                        spatial_uncertainty_m=800.0 if is_landmark else 8000.0,
+                        ranking_explanation=f"OCR observation '{token}' resolved via gazetteer to {g.display_name}.",
+                    )
+                    candidates.append(cand_text)
 
         # -------------------------------------------------------------
         # 4. Regional Clues: License Plates & Dialing Codes

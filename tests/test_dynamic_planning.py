@@ -83,11 +83,13 @@ class TestDynamicPlanningAudit(unittest.TestCase):
         state.clues["solar_executed"] = True
         state.record_action("tool:solar_shadow")
 
-        # Mark preprocessing and infrastructure also executed
+        # Mark preprocessing, infrastructure, and visual retrieval also executed
         state.clues["preprocessed"] = True
         state.record_action("tool:image_preprocessing")
         state.clues["infra_executed"] = True
         state.record_action("tool:infrastructure_detection")
+        state.clues["vpr_executed"] = True
+        state.record_action("tool:visual_place_search")
 
         # Next action should now propose candidate generation because road clues exist
         action3 = self.planner.select_next_action(state)

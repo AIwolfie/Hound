@@ -164,7 +164,10 @@ class InvestigationAgent:
             if not action:
                 logger.info("No further actions selected by planner; investigation paths exhausted.")
                 # Evaluate whether we have viable candidates or must abstain
-                active = [h for h in state.hypotheses.values() if h.status in ("active", "supported")]
+                active = [
+                    h for h in state.hypotheses.values()
+                    if h.status in ("active", "supported") and "unlocalized" not in h.name.lower()
+                ]
                 if active:
                     state.stopping_reason = "paths_exhausted"
                     state.final_status = "candidates_remaining"
@@ -177,6 +180,10 @@ class InvestigationAgent:
             # C. Execute Selected Tool
             act_signature = f"{action.tool_id}:{action.params}"
             state.record_action(act_signature, is_external=action.is_external_request)
+            if action.target_hypothesis_id:
+                state.record_action(f"{action.tool_id}:{action.target_hypothesis_id}", is_external=action.is_external_request)
+                if action.target_hypothesis_id in state.hypotheses:
+                    state.hypotheses[action.target_hypothesis_id].completed_checks.append(action.tool_id)
 
             t0 = time.perf_counter()
             tool_result = self.tools.execute_tool(action.tool_id, ctx, action.params)
@@ -248,6 +255,13 @@ class InvestigationAgent:
         if ev.kind in ("ridge", "skyline", "terrain"):
             state.clues["has_skyline"] = True
             state.clues["terrain_checked"] = True
+        if ev.kind in ("vpr", "visual_place") or "visual place match" in text_lower:
+            state.clues["vpr_executed"] = True
+            state.clues["has_vpr_match"] = True
+        if ev.kind == "road_geometry":
+            state.clues["road_geometry_matched"] = True
+        if ev.kind == "terrain_skyline":
+            state.clues["skyline_profiled"] = True
         if ev.kind == "osm":
             state.clues["osm_searched"] = True
 
@@ -340,6 +354,56 @@ class InvestigationAgent:
                     for ev in result.evidence_items:
                         self.hyp_mgr.add_corroboration(cand, ev)
 
+        elif action.tool_id == "visual_place_search":
+            state.clues["vpr_executed"] = True
+            matches = result.output_data.get("matches", [])
+            if matches:
+                state.clues["has_vpr_match"] = True
+                for m in matches:
+                    country_str = f", {m['country']}" if m.get("country") else ""
+                    cand_name = f"VPR: {m['name']} ({m.get('region', '')}{country_str})"
+                    existing = any(h.name == cand_name for h in state.hypotheses.values())
+                    if not existing and m.get("lat") is not None:
+                        hyp = self.hyp_mgr.register_candidate(
+                            investigation_id=state.investigation_id,
+                            name=cand_name,
+                            level=m.get("precision", "landmark"),
+                            lat=m["lat"],
+                            lon=m["lon"],
+                            initial_score=m.get("similarity", 0.8) * 4.5,
+                        )
+                        hyp.status = "active"
+                        state.hypotheses[hyp.id] = hyp
+
+        elif action.tool_id == "road_geometry_matching":
+            state.clues["road_geometry_matched"] = True
+            cand_id = action.target_hypothesis_id
+            if cand_id and cand_id in state.hypotheses:
+                cand = state.hypotheses[cand_id]
+                for ev in result.evidence_items:
+                    self.hyp_mgr.add_corroboration(cand, ev, corroboration_bonus=4.0)
+                top_seg = result.output_data.get("top_segment")
+                if top_seg and top_seg.get("lat") is not None:
+                    cand.lat = top_seg["lat"]
+                    cand.lon = top_seg["lon"]
+                    cand.level = "district"
+                    cand.radius_m = 3000.0
+
+        elif action.tool_id == "advanced_skyline_profiling":
+            state.clues["skyline_profiled"] = True
+            cand_id = action.target_hypothesis_id
+            if cand_id and cand_id in state.hypotheses:
+                cand = state.hypotheses[cand_id]
+                if result.output_data.get("matched"):
+                    for ev in result.evidence_items:
+                        self.hyp_mgr.add_corroboration(cand, ev, corroboration_bonus=5.0)
+
+        elif action.tool_id == "spatial_envelope_refinement":
+            cand_id = action.target_hypothesis_id
+            if cand_id and cand_id in state.hypotheses:
+                cand = state.hypotheses[cand_id]
+                cand.heuristic_score = result.output_data.get("composite_heuristic_score", cand.heuristic_score)
+
     def _compile_dossier(
         self,
         state: InvestigationState,
@@ -355,16 +419,34 @@ class InvestigationAgent:
 
         # Determine justified precision level
         if primary and primary.status in ("active", "supported"):
+            from core.spatial_envelope import GeographicResolutionLevel, SpatialEnvelope
             level_map = {
-                "point": "Point (<=100m)",
-                "building": "Building",
-                "road": "Road Corridor",
-                "area": "District / Local Area",
-                "city": "City / Municipality",
-                "admin": "Administrative Division",
-                "region": "Broad Geographic Region",
+                "point": GeographicResolutionLevel.SPECIFIC_COORDINATE,
+                "specific_coordinate": GeographicResolutionLevel.SPECIFIC_COORDINATE,
+                "landmark": GeographicResolutionLevel.LANDMARK,
+                "building": GeographicResolutionLevel.LANDMARK,
+                "neighborhood": GeographicResolutionLevel.NEIGHBORHOOD,
+                "district": GeographicResolutionLevel.DISTRICT,
+                "area": GeographicResolutionLevel.DISTRICT,
+                "road": GeographicResolutionLevel.ROAD_CORRIDOR,
+                "road_corridor": GeographicResolutionLevel.ROAD_CORRIDOR,
+                "city": GeographicResolutionLevel.CITY,
+                "admin": GeographicResolutionLevel.STATE_OR_PROVINCE,
+                "region": GeographicResolutionLevel.REGION,
             }
-            precision = level_map.get(primary.level, "Unlocalized")
+            res_lvl = level_map.get(primary.level.lower(), GeographicResolutionLevel.REGION)
+            radius = primary.radius_m or (100.0 if res_lvl == GeographicResolutionLevel.SPECIFIC_COORDINATE else (500.0 if res_lvl == GeographicResolutionLevel.LANDMARK else 25000.0))
+            if primary.lat is not None and primary.lon is not None:
+                env = SpatialEnvelope.from_point_and_radius(
+                    lat=primary.lat,
+                    lon=primary.lon,
+                    radius_m=radius,
+                    level=res_lvl,
+                    area_name=primary.name,
+                )
+                precision = env.formatted_display
+            else:
+                precision = f"{res_lvl.value.replace('_', ' ').title()} Envelope"
         else:
             precision = "Unlocalized"
 
@@ -380,8 +462,14 @@ class InvestigationAgent:
                 facts.append(f"[Fact] {ev.text}")
             elif ev.kind == "ocr":
                 facts.append(f"[Observed Text] {ev.text}")
-            elif ev.kind in ("terrain", "ridge_match", "falsification", "contradiction"):
-                inferences.append(f"[Inference/Computation] {ev.text}")
+            elif ev.kind in ("vpr", "visual_place"):
+                inferences.append(f"[Visual Place Retrieval] {ev.text}")
+            elif ev.kind == "road_geometry":
+                inferences.append(f"[Road Geometry Match] {ev.text}")
+            elif ev.kind in ("terrain", "ridge_match", "terrain_skyline"):
+                inferences.append(f"[Terrain Skyline Match] {ev.text}")
+            elif ev.kind in ("falsification", "contradiction"):
+                inferences.append(f"[Falsification Finding] {ev.text}")
 
         abstention_reasons: List[str] = []
         if state.final_status == "insufficient_evidence":
