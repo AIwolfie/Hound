@@ -880,6 +880,19 @@ class ToolRegistry:
         if not m:
             return ToolResult(tool_id="adversarial_solar_check", success=True, status="partial", output_data={"status": "untested"})
 
+        # Physical safety safeguard: Low-confidence shadow measurements must not override candidates
+        if solar_ev.confidence_weight < 0.60:
+            return ToolResult(
+                tool_id="adversarial_solar_check",
+                success=True,
+                status="partial",
+                output_data={
+                    "is_feasible": True,
+                    "status": "untested",
+                    "reason": f"Observed solar elevation confidence ({solar_ev.confidence_weight:.2f}) below physical safety threshold (0.60).",
+                },
+            )
+
         obs_elev = float(m.group(1))
         # If timestamp is available, test against date; else solstice ceiling
         feasible, max_ceiling, _ = is_solar_elevation_feasible(lat_deg=lat, observed_elev_deg=obs_elev, day_of_year=None)

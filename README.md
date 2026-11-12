@@ -18,7 +18,7 @@
 [![Status](https://img.shields.io/badge/STATUS-OPERATIONAL-00FF66?style=for-the-badge&logo=radar&logoColor=black)](https://github.com/hound-osint/hound)
 [![Python](https://img.shields.io/badge/PYTHON-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-00F0FF?style=for-the-badge&logo=python&logoColor=black)](https://python.org)
 [![License](https://img.shields.io/badge/LICENSE-MIT-FF0055?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Tests](https://img.shields.io/badge/VALIDATION-114%2F114%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
+[![Tests](https://img.shields.io/badge/VALIDATION-116%2F116%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
 [![Architecture](https://img.shields.io/badge/ENGINE-LOCAL--FIRST%20%26%20ZERO--HALLUCINATION-FFE600?style=for-the-badge&logo=databricks&logoColor=black)](docs/HOUND_ARCHITECTURE.md)
 
 [**Key Features**](#-core-capabilities) • [**Interactive Terminal**](#-terminal-experience) • [**Scientific Engine**](#-the-science-how-hound-thinks) • [**Benchmarks**](#-ground-truth-benchmarks) • [**Quickstart**](#-quickstart-in-60-seconds) • [**Ethical Code**](#-sovereign-osint--ethical-code)
@@ -446,6 +446,7 @@ python main.py agent report <investigation_id> -o dossier.md
 [PHASE 4] Autonomous Search Tree & Verification Agent[████████████████████] 100% (COMPLETE)
 [PHASE 4.1] Independent Validation & Adversarial Audit[████████████████████] 100% (COMPLETE)
 [PHASE 5] Advanced Visual Geolocation Intelligence   [████████████████████] 100% (COMPLETE)
+[PHASE 5.1] Benchmark Integrity & Visual Validation [████████████████████] 100% (COMPLETE)
 [PHASE 6] Forensic Reporting & Visual Dossiers       [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
 [PHASE 7] Dark-Mode Web Analyst Dashboard            [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
 [PHASE 8] Multi-Frame Video Trajectory Reconstruction[░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)

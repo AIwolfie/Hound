@@ -145,3 +145,58 @@ def test_resolution_specificity_weighting():
     assert eval_coord.breakdown.composite_heuristic_score > eval_country.breakdown.composite_heuristic_score
     assert eval_coord.breakdown.level_specificity_multiplier == 5.0
     assert eval_country.breakdown.level_specificity_multiplier == 1.0
+
+
+def test_terrain_seed_prevents_circular_double_counting():
+    """Verify that when a candidate is seeded by terrain, subsequent DEM correlation does not count as independent bonus."""
+    envelope = SpatialEnvelope.point(
+        lat=45.9765,
+        lon=7.7491,
+        radius_m=2000.0,
+        resolution=GeographicResolutionLevel.LANDMARK,
+    )
+
+    ev_terrain_seed = EvidenceItem(
+        id="ev_t1",
+        investigation_id="inv_t",
+        kind="terrain",
+        text="Observed pyramid peak skyline",
+        confidence_weight=0.9,
+        status="verified",
+    )
+
+    # Case A: Seeded by terrain
+    eval_seeded_by_terrain = MultiModalRanker.evaluate_hypothesis(
+        candidate_id="c_matterhorn",
+        name="Matterhorn",
+        seed_evidence_id="ev_t1",
+        seed_evidence_kind="terrain",
+        all_evidence=[ev_terrain_seed],
+        spatial_envelope=envelope,
+        terrain_correlation_score=0.88,
+    )
+
+    # Case B: Seeded by OCR (independent terrain confirmation)
+    ev_ocr_seed = EvidenceItem(
+        id="ev_o1",
+        investigation_id="inv_t",
+        kind="ocr",
+        text="Zermatt Trail Sign",
+        confidence_weight=0.9,
+        status="verified",
+    )
+    eval_seeded_by_ocr = MultiModalRanker.evaluate_hypothesis(
+        candidate_id="c_matterhorn",
+        name="Matterhorn",
+        seed_evidence_id="ev_o1",
+        seed_evidence_kind="ocr",
+        all_evidence=[ev_ocr_seed],
+        spatial_envelope=envelope,
+        terrain_correlation_score=0.88,
+    )
+
+    # Terrain bonus should be 0.0 when seeded by terrain (discounted), but > 0.0 when seeded independently by OCR
+    assert eval_seeded_by_terrain.breakdown.terrain_skyline_bonus == 0.0
+    assert eval_seeded_by_terrain.breakdown.correlation_discount_factor < 1.0
+    assert eval_seeded_by_ocr.breakdown.terrain_skyline_bonus > 0.0
+

@@ -385,4 +385,38 @@
 - **Honest Spatial Uncertainty:** Emits calibrated spatial uncertainty envelopes, refusing to fabricate pinpoint coordinates when evidence only justifies regional or corridor scopes.
 
 ### Next Development Milestone
-- Proceed to **Phase 6: Multi-Scale Geospatial Graph, Automated Cross-Verification & Autonomous OSINT Workflows**.
+- Proceed to **Phase 5.1: Benchmark Integrity & Visual Recognition Validation**.
+
+---
+
+## 2026-11-12 — Phase 5.1: Benchmark Integrity & Visual Recognition Validation
+
+### Completed Work
+1. **Independent Benchmark Reproduction:**
+   - Re-executed the 15-case blind benchmark suite (`benchmarks/blind_benchmark_suite.py`) from a clean environment without network dependencies.
+   - Confirmed 100% reproducibility of reported Phase 5 metrics: 81.8% point accuracy (15 cases), 100% region/country accuracy, 100% negative control abstention, 25.0 km mean error, 0.1 km median error.
+2. **Controlled Paired Comparison (10 Original Baseline Cases):**
+   - Conducted strict like-for-like paired comparison against original Phase 4.1 cases (7 positive, 3 negative controls).
+   - Point-level accuracy ($\le 25\text{ km}$): **0.0% $\longrightarrow$ 71.4%** (5/7 positive cases localized).
+   - Mean geodetic error: **134.75 km $\longrightarrow$ 39.29 km** (-70.8% error reduction).
+   - Median geodetic error: **181.90 km $\longrightarrow$ 0.20 km** (-99.9% error reduction).
+   - Negative control honest abstention: **100.0%** (3/3, 0 false positives).
+3. **Forensic Image Audit & Synthetic Canvas Inventory:**
+   - Cataloged all benchmark images: 0 real photographs, 15 synthetic in-memory OpenCV canvases (100%).
+   - Identified SHA-256 canvas collisions (`BLIND-06`=`07`=`09`, `BLIND-04`=`08`, `BLIND-02`=`12`, `BLIND-03`=`15`).
+   - Documented that synthetic fixtures validate algorithmic pipeline integration but do not establish real-world photographic generalization.
+4. **Visual Descriptor Robustness & Hardware Benchmarks:**
+   - Tested `HybridColorSpatialDescriptor` vs `NeuralGlobalDescriptor` (ResNet-18/50) under lighting, haze, season, rotation, and zoom.
+   - Proved ResNet-18 neural embeddings maintain high similarity across brightness (+40%: 0.9875), haze (0.9778), and snow (0.9445), where color pyramids degrade (<0.50).
+   - Benchmarked host hardware (NVIDIA GeForce RTX 2050): Hybrid CPU: 3.10 ms; ResNet-18 CUDA: 6.99 ms; ResNet-50 CUDA: 10.80 ms; ORB RANSAC: 3.95 ms; SIFT RANSAC: 82.15 ms.
+5. **Solar & Terrain Safety Hardening:**
+   - Added physical uncertainty safeguard to `adversarial_solar_check` in `agent/tool_registry.py`: low-confidence solar evidence (`confidence_weight < 0.60`) is marked `untested` and cannot falsify candidates.
+   - Added non-circular terrain seed test in `tests/test_multi_modal_ranker.py` and solar confidence safeguard test in `tests/test_solar_validation.py`.
+6. **Regression Suite:**
+   - Test suite expanded to **116 passed tests** across 32 modules.
+7. **Comprehensive Audit Report:**
+   - Published exhaustive evaluation in `docs/PHASE_5_1_BENCHMARK_AUDIT.md`.
+   - Final Verdict: **CONDITIONAL PASS**.
+
+### Next Development Milestone
+- Proceed to **Phase 6: Forensic Reporting & Visual Dossiers**.

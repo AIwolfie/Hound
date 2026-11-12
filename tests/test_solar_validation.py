@@ -101,6 +101,60 @@ class TestSolarValidation(unittest.TestCase):
         feasible_tropics, _, _ = SolarAnalyzer.is_solar_elevation_feasible(10.0, 85.0)
         self.assertTrue(feasible_tropics)
 
+    def test_low_confidence_solar_shadow_safeguard(self):
+        """Verify that tool registry does not falsify candidates when solar confidence is below 0.60."""
+        from agent.tool_registry import ToolRegistry, ToolExecutionContext
+        from storage.evidence_store import EvidenceItem, EvidenceStore
+        from storage.database import DatabaseManager
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_path = Path(tmpdir) / "test_solar.db"
+            db = DatabaseManager(db_path)
+            from storage.investigation_store import InvestigationStore
+            from core.image_loader import load_and_assess_image
+            import numpy as np
+            import cv2
+
+            dummy_img = Path(tmpdir) / "test.jpg"
+            cv2.imwrite(str(dummy_img), np.zeros((100, 100, 3), dtype=np.uint8))
+            img_rec = load_and_assess_image(dummy_img, preserve_original=False)
+            inv_store = InvestigationStore(db, Path(tmpdir) / "storage")
+            inv = inv_store.create_investigation(img_rec)
+
+            ev_store = EvidenceStore(db)
+
+            # Add low-confidence solar evidence (e.g. 0.35 confidence from noisy indoor/fuzzy shadow)
+            ev_store.add_evidence(
+                EvidenceItem(
+                    investigation_id=inv.id,
+                    kind="solar",
+                    status="observed",
+                    text="[Solar Ephemeris] Estimated solar elevation: 65.0°",
+                    confidence_weight=0.35,  # Unreliable shadow measurement
+                )
+            )
+
+            registry = ToolRegistry()
+            ctx = ToolExecutionContext(
+                investigation_id=inv.id,
+                db_manager=db,
+            )
+
+            # Test against latitude 65.0°N (where 65° elevation is astronomically impossible)
+            result = registry.execute_tool(
+                "adversarial_solar_check",
+                ctx,
+                {"candidate_id": "cand_1", "lat": 65.0},
+            )
+
+            # Result must NOT be falsified because confidence was below 0.60 safeguard threshold
+            self.assertEqual(result.status, "partial")
+            self.assertEqual(result.output_data["status"], "untested")
+            self.assertIn("below physical safety threshold", result.output_data["reason"])
+
+
 
 if __name__ == "__main__":
     unittest.main()
