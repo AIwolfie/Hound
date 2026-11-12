@@ -20,5 +20,7 @@ data/cache/
 
 # Testing & temporary
 .pytest_cache/
+.preprocessed/
+**/.preprocessed/
 *.tmp
 *.log

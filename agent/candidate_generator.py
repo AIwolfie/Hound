@@ -130,11 +130,18 @@ class GeographicCandidateGenerator:
         # -------------------------------------------------------------
         # 2. Text Clues: Road Identifiers & Named Routes
         # -------------------------------------------------------------
+        from core.adversarial_defense import AdversarialTextSanitizer
+
         road_evs = [
             e for e in evidence_items
             if e.kind == "ocr" and ("Category: road_number" in e.text or "road sign" in e.text.lower() or "highway" in e.text.lower())
         ]
         for rev in road_evs:
+            # Adversarial prompt injection defense
+            san = AdversarialTextSanitizer.inspect_text(rev.text)
+            if san.is_adversarial:
+                continue
+
             # Extract road string e.g. "Recognized text: "US-101 North""
             match = re.search(r'Recognized text:\s*"([^"]+)"', rev.text)
             if match:
@@ -193,6 +200,11 @@ class GeographicCandidateGenerator:
             if e.kind == "ocr" and not ("Category: road_number" in e.text or "US-101" in e.text or "CA-1" in e.text)
         ]
         for tev in text_evs[:6]:
+            # Adversarial prompt injection defense
+            san = AdversarialTextSanitizer.inspect_text(tev.text)
+            if san.is_adversarial:
+                continue
+
             # Portable souvenirs, novelty items, and low-confidence clues do not localize photo origin
             if tev.confidence_weight < 0.50 or any(k in tev.text.lower() for k in ("novelty", "souvenir", "mug", "gift")):
                 continue

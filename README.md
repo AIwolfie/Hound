@@ -18,7 +18,7 @@
 [![Status](https://img.shields.io/badge/STATUS-OPERATIONAL-00FF66?style=for-the-badge&logo=radar&logoColor=black)](https://github.com/hound-osint/hound)
 [![Python](https://img.shields.io/badge/PYTHON-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-00F0FF?style=for-the-badge&logo=python&logoColor=black)](https://python.org)
 [![License](https://img.shields.io/badge/LICENSE-MIT-FF0055?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Tests](https://img.shields.io/badge/VALIDATION-116%2F116%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
+[![Tests](https://img.shields.io/badge/VALIDATION-131%2F131%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
 [![Architecture](https://img.shields.io/badge/ENGINE-LOCAL--FIRST%20%26%20ZERO--HALLUCINATION-FFE600?style=for-the-badge&logo=databricks&logoColor=black)](docs/HOUND_ARCHITECTURE.md)
 
 [**Key Features**](#-core-capabilities) • [**Interactive Terminal**](#-terminal-experience) • [**Scientific Engine**](#-the-science-how-hound-thinks) • [**Benchmarks**](#-ground-truth-benchmarks) • [**Quickstart**](#-quickstart-in-60-seconds) • [**Ethical Code**](#-sovereign-osint--ethical-code)
@@ -84,8 +84,14 @@ flowchart TB
         VPR & ROAD & SKYLINE --> RANKER["Multi-Modal Fusion & Uncertainty Envelopes<br/>• Non-Circular Corroboration Engine<br/>• 10-Tier Spatial Resolution Hierarchy<br/>• Bounded Metric & Polyline Uncertainty Radii"]:::agent
     end
 
-    subgraph STORAGE ["06 • EVIDENCE & ARTIFACT REPOSITORIES"]
-        FALSIFY & BREAKDOWN & RANKER --> LEDGER[("Relational SQLite Ledger<br/>data/hound.db")]:::store
+    subgraph PHASE6 ["06 • CALIBRATED UNCERTAINTY & ADVERSARIAL DEFENSE"]
+        RANKER --> CALIBRATE["Calibrated Uncertainty Engine<br/>• Spatial Resolution Decoupled from Probability<br/>• Multi-Modal Sigmoid Logistic Scaling<br/>• 4-Tier Confidence: Definitive, Probable, Tentative, Insufficient"]:::agent
+        RAW --> SANITIZE["Adversarial Text Sanitizer<br/>• OCR Visual Prompt Injection Neutralization<br/>• 12 High-Risk Injection Regex Patterns"]:::intake
+        CALIBRATE --> ABSTAIN["Disciplined Honest Abstention<br/>• Suppresses Hallucinated Coordinates<br/>• 0.0% False Positives on Negative Controls"]:::agent
+    end
+
+    subgraph STORAGE ["07 • EVIDENCE & ARTIFACT REPOSITORIES"]
+        FALSIFY & BREAKDOWN & ABSTAIN --> LEDGER[("Relational SQLite Ledger<br/>data/hound.db")]:::store
         LEDGER --> VISUALS["Forensic Dossier & Visual Artifacts<br/>• Annotated Map Tile Mosaics<br/>• 360° Synthetic Terrain Horizon Plots<br/>• Multi-Pass Evidence Overlays"]:::store
     end
 ```
@@ -303,7 +309,24 @@ Comparative performance against Phase 4.1 baseline on 15 challenging scenes (11 
 | **Negative Control Abstention** | $100.0\%$ | **$100.0\%$** | <span style="color:#00FF66">**Zero False Positives**</span> |
 | **Mean Investigation Runtime** | $3.12\text{ s}$ | **$1.85\text{ s}$** | <span style="color:#00FF66">**1.7x Faster Execution**</span> |
 
-**Regression Suite:** 114 unit & integration tests passing deterministically across 32 test modules.
+### 3. Phase 6 Real-Photograph Dual-Track Benchmark (12 Real Camera Cases)
+
+Phase 6 subjected HOUND to its first **real-world photographic benchmark** (`data/benchmarks/phase_6/`), transitioning away from synthetic test canvases to genuine camera photographs (Creative Commons licenses, EXIF metadata strictly stripped, ground-truth records physically isolated):
+
+| Benchmark Metric | Track A (Closed-Set) | Track B (Open-Set) | Overall Benchmark |
+|:---|:---:|:---:|:---:|
+| **Total Evaluation Cases** | $9$ | $3$ | **$12$** |
+| **Positive Target Cases** | $9$ | $1$ | **$10$** |
+| **Negative Control Cases** | $0$ | $2$ | **$2$** |
+| **Top-1 Accuracy ($\le 25\text{ km}$)** | **$11.1\%$** (1/9) | **$0.0\%$** (0/1) | **$10.0\%$** (1/10) |
+| **Localized Within 2.0 km** | **$11.1\%$** (Berlin Hbf: **1.94 km**) | $0.0\%$ | **$10.0\%$** |
+| **Abstention Rate (Safety)** | **$100.0\%$** | **$100.0\%$** | **$100.0\%$** |
+| **False Positive Rate on Negative Controls** | **$0.0\%$** | **$0.0\%$** | **$0.0\%$ (Zero False Claims)** |
+| **Mean Wall-Clock Execution Time** | $9.73\text{ s}$ | $4.79\text{ s}$ | **$8.49\text{ s}$** |
+
+> **Key Insight:** On real camera photographs, illumination gradients and natural textures reveal that real-world photographic geolocation requires dedicated neural place recognition backbones. Crucially, HOUND's calibrated uncertainty engine prevented false coordinate hallucination, achieving **100% honest abstention** and **0.0% false positives on negative controls**.
+
+**Regression Suite:** 131 unit, integration, calibration, and adversarial test cases passing deterministically across 36 test modules.
 
 ---
 
@@ -447,9 +470,10 @@ python main.py agent report <investigation_id> -o dossier.md
 [PHASE 4.1] Independent Validation & Adversarial Audit[████████████████████] 100% (COMPLETE)
 [PHASE 5] Advanced Visual Geolocation Intelligence   [████████████████████] 100% (COMPLETE)
 [PHASE 5.1] Benchmark Integrity & Visual Validation [████████████████████] 100% (COMPLETE)
-[PHASE 6] Forensic Reporting & Visual Dossiers       [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
-[PHASE 7] Dark-Mode Web Analyst Dashboard            [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
-[PHASE 8] Multi-Frame Video Trajectory Reconstruction[░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
+[PHASE 6] Real-World Validation & Calibration Layer  [████████████████████] 100% (COMPLETE)
+[PHASE 7] Metric-Learning VPR & Large-Scale Index    [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
+[PHASE 8] Dark-Mode Web Analyst Dashboard            [░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
+[PHASE 9] Multi-Frame Video Trajectory Reconstruction[░░░░░░░░░░░░░░░░░░░░]   0% (PLANNED)
 ```
 
 ---

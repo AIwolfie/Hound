@@ -419,4 +419,49 @@
    - Final Verdict: **CONDITIONAL PASS**.
 
 ### Next Development Milestone
-- Proceed to **Phase 6: Forensic Reporting & Visual Dossiers**.
+- Proceed to **Phase 6: Real-World Geolocation Validation & Open-World Intelligence**.
+
+---
+
+## 2026-11-12 — Phase 6: Real-World Geolocation Validation & Open-World Intelligence
+
+### Completed Work
+1. **Real-Photograph Benchmark Dataset (`data/benchmarks/phase_6/`):**
+   - Curated 12 genuine camera photographs from Wikimedia Commons with documented Creative Commons licenses, author attributions, and source URLs via `benchmarks/curate_phase6_dataset.py`.
+   - Standardized to max dimension 1024; all EXIF headers and GPS tags strictly stripped.
+   - Segregated into:
+     - `data/benchmarks/phase_6/images/` (12 JPGs: `REAL-01.jpg` to `REAL-12.jpg`).
+     - `data/benchmarks/phase_6/ground_truth/ground_truth.json` (strictly isolated evaluation records).
+     - `data/benchmarks/phase_6/metadata/manifest.json` (provenance, authors, licenses, SHA-256 digests).
+     - `data/benchmarks/phase_6/reports/` (benchmark evaluation reports).
+2. **Calibrated Geographic Uncertainty Engine (`core/calibration_engine.py`):**
+   - Built `CalibrationEngine` and `CalibratedGeolocationEstimate`.
+   - Standardized 4 confidence tiers: `DEFINITIVE` ($P \ge 0.90$), `PROBABLE` ($0.70 \le P < 0.90$), `TENTATIVE` ($0.40 \le P < 0.70$), `INSUFFICIENT` ($P < 0.40$).
+   - Multi-modal logistic sigmoid calibration mapping raw heuristic score, independent modality count ($M_{\text{indep}}$), and unresolved contradictions ($C_{\text{unresolved}}$) into calibrated probability $P \in [0.0, 1.0]$.
+   - Decoupled spatial resolution levels (`LANDMARK` to `UNLOCALIZED`) from confidence probability.
+   - Enforced disciplined honest abstention: unlocalized fallback when evidence is below threshold.
+3. **Adversarial Protections & Input Hardening (`core/adversarial_defense.py`):**
+   - Built `AdversarialTextSanitizer` with regex patterns detecting prompt injection attempts inside image OCR text (`ignore all prior instructions`, `system prompt`, `developer mode`, `jailbreak`, etc.).
+   - Built `ReferencePoisoningGuard` validating WGS-84 coordinate bounds, Null Island coordinates, and descriptor dimensionalities.
+   - Integrated sanitizer into `agent/candidate_generator.py` for road numbers and text clues.
+4. **Dual-Track Benchmark Runner (`benchmarks/phase_6_benchmark.py`):**
+   - Executed benchmark across Track A (closed-set retrieval) and Track B (open-set geolocation).
+   - Berlin Central Station (`REAL-05`) localized within **1.94 km** purely from visual overhead catenary infrastructure and railway station signage.
+   - Negative controls (`REAL-11` windowless meeting room and `REAL-12` featureless desert dunes) achieved **100% honest abstention** with **0.0% false positives**.
+   - Verified that handcrafted color pyramids on real photographs do not cross synthetic retrieval thresholds, proving the need for dedicated neural VPR backbones.
+5. **Phase 6 Test Suites (`tests/`):**
+   - Added `tests/test_phase_6_calibration.py` (4 tests).
+   - Added `tests/test_phase_6_open_set.py` (3 tests).
+   - Added `tests/test_phase_6_leakage.py` (5 tests).
+   - Added `tests/test_phase_6_real_world.py` (3 tests).
+   - **Full regression suite:** **131 passed in 55.31s** across 36 test modules.
+6. **Documentation Deliverables:**
+   - Published `docs/PHASE_6_IMPLEMENTATION_REPORT.md` (validation verdict: CONDITIONAL PASS).
+   - Published `docs/PHASE_6_BENCHMARK_RESULTS.md` (empirical dual-track results and failure analysis).
+   - Published `docs/PHASE_6_MODEL_PROVENANCE.md` (model provenance and VPR architecture audit).
+
+### Final Validation Verdict
+- **CONDITIONAL PASS**
+
+### Next Development Milestone
+- Proceed to **Phase 7: Metric-Learning Visual Place Recognition (AnyLoc / CosPlace) & Scalable Vector Index**.

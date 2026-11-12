@@ -1,0 +1,134 @@
+{
+  "REAL-01": {
+    "case_id": "REAL-01",
+    "name": "Eiffel Tower Champ de Mars",
+    "is_negative_control": false,
+    "country": "France",
+    "region": "\u00cele-de-France",
+    "target_lat": 48.8584,
+    "target_lon": 2.2945,
+    "tolerance_km": 15.0,
+    "expected_scale": "landmark"
+  },
+  "REAL-02": {
+    "case_id": "REAL-02",
+    "name": "Matterhorn Alpine Summit",
+    "is_negative_control": false,
+    "country": "Switzerland",
+    "region": "Valais",
+    "target_lat": 45.9765,
+    "target_lon": 7.7491,
+    "tolerance_km": 25.0,
+    "expected_scale": "landmark"
+  },
+  "REAL-03": {
+    "case_id": "REAL-03",
+    "name": "Sydney Opera House Harbour",
+    "is_negative_control": false,
+    "country": "Australia",
+    "region": "New South Wales",
+    "target_lat": -33.8568,
+    "target_lon": 151.2153,
+    "tolerance_km": 15.0,
+    "expected_scale": "landmark"
+  },
+  "REAL-04": {
+    "case_id": "REAL-04",
+    "name": "Shibuya Scramble Crossing",
+    "is_negative_control": false,
+    "country": "Japan",
+    "region": "Tokyo",
+    "target_lat": 35.6595,
+    "target_lon": 139.7005,
+    "tolerance_km": 15.0,
+    "expected_scale": "district"
+  },
+  "REAL-05": {
+    "case_id": "REAL-05",
+    "name": "Berlin Central Station Tracks",
+    "is_negative_control": false,
+    "country": "Germany",
+    "region": "Berlin",
+    "target_lat": 52.5251,
+    "target_lon": 13.3694,
+    "tolerance_km": 20.0,
+    "expected_scale": "landmark"
+  },
+  "REAL-06": {
+    "case_id": "REAL-06",
+    "name": "Historic Route 66 Seligman Arizona",
+    "is_negative_control": false,
+    "country": "United States",
+    "region": "Arizona",
+    "target_lat": 35.3256,
+    "target_lon": -112.8744,
+    "tolerance_km": 40.0,
+    "expected_scale": "road_corridor"
+  },
+  "REAL-07": {
+    "case_id": "REAL-07",
+    "name": "Bixby Creek Bridge Big Sur",
+    "is_negative_control": false,
+    "country": "United States",
+    "region": "California",
+    "target_lat": 36.3714,
+    "target_lon": -121.9018,
+    "tolerance_km": 30.0,
+    "expected_scale": "road_corridor"
+  },
+  "REAL-08": {
+    "case_id": "REAL-08",
+    "name": "Val d'Orcia Rolling Farmland",
+    "is_negative_control": false,
+    "country": "Italy",
+    "region": "Tuscany",
+    "target_lat": 43.056,
+    "target_lon": 11.602,
+    "tolerance_km": 35.0,
+    "expected_scale": "region"
+  },
+  "REAL-09": {
+    "case_id": "REAL-09",
+    "name": "Zabriskie Point Death Valley",
+    "is_negative_control": false,
+    "country": "United States",
+    "region": "California",
+    "target_lat": 36.4208,
+    "target_lon": -116.8122,
+    "tolerance_km": 35.0,
+    "expected_scale": "region"
+  },
+  "REAL-10": {
+    "case_id": "REAL-10",
+    "name": "Tromso Arctic Port & Mountains",
+    "is_negative_control": false,
+    "country": "Norway",
+    "region": "Troms",
+    "target_lat": 69.6492,
+    "target_lon": 18.9553,
+    "tolerance_km": 25.0,
+    "expected_scale": "city"
+  },
+  "REAL-11": {
+    "case_id": "REAL-11",
+    "name": "Windowless Corporate Meeting Room",
+    "is_negative_control": true,
+    "country": null,
+    "region": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "expected_scale": "unlocalized"
+  },
+  "REAL-12": {
+    "case_id": "REAL-12",
+    "name": "Featureless Desert Sand Ripples",
+    "is_negative_control": true,
+    "country": null,
+    "region": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "expected_scale": "unlocalized"
+  }
+}
