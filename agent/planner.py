@@ -160,7 +160,7 @@ class InvestigationPlanner:
                         priority=9.0,
                         expected_info_gain=0.8,
                         cost_estimate=0.20,
-                        is_external_request=True,
+                        is_external_request=False,
                     )
                 )
 

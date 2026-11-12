@@ -633,7 +633,8 @@ class ToolRegistry:
             return ToolResult(tool_id="gazetteer_search", success=False, status="error", error_message="Query string required.")
 
         gazetteer = GazetteerService(db_manager=ctx.db)
-        item = gazetteer.geocode(query)
+        results = gazetteer.forward_geocode(query, limit=1)
+        item = results[0] if results else None
 
         if not item:
             return ToolResult(tool_id="gazetteer_search", success=True, status="success", output_data={"found": False})
@@ -657,7 +658,7 @@ class ToolRegistry:
                 "display_name": item.display_name,
                 "lat": item.lat,
                 "lon": item.lon,
-                "type": item.type,
+                "type": item.place_type,
                 "country": item.country,
                 "state": item.state,
                 "city": item.city,

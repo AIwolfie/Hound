@@ -328,12 +328,17 @@ class InvestigationAgent:
                         result_summary=f"Observed sun elevation exceeds ceiling at lat {cand.lat:.2f}°.",
                     )
 
-        elif action.tool_id in ("osm_road_search", "dem_horizon_profile", "ridge_matching"):
+        elif action.tool_id in ("osm_road_search", "dem_horizon_profile", "ridge_matching", "adversarial_osm_check"):
             cand_id = action.target_hypothesis_id
             if cand_id and cand_id in state.hypotheses:
                 cand = state.hypotheses[cand_id]
-                for ev in result.evidence_items:
-                    self.hyp_mgr.add_corroboration(cand, ev)
+                if not result.success or result.status in ("service_unavailable", "skipped", "error"):
+                    note = f"{action.tool_id}: {result.error_message or result.status}"
+                    if note not in cand.untested_constraints:
+                        cand.untested_constraints.append(note)
+                else:
+                    for ev in result.evidence_items:
+                        self.hyp_mgr.add_corroboration(cand, ev)
 
     def _compile_dossier(
         self,
@@ -385,6 +390,14 @@ class InvestigationAgent:
         elif state.final_status == "inconclusive":
             abstention_reasons.append("Competing hypotheses could not be separated with high confidence.")
 
+        all_untested: List[str] = []
+        if primary and primary.untested_constraints:
+            all_untested.extend(primary.untested_constraints)
+        for h in all_hypotheses:
+            for uc in h.untested_constraints:
+                if uc not in all_untested:
+                    all_untested.append(uc)
+
         return FinalInvestigationDossier(
             investigation_id=state.investigation_id,
             target_filename=inv_record.filename,
@@ -402,7 +415,7 @@ class InvestigationAgent:
             rejected_hypotheses=rejected,
             facts=facts,
             inferences=inferences,
-            untested_constraints=primary.untested_constraints if primary else [],
+            untested_constraints=all_untested,
             abstention_reasons=abstention_reasons,
             data_sources_used=["OpenStreetMap", "AWS Terrarium DEM", "NOAA Solar Ephemeris", "Nominatim Gazetteer"],
             known_limitations=[
