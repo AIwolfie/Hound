@@ -1,0 +1,106 @@
+[
+  {
+    "query_id": "CALIB_POS-01",
+    "name": "Calibration Positive REF-01",
+    "target_ref_id": "REF-01",
+    "filename": "calibration/CALIB_POS-01.jpg",
+    "sha256": "5f9dcec4341e348d49fff8fcb527ef27021d23545927530307ef2b9bbc85cd5e",
+    "is_positive": true
+  },
+  {
+    "query_id": "CALIB_POS-02",
+    "name": "Calibration Positive REF-03",
+    "target_ref_id": "REF-03",
+    "filename": "calibration/CALIB_POS-02.jpg",
+    "sha256": "1f278296b5565f6cba6adf6552a7ab25bc1222abee73a90499fb66ebebd689ad",
+    "is_positive": true
+  },
+  {
+    "query_id": "CALIB_POS-03",
+    "name": "Calibration Positive REF-05",
+    "target_ref_id": "REF-05",
+    "filename": "calibration/CALIB_POS-03.jpg",
+    "sha256": "195ed0e958fc78876768fe769f8ba024a4e574fcd4350c99a2d979f060f60b8d",
+    "is_positive": true
+  },
+  {
+    "query_id": "CALIB_POS-04",
+    "name": "Calibration Positive REF-07",
+    "target_ref_id": "REF-07",
+    "filename": "calibration/CALIB_POS-04.jpg",
+    "sha256": "1c202066efc040538afbcdd5c4574f87f56e937a357b6f5d9bddb65f2cf8c01a",
+    "is_positive": true
+  },
+  {
+    "query_id": "CALIB_POS-05",
+    "name": "Calibration Positive REF-10",
+    "target_ref_id": "REF-10",
+    "filename": "calibration/CALIB_POS-05.jpg",
+    "sha256": "93eaba13c5f4fea58576c797d375aa4702028c5e6abdcefb0c009c3c3a61c9e1",
+    "is_positive": true
+  },
+  {
+    "query_id": "CALIB_OPEN-01",
+    "name": "Calibration Open-Set Machu Picchu",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_OPEN-01.jpg",
+    "sha256": "0c10f6c3b06dc6ae519f473da2712831ffdbc4bf2249a1fe84cf495127dc6857",
+    "is_positive": false
+  },
+  {
+    "query_id": "CALIB_OPEN-02",
+    "name": "Calibration Open-Set Petra Al-Khazneh",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_OPEN-02.jpg",
+    "sha256": "0c10f6c3b06dc6ae519f473da2712831ffdbc4bf2249a1fe84cf495127dc6857",
+    "is_positive": false
+  },
+  {
+    "query_id": "CALIB_OPEN-03",
+    "name": "Calibration Open-Set Sagrada Familia",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_OPEN-03.jpg",
+    "sha256": "0c10f6c3b06dc6ae519f473da2712831ffdbc4bf2249a1fe84cf495127dc6857",
+    "is_positive": false
+  },
+  {
+    "query_id": "CALIB_OPEN-04",
+    "name": "Calibration Open-Set Torres del Paine",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_OPEN-04.jpg",
+    "sha256": "0c10f6c3b06dc6ae519f473da2712831ffdbc4bf2249a1fe84cf495127dc6857",
+    "is_positive": false
+  },
+  {
+    "query_id": "CALIB_NEG-01",
+    "name": "Calibration Negative CASE-45.jpg",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_NEG-01.jpg",
+    "sha256": "c2996c3bcd1627098f8b46bbd29089f08000ecabc1c8bf775d0b5387d3f53c2c",
+    "is_positive": false
+  },
+  {
+    "query_id": "CALIB_NEG-02",
+    "name": "Calibration Negative CASE-46.jpg",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_NEG-02.jpg",
+    "sha256": "1ef2dd849182709c839327cf9b8e4d2c5a81d724686335aaed5ce663f430c3af",
+    "is_positive": false
+  },
+  {
+    "query_id": "CALIB_NEG-03",
+    "name": "Calibration Negative CASE-47.jpg",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_NEG-03.jpg",
+    "sha256": "0554931fed2a66df1e94f32295a37e7af655270e4b18369b8598ebf79467fcb0",
+    "is_positive": false
+  },
+  {
+    "query_id": "CALIB_NEG-04",
+    "name": "Calibration Negative CASE-48.jpg",
+    "target_ref_id": null,
+    "filename": "calibration/CALIB_NEG-04.jpg",
+    "sha256": "fbd1b3d07cb797b298239d8f9a3396458532e7cda9df0651326f65d1c342bde4",
+    "is_positive": false
+  }
+]

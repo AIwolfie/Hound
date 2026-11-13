@@ -1,0 +1,67 @@
+{
+  "CALIB_POS-01": {
+    "query_id": "CALIB_POS-01",
+    "target_ref_id": "REF-01",
+    "is_positive": true
+  },
+  "CALIB_POS-02": {
+    "query_id": "CALIB_POS-02",
+    "target_ref_id": "REF-03",
+    "is_positive": true
+  },
+  "CALIB_POS-03": {
+    "query_id": "CALIB_POS-03",
+    "target_ref_id": "REF-05",
+    "is_positive": true
+  },
+  "CALIB_POS-04": {
+    "query_id": "CALIB_POS-04",
+    "target_ref_id": "REF-07",
+    "is_positive": true
+  },
+  "CALIB_POS-05": {
+    "query_id": "CALIB_POS-05",
+    "target_ref_id": "REF-10",
+    "is_positive": true
+  },
+  "CALIB_OPEN-01": {
+    "query_id": "CALIB_OPEN-01",
+    "target_ref_id": null,
+    "is_positive": false
+  },
+  "CALIB_OPEN-02": {
+    "query_id": "CALIB_OPEN-02",
+    "target_ref_id": null,
+    "is_positive": false
+  },
+  "CALIB_OPEN-03": {
+    "query_id": "CALIB_OPEN-03",
+    "target_ref_id": null,
+    "is_positive": false
+  },
+  "CALIB_OPEN-04": {
+    "query_id": "CALIB_OPEN-04",
+    "target_ref_id": null,
+    "is_positive": false
+  },
+  "CALIB_NEG-01": {
+    "query_id": "CALIB_NEG-01",
+    "target_ref_id": null,
+    "is_positive": false
+  },
+  "CALIB_NEG-02": {
+    "query_id": "CALIB_NEG-02",
+    "target_ref_id": null,
+    "is_positive": false
+  },
+  "CALIB_NEG-03": {
+    "query_id": "CALIB_NEG-03",
+    "target_ref_id": null,
+    "is_positive": false
+  },
+  "CALIB_NEG-04": {
+    "query_id": "CALIB_NEG-04",
+    "target_ref_id": null,
+    "is_positive": false
+  }
+}

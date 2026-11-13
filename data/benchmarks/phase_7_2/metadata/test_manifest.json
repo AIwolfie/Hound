@@ -1,0 +1,336 @@
+[
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-01",
+    "name": "Eiffel Tower (Independent View)",
+    "target_ref_id": "REF-01",
+    "filename": "test/track_a/QA-01.jpg",
+    "sha256": "e84ed30d4257f0c2f2e843ea353858ecdc020c27ef26544614a1d36bdac781d6"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-02",
+    "name": "Matterhorn from Riffelsee (Independent View)",
+    "target_ref_id": "REF-02",
+    "filename": "test/track_a/QA-02.jpg",
+    "sha256": "563a0814acfae0d694112f37b74e1d4e4c3148d0cfcaadc66ce1e66ed2ddfb64"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-03",
+    "name": "Sydney Opera House (Independent View)",
+    "target_ref_id": "REF-03",
+    "filename": "test/track_a/QA-03.jpg",
+    "sha256": "febffe7e140ca8a798f621b6dc5d2abd881eaa626e83df22222b6dbb7a24a8dd"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-04",
+    "name": "Shibuya Crossing (Independent View)",
+    "target_ref_id": "REF-04",
+    "filename": "test/track_a/QA-04.jpg",
+    "sha256": "f2b1a26fcff39ca081b4e5427a6a866609e7c60c0f1e540e3d1c55ea11caae60"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-05",
+    "name": "Berlin Central Station (Independent Exterior)",
+    "target_ref_id": "REF-05",
+    "filename": "test/track_a/QA-05.jpg",
+    "sha256": "ce28777acb9c8f8dc9a99a6c7916d01b123f18d4b5c9190fcedaf7bf60fca0e1"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-06",
+    "name": "Route 66 Seligman (Independent View)",
+    "target_ref_id": "REF-06",
+    "filename": "test/track_a/QA-06.jpg",
+    "sha256": "50d4f11e28cc87669f68a8c20dfa7d42314da1125cf881b07d091cd31dcdd308"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-07",
+    "name": "Bixby Creek Bridge (Independent View)",
+    "target_ref_id": "REF-07",
+    "filename": "test/track_a/QA-07.jpg",
+    "sha256": "bbdd540c9a8cc40a017ad777f3a2a29110ac9e547249498d200ab0064db92b86"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-08",
+    "name": "Val d'Orcia in Autumn (Independent View)",
+    "target_ref_id": "REF-08",
+    "filename": "test/track_a/QA-08.jpg",
+    "sha256": "ff0d24f8d38b2b22c9a870348a2e16d3154180eb0e1c405674fa156879d6a6e5"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-09",
+    "name": "Zabriskie Point (Independent View)",
+    "target_ref_id": "REF-09",
+    "filename": "test/track_a/QA-09.jpg",
+    "sha256": "1f9947335790e623757af865a2f608c932d1d73116cc7b2031f07cad02b16604"
+  },
+  {
+    "track": "TRACK_A",
+    "query_id": "QA-10",
+    "name": "Tromso Harbour Panorama (Independent View)",
+    "target_ref_id": "REF-10",
+    "filename": "test/track_a/QA-10.jpg",
+    "sha256": "f46f04c925f48e06c089da47ca1e8208fdc8325dbf0e7fd38db0b20a22ab337b"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-01",
+    "name": "Eiffel Tower (Night & Pont Alexandre III)",
+    "target_ref_id": "REF-01",
+    "filename": "test/track_b/QB-01.jpg",
+    "sha256": "8678f201ec957ab5f83bf55aa1a350375bc6a4c2cc6c9f3a93767820263318ab"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-02",
+    "name": "Matterhorn (Winter Summit March)",
+    "target_ref_id": "REF-02",
+    "filename": "test/track_b/QB-02.jpg",
+    "sha256": "8b1ae91c7f4fc7d79ca3a0e5c4d3b1d8a6d332ec8a5d85cc2eab01aed07a6e67"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-03",
+    "name": "Sydney Opera House (Vivid Light Festival)",
+    "target_ref_id": "REF-03",
+    "filename": "test/track_b/QB-03.jpg",
+    "sha256": "fd5919f8d513d78be1a954474269c6d5920842cd9ea0fac2f59ed3ca4d0f92ad"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-04",
+    "name": "Shibuya Crossing (Rain & Umbrellas)",
+    "target_ref_id": "REF-04",
+    "filename": "test/track_b/QB-04.jpg",
+    "sha256": "7a6d229f7c334b8c8332502520fd610eb83e8c85ee0c7306373885a549f890fb"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-05",
+    "name": "Berlin Central Station (Interior Tracks)",
+    "target_ref_id": "REF-05",
+    "filename": "test/track_b/QB-05.jpg",
+    "sha256": "a7ed2580162880088e6a974aa2a8bed2b4b67ce212eaa4ccfa8917a4536099d7"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-06",
+    "name": "Route 66 Seligman (Gold Wing Motorcycle Sign)",
+    "target_ref_id": "REF-06",
+    "filename": "test/track_b/QB-06.jpg",
+    "sha256": "adfe245a66683f36dec862013aa0243f7776f141b5b46384b7bb74ddb5dbc7aa"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-07",
+    "name": "Bixby Creek Bridge (Dense Morning Fog)",
+    "target_ref_id": "REF-07",
+    "filename": "test/track_b/QB-07.jpg",
+    "sha256": "0228224f2c9aeeaa540b138c433bad1514cadaa787994b421f273a9c5f8c7aba"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-08",
+    "name": "Val d'Orcia (Isolated Cypress Ring S. Quirico)",
+    "target_ref_id": "REF-08",
+    "filename": "test/track_b/QB-08.jpg",
+    "sha256": "4ba3435a783f4ea3c6d71120707350982961abe80b662756dc487f96a4fbcda0"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-09",
+    "name": "Zabriskie Point (Ridge Shadows Telephoto)",
+    "target_ref_id": "REF-09",
+    "filename": "test/track_b/QB-09.jpg",
+    "sha256": "93daadb9e8c71278ad1a48857efd5bc9b1f6c1cbbe743029e0134d7d547bcb1f"
+  },
+  {
+    "track": "TRACK_B",
+    "query_id": "QB-10",
+    "name": "Tromso Harbour (Ship Hull in Arctic Harbour)",
+    "target_ref_id": "REF-10",
+    "filename": "test/track_b/QB-10.jpg",
+    "sha256": "bc3a46e282a524ee502a39f26bd416354d40daf37bf90ce18434dfb18d51002f"
+  },
+  {
+    "track": "TRACK_C1",
+    "query_id": "QC1-01",
+    "name": "Unseen Place: Taj Mahal Yamuna View",
+    "target_ref_id": null,
+    "filename": "test/track_c1/QC1-01.jpg",
+    "sha256": "fed3a7e840e3f886bb54f140c0021e025acc029c82b6b7964f61123b3ffcd29a"
+  },
+  {
+    "track": "TRACK_C1",
+    "query_id": "QC1-02",
+    "name": "Unseen Place: Colosseum Amphitheatre",
+    "target_ref_id": null,
+    "filename": "test/track_c1/QC1-02.jpg",
+    "sha256": "890dc83e2d9dce6a8f81e0149e9367b25fb84b966875f0ba15923d2dc1b2c6f5"
+  },
+  {
+    "track": "TRACK_C1",
+    "query_id": "QC1-03",
+    "name": "Unseen Place: Neuschwanstein Castle",
+    "target_ref_id": null,
+    "filename": "test/track_c1/QC1-03.jpg",
+    "sha256": "d76be6462bbec944df6cf7f10d9524bdeb034cbda780b119d66c32496ac1412e"
+  },
+  {
+    "track": "TRACK_C1",
+    "query_id": "QC1-04",
+    "name": "Unseen Place: Great Wall of China Mutianyu",
+    "target_ref_id": null,
+    "filename": "test/track_c1/QC1-04.jpg",
+    "sha256": "bf3f7a3b7b6c47ba6247b4371c71f1a568f788d9934b1de565aeca6a2f67dd78"
+  },
+  {
+    "track": "TRACK_C1",
+    "query_id": "QC1-05",
+    "name": "Unseen Place: Christ the Redeemer Corcovado",
+    "target_ref_id": null,
+    "filename": "test/track_c1/QC1-05.jpg",
+    "sha256": "ca9da8b0b1ff858f2baecae6adf65d9a99791ca50d2afc69913cf1eec0a4fb34"
+  },
+  {
+    "track": "TRACK_C1",
+    "query_id": "QC1-06",
+    "name": "Unseen Place: Mount Fuji Lake Kawaguchiko",
+    "target_ref_id": null,
+    "filename": "test/track_c1/QC1-06.jpg",
+    "sha256": "24e86a9787d9d04d82c56422f8d5e069b783016840e12bcc97b0937a48be0202"
+  },
+  {
+    "track": "TRACK_C1",
+    "query_id": "QC1-07",
+    "name": "Unseen Place: Golden Gate Bridge Vista",
+    "target_ref_id": null,
+    "filename": "test/track_c1/QC1-07.jpg",
+    "sha256": "adb6465ad9979bcfc204d60c4d7d0d2d4ecb158f1784df3dd0304c47fbee74c2"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-01",
+    "name": "Non-Place Control: Windowless Corporate Meeting Room",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-01.jpg",
+    "sha256": "51b5b69bf690b55e3f08176ccee28e08186137dbbbc23521d8542da948327d99"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-02",
+    "name": "Non-Place Control: Featureless Desert Sand Ripples",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-02.jpg",
+    "sha256": "bdbd29ebb019b2909801a136a883c310cb63e83ea95018cfef8b77657eaf85ff"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-03",
+    "name": "Non-Place Control: Blank White Interior Drywall",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-03.jpg",
+    "sha256": "762802b25e343bee1a5dbe1e5ef914ad7cd2e26331e17356f61f65025b6ab0aa"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-04",
+    "name": "Non-Place Control: Close-Up Macro Oak Bark",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-04.jpg",
+    "sha256": "fef781193af76f9c73611463dcbf8b0b0e5cdae38cd46d5a05d0908c848e25ff"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-05",
+    "name": "Non-Place Control: Close-Up Asphalt Pavement",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-05.jpg",
+    "sha256": "d7c193077fbe7aa499a72eaee97a1682b1131530f391d6f114406d3ff5d1d36e"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-06",
+    "name": "Non-Place Control: Overcast Featureless White Fog",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-06.jpg",
+    "sha256": "ed3f71e8d4167c2faeeed5c92e38549e22fd221112a0c735046f58cd8efe1d49"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-07",
+    "name": "Non-Place Control: Ambiguous Open Ocean Water",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-07.jpg",
+    "sha256": "6fa2e97e261b3f0f14329075dfc956976e8217d6faab7ad1cc1e4786db4fe546"
+  },
+  {
+    "track": "TRACK_C2",
+    "query_id": "QC2-08",
+    "name": "Non-Place Control: Featureless Sand Ripple Texture",
+    "target_ref_id": null,
+    "filename": "test/track_c2/QC2-08.jpg",
+    "sha256": "dc1a47cb9322e0a4f8d09437e91ab7ce7b9d70ac85b9533926fb2e43dd13bbb9"
+  },
+  {
+    "track": "TRACK_D",
+    "query_id": "ADV-01",
+    "name": "St Paul's Cathedral London (Similar Dome Architecture)",
+    "target_ref_id": null,
+    "filename": "test/track_d/ADV-01.jpg",
+    "sha256": "66776413ea7489933f455cc4ff01d005ca9a93438fab45b1bccea046522be6e9",
+    "category": "architecture_lookalike"
+  },
+  {
+    "track": "TRACK_D",
+    "query_id": "ADV-02",
+    "name": "Ponte 25 de Abril Lisbon (Twin-Tower Red Suspension Bridge)",
+    "target_ref_id": null,
+    "filename": "test/track_d/ADV-02.jpg",
+    "sha256": "11fa5a77ecc46b5ed8ccada73a2ae6ba139a9c23757eacddfe179e9de3e66cec",
+    "category": "bridge_lookalike"
+  },
+  {
+    "track": "TRACK_D",
+    "query_id": "ADV-03",
+    "name": "Mount Rainier Reflection Lake (Snow Stratovolcano)",
+    "target_ref_id": null,
+    "filename": "test/track_d/ADV-03.jpg",
+    "sha256": "fae6b34b7db6d518e72c19c0d64162724800fed3aae6a028a48570fa375dc2fe",
+    "category": "mountain_lookalike"
+  },
+  {
+    "track": "TRACK_D",
+    "query_id": "ADV-04",
+    "name": "Paris Gare de Lyon Tracks (Modern Overhead Catenary)",
+    "target_ref_id": null,
+    "filename": "test/track_d/ADV-04.jpg",
+    "sha256": "7a109a5e19410fe9b98e802fa67f9fc0b832236df950788e669d603312d2b6f2",
+    "category": "railway_lookalike"
+  },
+  {
+    "track": "TRACK_D",
+    "query_id": "ADV-05",
+    "name": "Route 66 Steakhouse in Bavaria Germany (Misleading Sign)",
+    "target_ref_id": null,
+    "filename": "test/track_d/ADV-05.jpg",
+    "sha256": "680d8892b87e8b00b15f85c35dd66a695e407310c81a2ab89031ad1c4477518f",
+    "category": "misleading_text"
+  },
+  {
+    "track": "TRACK_D",
+    "query_id": "ADV-06",
+    "name": "Ludkovice Concrete Highway Underpass (Ambiguous Infrastructure)",
+    "target_ref_id": null,
+    "filename": "test/track_d/ADV-06.jpg",
+    "sha256": "2f3b015f2276627799a54892c138c02f349910b394b7cc74047694fe3f2d39d0",
+    "category": "insufficient_evidence"
+  }
+]

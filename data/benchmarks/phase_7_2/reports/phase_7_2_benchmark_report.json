@@ -1,0 +1,3527 @@
+{
+  "metadata": {
+    "phase": "Phase 7.2 Statistical Validation & Open-Set Reliability",
+    "date": "2026-11-13",
+    "references_count": 10,
+    "calibration_count": 13,
+    "test_count": 41
+  },
+  "calibration_freezing": {
+    "CosPlace": {
+      "model_name": "CosPlace_ResNet18_512",
+      "frozen_tau": 0.28,
+      "platt_coef": 1.5988,
+      "platt_intercept": -1.2709,
+      "threshold_evals": [
+        {
+          "tau": 0.2,
+          "sel_acc": 0.556,
+          "fer": 0.5,
+          "obj": 0.056
+        },
+        {
+          "tau": 0.22,
+          "sel_acc": 0.556,
+          "fer": 0.5,
+          "obj": 0.056
+        },
+        {
+          "tau": 0.24,
+          "sel_acc": 0.556,
+          "fer": 0.5,
+          "obj": 0.056
+        },
+        {
+          "tau": 0.26,
+          "sel_acc": 0.556,
+          "fer": 0.5,
+          "obj": 0.056
+        },
+        {
+          "tau": 0.28,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.3,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.32,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.34,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.36,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.38,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.4,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.42,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.44,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.46,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.48,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.5,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.52,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.54,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.56,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.58,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.6,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.62,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.64,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.66,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.68,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        },
+        {
+          "tau": 0.7,
+          "sel_acc": 1.0,
+          "fer": 0.0,
+          "obj": 1.0
+        }
+      ],
+      "historical_040_eval": {
+        "tau": 0.4,
+        "sel_acc": 1.0,
+        "fer": 0.0,
+        "obj": 1.0
+      },
+      "historical_055_eval": {
+        "tau": 0.54,
+        "sel_acc": 1.0,
+        "fer": 0.0,
+        "obj": 1.0
+      }
+    }
+  },
+  "test_evaluations": {
+    "CosPlace": {
+      "tau_0.28": {
+        "TRACK_A": {
+          "track_name": "TRACK_A",
+          "threshold": 0.28,
+          "total_queries": 10,
+          "recall_at_1": 60.0,
+          "recall_at_5": 60.0,
+          "recall_at_10": 60.0,
+          "acc_1km": 10.0,
+          "acc_5km": 10.0,
+          "acc_25km": 10.0,
+          "acc_100km": 10.0,
+          "median_error_km": 12590.93,
+          "mean_error_km": 10171.86,
+          "max_error_km": 16657.49,
+          "coverage_pct": 60.0,
+          "selective_accuracy_pct": 66.7,
+          "confusion": {
+            "tp": 4,
+            "fp": 2,
+            "tn": 0,
+            "fn": 4
+          },
+          "queries": [
+            {
+              "query_id": "QA-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.2305,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-02",
+              "top_match_id": "REF-02",
+              "top_score": 0.4204,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 0.0
+            },
+            {
+              "query_id": "QA-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.3205,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 16657.49
+            },
+            {
+              "query_id": "QA-04",
+              "top_match_id": "REF-04",
+              "top_score": 0.3319,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 14265.44
+            },
+            {
+              "query_id": "QA-05",
+              "top_match_id": "REF-03",
+              "top_score": 0.179,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-06",
+              "top_match_id": "REF-06",
+              "top_score": 0.1932,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-07",
+              "top_match_id": "REF-07",
+              "top_score": 0.6623,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12807.81
+            },
+            {
+              "query_id": "QA-08",
+              "top_match_id": "REF-09",
+              "top_score": 0.3528,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 4926.37
+            },
+            {
+              "query_id": "QA-09",
+              "top_match_id": "REF-09",
+              "top_score": 0.6636,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12374.05
+            },
+            {
+              "query_id": "QA-10",
+              "top_match_id": "REF-03",
+              "top_score": 0.1112,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_B": {
+          "track_name": "TRACK_B",
+          "threshold": 0.28,
+          "total_queries": 10,
+          "recall_at_1": 70.0,
+          "recall_at_5": 80.0,
+          "recall_at_10": 80.0,
+          "acc_1km": 10.0,
+          "acc_5km": 10.0,
+          "acc_25km": 10.0,
+          "acc_100km": 10.0,
+          "median_error_km": 10123.19,
+          "mean_error_km": 8627.95,
+          "max_error_km": 14265.44,
+          "coverage_pct": 40.0,
+          "selective_accuracy_pct": 75.0,
+          "confusion": {
+            "tp": 3,
+            "fp": 1,
+            "tn": 0,
+            "fn": 6
+          },
+          "queries": [
+            {
+              "query_id": "QB-01",
+              "top_match_id": "REF-07",
+              "top_score": 0.1138,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-02",
+              "top_match_id": "REF-02",
+              "top_score": 0.5856,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 0.0
+            },
+            {
+              "query_id": "QB-03",
+              "top_match_id": "REF-08",
+              "top_score": 0.2047,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-04",
+              "top_match_id": "REF-04",
+              "top_score": 0.467,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 14265.44
+            },
+            {
+              "query_id": "QB-05",
+              "top_match_id": "REF-05",
+              "top_score": 0.2716,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-06",
+              "top_match_id": "REF-06",
+              "top_score": 0.1062,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-07",
+              "top_match_id": "REF-07",
+              "top_score": 0.2796,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-08",
+              "top_match_id": "REF-08",
+              "top_score": 0.2401,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-09",
+              "top_match_id": "REF-09",
+              "top_score": 0.6045,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12374.05
+            },
+            {
+              "query_id": "QB-10",
+              "top_match_id": "REF-09",
+              "top_score": 0.2975,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 7872.33
+            }
+          ]
+        },
+        "TRACK_C1": {
+          "track_name": "TRACK_C1",
+          "threshold": 0.28,
+          "total_queries": 7,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": 12220.97,
+          "mean_error_km": 12220.97,
+          "max_error_km": 12220.97,
+          "coverage_pct": 14.3,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 6,
+            "fn": 0
+          },
+          "flr_c1": 14.3,
+          "car_c1": 85.7,
+          "queries": [
+            {
+              "query_id": "QC1-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.1999,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-02",
+              "top_match_id": "REF-04",
+              "top_score": 0.112,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-03",
+              "top_match_id": "REF-10",
+              "top_score": 0.228,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-04",
+              "top_match_id": "REF-07",
+              "top_score": 0.318,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12220.97
+            },
+            {
+              "query_id": "QC1-05",
+              "top_match_id": "REF-09",
+              "top_score": 0.2288,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-06",
+              "top_match_id": "REF-09",
+              "top_score": 0.1351,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-07",
+              "top_match_id": "REF-01",
+              "top_score": 0.1885,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_C2": {
+          "track_name": "TRACK_C2",
+          "threshold": 0.28,
+          "total_queries": 8,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": null,
+          "mean_error_km": null,
+          "max_error_km": null,
+          "coverage_pct": 12.5,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 7,
+            "fn": 0
+          },
+          "fer_c2": 12.5,
+          "car_c2": 87.5,
+          "queries": [
+            {
+              "query_id": "QC2-01",
+              "top_match_id": "REF-06",
+              "top_score": 0.1881,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-02",
+              "top_match_id": "REF-09",
+              "top_score": 0.3486,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.1685,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-04",
+              "top_match_id": "REF-06",
+              "top_score": 0.1082,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-05",
+              "top_match_id": "REF-06",
+              "top_score": 0.1072,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-06",
+              "top_match_id": "REF-02",
+              "top_score": 0.1763,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-07",
+              "top_match_id": "REF-06",
+              "top_score": 0.1207,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-08",
+              "top_match_id": "REF-06",
+              "top_score": 0.1039,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_D": {
+          "track_name": "TRACK_D",
+          "threshold": 0.28,
+          "total_queries": 6,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": 8579.67,
+          "mean_error_km": 8579.67,
+          "max_error_km": 8579.67,
+          "coverage_pct": 16.7,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 1,
+            "tn": 5,
+            "fn": 0
+          },
+          "flr_adv": 16.7,
+          "car_adv": 83.3,
+          "queries": [
+            {
+              "query_id": "ADV-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.242,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-02",
+              "top_match_id": "REF-01",
+              "top_score": 0.1572,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.3001,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 8579.67
+            },
+            {
+              "query_id": "ADV-04",
+              "top_match_id": "REF-10",
+              "top_score": 0.2048,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-05",
+              "top_match_id": "REF-03",
+              "top_score": 0.152,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-06",
+              "top_match_id": "REF-09",
+              "top_score": 0.1653,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        }
+      },
+      "tau_0.40": {
+        "TRACK_A": {
+          "track_name": "TRACK_A",
+          "threshold": 0.4,
+          "total_queries": 10,
+          "recall_at_1": 60.0,
+          "recall_at_5": 60.0,
+          "recall_at_10": 60.0,
+          "acc_1km": 10.0,
+          "acc_5km": 10.0,
+          "acc_25km": 10.0,
+          "acc_100km": 10.0,
+          "median_error_km": 12374.05,
+          "mean_error_km": 8393.95,
+          "max_error_km": 12807.81,
+          "coverage_pct": 30.0,
+          "selective_accuracy_pct": 100.0,
+          "confusion": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 7
+          },
+          "queries": [
+            {
+              "query_id": "QA-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.2305,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-02",
+              "top_match_id": "REF-02",
+              "top_score": 0.4204,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 0.0
+            },
+            {
+              "query_id": "QA-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.3205,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-04",
+              "top_match_id": "REF-04",
+              "top_score": 0.3319,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-05",
+              "top_match_id": "REF-03",
+              "top_score": 0.179,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-06",
+              "top_match_id": "REF-06",
+              "top_score": 0.1932,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-07",
+              "top_match_id": "REF-07",
+              "top_score": 0.6623,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12807.81
+            },
+            {
+              "query_id": "QA-08",
+              "top_match_id": "REF-09",
+              "top_score": 0.3528,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-09",
+              "top_match_id": "REF-09",
+              "top_score": 0.6636,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12374.05
+            },
+            {
+              "query_id": "QA-10",
+              "top_match_id": "REF-03",
+              "top_score": 0.1112,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_B": {
+          "track_name": "TRACK_B",
+          "threshold": 0.4,
+          "total_queries": 10,
+          "recall_at_1": 70.0,
+          "recall_at_5": 80.0,
+          "recall_at_10": 80.0,
+          "acc_1km": 10.0,
+          "acc_5km": 10.0,
+          "acc_25km": 10.0,
+          "acc_100km": 10.0,
+          "median_error_km": 12374.05,
+          "mean_error_km": 8879.83,
+          "max_error_km": 14265.44,
+          "coverage_pct": 30.0,
+          "selective_accuracy_pct": 100.0,
+          "confusion": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 0,
+            "fn": 7
+          },
+          "queries": [
+            {
+              "query_id": "QB-01",
+              "top_match_id": "REF-07",
+              "top_score": 0.1138,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-02",
+              "top_match_id": "REF-02",
+              "top_score": 0.5856,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 0.0
+            },
+            {
+              "query_id": "QB-03",
+              "top_match_id": "REF-08",
+              "top_score": 0.2047,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-04",
+              "top_match_id": "REF-04",
+              "top_score": 0.467,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 14265.44
+            },
+            {
+              "query_id": "QB-05",
+              "top_match_id": "REF-05",
+              "top_score": 0.2716,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-06",
+              "top_match_id": "REF-06",
+              "top_score": 0.1062,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-07",
+              "top_match_id": "REF-07",
+              "top_score": 0.2796,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-08",
+              "top_match_id": "REF-08",
+              "top_score": 0.2401,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-09",
+              "top_match_id": "REF-09",
+              "top_score": 0.6045,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12374.05
+            },
+            {
+              "query_id": "QB-10",
+              "top_match_id": "REF-09",
+              "top_score": 0.2975,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_C1": {
+          "track_name": "TRACK_C1",
+          "threshold": 0.4,
+          "total_queries": 7,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": null,
+          "mean_error_km": null,
+          "max_error_km": null,
+          "coverage_pct": 0.0,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 7,
+            "fn": 0
+          },
+          "flr_c1": 0.0,
+          "car_c1": 100.0,
+          "queries": [
+            {
+              "query_id": "QC1-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.1999,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-02",
+              "top_match_id": "REF-04",
+              "top_score": 0.112,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-03",
+              "top_match_id": "REF-10",
+              "top_score": 0.228,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-04",
+              "top_match_id": "REF-07",
+              "top_score": 0.318,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-05",
+              "top_match_id": "REF-09",
+              "top_score": 0.2288,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-06",
+              "top_match_id": "REF-09",
+              "top_score": 0.1351,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-07",
+              "top_match_id": "REF-01",
+              "top_score": 0.1885,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_C2": {
+          "track_name": "TRACK_C2",
+          "threshold": 0.4,
+          "total_queries": 8,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": null,
+          "mean_error_km": null,
+          "max_error_km": null,
+          "coverage_pct": 0.0,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          },
+          "fer_c2": 0.0,
+          "car_c2": 100.0,
+          "queries": [
+            {
+              "query_id": "QC2-01",
+              "top_match_id": "REF-06",
+              "top_score": 0.1881,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-02",
+              "top_match_id": "REF-09",
+              "top_score": 0.3486,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.1685,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-04",
+              "top_match_id": "REF-06",
+              "top_score": 0.1082,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-05",
+              "top_match_id": "REF-06",
+              "top_score": 0.1072,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-06",
+              "top_match_id": "REF-02",
+              "top_score": 0.1763,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-07",
+              "top_match_id": "REF-06",
+              "top_score": 0.1207,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-08",
+              "top_match_id": "REF-06",
+              "top_score": 0.1039,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_D": {
+          "track_name": "TRACK_D",
+          "threshold": 0.4,
+          "total_queries": 6,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": null,
+          "mean_error_km": null,
+          "max_error_km": null,
+          "coverage_pct": 0.0,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 6,
+            "fn": 0
+          },
+          "flr_adv": 0.0,
+          "car_adv": 100.0,
+          "queries": [
+            {
+              "query_id": "ADV-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.242,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-02",
+              "top_match_id": "REF-01",
+              "top_score": 0.1572,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.3001,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-04",
+              "top_match_id": "REF-10",
+              "top_score": 0.2048,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-05",
+              "top_match_id": "REF-03",
+              "top_score": 0.152,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-06",
+              "top_match_id": "REF-09",
+              "top_score": 0.1653,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        }
+      },
+      "tau_0.55": {
+        "TRACK_A": {
+          "track_name": "TRACK_A",
+          "threshold": 0.55,
+          "total_queries": 10,
+          "recall_at_1": 60.0,
+          "recall_at_5": 60.0,
+          "recall_at_10": 60.0,
+          "acc_1km": 0.0,
+          "acc_5km": 0.0,
+          "acc_25km": 0.0,
+          "acc_100km": 0.0,
+          "median_error_km": 12590.93,
+          "mean_error_km": 12590.93,
+          "max_error_km": 12807.81,
+          "coverage_pct": 20.0,
+          "selective_accuracy_pct": 100.0,
+          "confusion": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 8
+          },
+          "queries": [
+            {
+              "query_id": "QA-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.2305,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-02",
+              "top_match_id": "REF-02",
+              "top_score": 0.4204,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.3205,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-04",
+              "top_match_id": "REF-04",
+              "top_score": 0.3319,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-05",
+              "top_match_id": "REF-03",
+              "top_score": 0.179,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-06",
+              "top_match_id": "REF-06",
+              "top_score": 0.1932,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-07",
+              "top_match_id": "REF-07",
+              "top_score": 0.6623,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12807.81
+            },
+            {
+              "query_id": "QA-08",
+              "top_match_id": "REF-09",
+              "top_score": 0.3528,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QA-09",
+              "top_match_id": "REF-09",
+              "top_score": 0.6636,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12374.05
+            },
+            {
+              "query_id": "QA-10",
+              "top_match_id": "REF-03",
+              "top_score": 0.1112,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_B": {
+          "track_name": "TRACK_B",
+          "threshold": 0.55,
+          "total_queries": 10,
+          "recall_at_1": 70.0,
+          "recall_at_5": 80.0,
+          "recall_at_10": 80.0,
+          "acc_1km": 10.0,
+          "acc_5km": 10.0,
+          "acc_25km": 10.0,
+          "acc_100km": 10.0,
+          "median_error_km": 6187.03,
+          "mean_error_km": 6187.03,
+          "max_error_km": 12374.05,
+          "coverage_pct": 20.0,
+          "selective_accuracy_pct": 100.0,
+          "confusion": {
+            "tp": 2,
+            "fp": 0,
+            "tn": 0,
+            "fn": 8
+          },
+          "queries": [
+            {
+              "query_id": "QB-01",
+              "top_match_id": "REF-07",
+              "top_score": 0.1138,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-02",
+              "top_match_id": "REF-02",
+              "top_score": 0.5856,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 0.0
+            },
+            {
+              "query_id": "QB-03",
+              "top_match_id": "REF-08",
+              "top_score": 0.2047,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-04",
+              "top_match_id": "REF-04",
+              "top_score": 0.467,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-05",
+              "top_match_id": "REF-05",
+              "top_score": 0.2716,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-06",
+              "top_match_id": "REF-06",
+              "top_score": 0.1062,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-07",
+              "top_match_id": "REF-07",
+              "top_score": 0.2796,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-08",
+              "top_match_id": "REF-08",
+              "top_score": 0.2401,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QB-09",
+              "top_match_id": "REF-09",
+              "top_score": 0.6045,
+              "abstain": false,
+              "status": "EMITTED",
+              "error_km": 12374.05
+            },
+            {
+              "query_id": "QB-10",
+              "top_match_id": "REF-09",
+              "top_score": 0.2975,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_C1": {
+          "track_name": "TRACK_C1",
+          "threshold": 0.55,
+          "total_queries": 7,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": null,
+          "mean_error_km": null,
+          "max_error_km": null,
+          "coverage_pct": 0.0,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 7,
+            "fn": 0
+          },
+          "flr_c1": 0.0,
+          "car_c1": 100.0,
+          "queries": [
+            {
+              "query_id": "QC1-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.1999,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-02",
+              "top_match_id": "REF-04",
+              "top_score": 0.112,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-03",
+              "top_match_id": "REF-10",
+              "top_score": 0.228,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-04",
+              "top_match_id": "REF-07",
+              "top_score": 0.318,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-05",
+              "top_match_id": "REF-09",
+              "top_score": 0.2288,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-06",
+              "top_match_id": "REF-09",
+              "top_score": 0.1351,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC1-07",
+              "top_match_id": "REF-01",
+              "top_score": 0.1885,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_C2": {
+          "track_name": "TRACK_C2",
+          "threshold": 0.55,
+          "total_queries": 8,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": null,
+          "mean_error_km": null,
+          "max_error_km": null,
+          "coverage_pct": 0.0,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 8,
+            "fn": 0
+          },
+          "fer_c2": 0.0,
+          "car_c2": 100.0,
+          "queries": [
+            {
+              "query_id": "QC2-01",
+              "top_match_id": "REF-06",
+              "top_score": 0.1881,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-02",
+              "top_match_id": "REF-09",
+              "top_score": 0.3486,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.1685,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-04",
+              "top_match_id": "REF-06",
+              "top_score": 0.1082,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-05",
+              "top_match_id": "REF-06",
+              "top_score": 0.1072,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-06",
+              "top_match_id": "REF-02",
+              "top_score": 0.1763,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-07",
+              "top_match_id": "REF-06",
+              "top_score": 0.1207,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "QC2-08",
+              "top_match_id": "REF-06",
+              "top_score": 0.1039,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        },
+        "TRACK_D": {
+          "track_name": "TRACK_D",
+          "threshold": 0.55,
+          "total_queries": 6,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "recall_at_10": null,
+          "acc_1km": null,
+          "acc_5km": null,
+          "acc_25km": null,
+          "acc_100km": null,
+          "median_error_km": null,
+          "mean_error_km": null,
+          "max_error_km": null,
+          "coverage_pct": 0.0,
+          "selective_accuracy_pct": null,
+          "confusion": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 6,
+            "fn": 0
+          },
+          "flr_adv": 0.0,
+          "car_adv": 100.0,
+          "queries": [
+            {
+              "query_id": "ADV-01",
+              "top_match_id": "REF-01",
+              "top_score": 0.242,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-02",
+              "top_match_id": "REF-01",
+              "top_score": 0.1572,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-03",
+              "top_match_id": "REF-02",
+              "top_score": 0.3001,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-04",
+              "top_match_id": "REF-10",
+              "top_score": 0.2048,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-05",
+              "top_match_id": "REF-03",
+              "top_score": 0.152,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            },
+            {
+              "query_id": "ADV-06",
+              "top_match_id": "REF-09",
+              "top_score": 0.1653,
+              "abstain": true,
+              "status": "ABSTAINED",
+              "error_km": "UNAVAILABLE"
+            }
+          ]
+        }
+      }
+    },
+    "AnyLoc_dinov2_vits14": {
+      "TRACK_A": {
+        "track_name": "TRACK_A",
+        "threshold": 0.65,
+        "total_queries": 10,
+        "recall_at_1": 70.0,
+        "recall_at_5": 70.0,
+        "recall_at_10": 70.0,
+        "acc_1km": 20.0,
+        "acc_5km": 20.0,
+        "acc_25km": 20.0,
+        "acc_100km": 20.0,
+        "median_error_km": 9967.99,
+        "mean_error_km": 8548.23,
+        "max_error_km": 15200.81,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": 70.0,
+        "confusion": {
+          "tp": 7,
+          "fp": 3,
+          "tn": 0,
+          "fn": 0
+        },
+        "queries": [
+          {
+            "query_id": "QA-01",
+            "top_match_id": "REF-01",
+            "top_score": 0.8957,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 0.0
+          },
+          {
+            "query_id": "QA-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.9327,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 0.0
+          },
+          {
+            "query_id": "QA-03",
+            "top_match_id": "REF-03",
+            "top_score": 0.8932,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 15200.81
+          },
+          {
+            "query_id": "QA-04",
+            "top_match_id": "REF-04",
+            "top_score": 0.9434,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14265.44
+          },
+          {
+            "query_id": "QA-05",
+            "top_match_id": "REF-03",
+            "top_score": 0.9252,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5971.87
+          },
+          {
+            "query_id": "QA-06",
+            "top_match_id": "REF-04",
+            "top_score": 0.9175,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12063.66
+          },
+          {
+            "query_id": "QA-07",
+            "top_match_id": "REF-07",
+            "top_score": 0.9759,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12807.81
+          },
+          {
+            "query_id": "QA-08",
+            "top_match_id": "REF-08",
+            "top_score": 0.9267,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4926.37
+          },
+          {
+            "query_id": "QA-09",
+            "top_match_id": "REF-09",
+            "top_score": 0.9682,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12374.05
+          },
+          {
+            "query_id": "QA-10",
+            "top_match_id": "REF-03",
+            "top_score": 0.9422,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 7872.33
+          }
+        ]
+      },
+      "TRACK_B": {
+        "track_name": "TRACK_B",
+        "threshold": 0.65,
+        "total_queries": 10,
+        "recall_at_1": 90.0,
+        "recall_at_5": 100.0,
+        "recall_at_10": 100.0,
+        "acc_1km": 10.0,
+        "acc_5km": 10.0,
+        "acc_25km": 10.0,
+        "acc_100km": 10.0,
+        "median_error_km": 9967.99,
+        "mean_error_km": 9091.96,
+        "max_error_km": 15200.81,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": 90.0,
+        "confusion": {
+          "tp": 9,
+          "fp": 1,
+          "tn": 0,
+          "fn": 0
+        },
+        "queries": [
+          {
+            "query_id": "QB-01",
+            "top_match_id": "REF-03",
+            "top_score": 0.9442,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5437.27
+          },
+          {
+            "query_id": "QB-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.9376,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 0.0
+          },
+          {
+            "query_id": "QB-03",
+            "top_match_id": "REF-03",
+            "top_score": 0.9282,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 15200.81
+          },
+          {
+            "query_id": "QB-04",
+            "top_match_id": "REF-04",
+            "top_score": 0.9749,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14265.44
+          },
+          {
+            "query_id": "QB-05",
+            "top_match_id": "REF-05",
+            "top_score": 0.9327,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5971.87
+          },
+          {
+            "query_id": "QB-06",
+            "top_match_id": "REF-06",
+            "top_score": 0.9537,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12063.66
+          },
+          {
+            "query_id": "QB-07",
+            "top_match_id": "REF-07",
+            "top_score": 0.9548,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12807.81
+          },
+          {
+            "query_id": "QB-08",
+            "top_match_id": "REF-08",
+            "top_score": 0.9248,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4926.37
+          },
+          {
+            "query_id": "QB-09",
+            "top_match_id": "REF-09",
+            "top_score": 0.9261,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12374.05
+          },
+          {
+            "query_id": "QB-10",
+            "top_match_id": "REF-10",
+            "top_score": 0.8881,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 7872.33
+          }
+        ]
+      },
+      "TRACK_C1": {
+        "track_name": "TRACK_C1",
+        "threshold": 0.65,
+        "total_queries": 7,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": 6759.35,
+        "mean_error_km": 8789.03,
+        "max_error_km": 14210.94,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 7,
+          "tn": 0,
+          "fn": 0
+        },
+        "flr_c1": 100.0,
+        "car_c1": 0.0,
+        "queries": [
+          {
+            "query_id": "QC1-01",
+            "top_match_id": "REF-01",
+            "top_score": 0.8987,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 6759.35
+          },
+          {
+            "query_id": "QC1-02",
+            "top_match_id": "REF-04",
+            "top_score": 0.9161,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4823.76
+          },
+          {
+            "query_id": "QC1-03",
+            "top_match_id": "REF-07",
+            "top_score": 0.924,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5389.68
+          },
+          {
+            "query_id": "QC1-04",
+            "top_match_id": "REF-07",
+            "top_score": 0.9311,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12220.97
+          },
+          {
+            "query_id": "QC1-05",
+            "top_match_id": "REF-07",
+            "top_score": 0.914,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5320.09
+          },
+          {
+            "query_id": "QC1-06",
+            "top_match_id": "REF-08",
+            "top_score": 0.9032,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14210.94
+          },
+          {
+            "query_id": "QC1-07",
+            "top_match_id": "REF-07",
+            "top_score": 0.8888,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12798.44
+          }
+        ]
+      },
+      "TRACK_C2": {
+        "track_name": "TRACK_C2",
+        "threshold": 0.65,
+        "total_queries": 8,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": null,
+        "mean_error_km": null,
+        "max_error_km": null,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 8,
+          "tn": 0,
+          "fn": 0
+        },
+        "fer_c2": 100.0,
+        "car_c2": 0.0,
+        "queries": [
+          {
+            "query_id": "QC2-01",
+            "top_match_id": "REF-04",
+            "top_score": 0.8915,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-02",
+            "top_match_id": "REF-08",
+            "top_score": 0.9267,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-03",
+            "top_match_id": "REF-08",
+            "top_score": 0.7058,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-04",
+            "top_match_id": "REF-03",
+            "top_score": 0.7188,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-05",
+            "top_match_id": "REF-03",
+            "top_score": 0.7175,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-06",
+            "top_match_id": "REF-08",
+            "top_score": 0.7095,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-07",
+            "top_match_id": "REF-08",
+            "top_score": 0.7213,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-08",
+            "top_match_id": "REF-08",
+            "top_score": 0.7182,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      },
+      "TRACK_D": {
+        "track_name": "TRACK_D",
+        "threshold": 0.65,
+        "total_queries": 6,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": 5451.83,
+        "mean_error_km": 4991.24,
+        "max_error_km": 8579.67,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 6,
+          "tn": 0,
+          "fn": 0
+        },
+        "flr_adv": 100.0,
+        "car_adv": 0.0,
+        "queries": [
+          {
+            "query_id": "ADV-01",
+            "top_match_id": "REF-01",
+            "top_score": 0.9188,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 340.85
+          },
+          {
+            "query_id": "ADV-02",
+            "top_match_id": "REF-07",
+            "top_score": 0.9226,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4402.93
+          },
+          {
+            "query_id": "ADV-03",
+            "top_match_id": "REF-02",
+            "top_score": 0.9091,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 8579.67
+          },
+          {
+            "query_id": "ADV-04",
+            "top_match_id": "REF-05",
+            "top_score": 0.9101,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5436.03
+          },
+          {
+            "query_id": "ADV-05",
+            "top_match_id": "REF-04",
+            "top_score": 0.9215,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5467.63
+          },
+          {
+            "query_id": "ADV-06",
+            "top_match_id": "REF-07",
+            "top_score": 0.9019,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5720.37
+          }
+        ]
+      }
+    },
+    "MixVPR_resnet50_512": {
+      "TRACK_A": {
+        "track_name": "TRACK_A",
+        "threshold": 0.6,
+        "total_queries": 10,
+        "recall_at_1": 30.0,
+        "recall_at_5": 50.0,
+        "recall_at_10": 50.0,
+        "acc_1km": 0.0,
+        "acc_5km": 0.0,
+        "acc_25km": 0.0,
+        "acc_100km": 0.0,
+        "median_error_km": 8988.08,
+        "mean_error_km": 8988.08,
+        "max_error_km": 12807.81,
+        "coverage_pct": 20.0,
+        "selective_accuracy_pct": 50.0,
+        "confusion": {
+          "tp": 1,
+          "fp": 1,
+          "tn": 0,
+          "fn": 8
+        },
+        "queries": [
+          {
+            "query_id": "QA-01",
+            "top_match_id": "REF-01",
+            "top_score": 0.5209,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QA-02",
+            "top_match_id": "REF-07",
+            "top_score": 0.6041,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5168.35
+          },
+          {
+            "query_id": "QA-03",
+            "top_match_id": "REF-01",
+            "top_score": 0.595,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QA-04",
+            "top_match_id": "REF-07",
+            "top_score": 0.4852,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QA-05",
+            "top_match_id": "REF-01",
+            "top_score": 0.5686,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QA-06",
+            "top_match_id": "REF-08",
+            "top_score": 0.5358,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QA-07",
+            "top_match_id": "REF-07",
+            "top_score": 0.6002,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12807.81
+          },
+          {
+            "query_id": "QA-08",
+            "top_match_id": "REF-01",
+            "top_score": 0.5408,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QA-09",
+            "top_match_id": "REF-09",
+            "top_score": 0.585,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QA-10",
+            "top_match_id": "REF-04",
+            "top_score": 0.5611,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      },
+      "TRACK_B": {
+        "track_name": "TRACK_B",
+        "threshold": 0.6,
+        "total_queries": 10,
+        "recall_at_1": 40.0,
+        "recall_at_5": 50.0,
+        "recall_at_10": 50.0,
+        "acc_1km": 0.0,
+        "acc_5km": 0.0,
+        "acc_25km": 0.0,
+        "acc_100km": 0.0,
+        "median_error_km": 12374.05,
+        "mean_error_km": 12374.05,
+        "max_error_km": 12374.05,
+        "coverage_pct": 10.0,
+        "selective_accuracy_pct": 100.0,
+        "confusion": {
+          "tp": 1,
+          "fp": 0,
+          "tn": 0,
+          "fn": 9
+        },
+        "queries": [
+          {
+            "query_id": "QB-01",
+            "top_match_id": "REF-03",
+            "top_score": 0.5626,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.5654,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-03",
+            "top_match_id": "REF-01",
+            "top_score": 0.5358,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-04",
+            "top_match_id": "REF-04",
+            "top_score": 0.5499,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-05",
+            "top_match_id": "REF-10",
+            "top_score": 0.5277,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-06",
+            "top_match_id": "REF-08",
+            "top_score": 0.5071,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-07",
+            "top_match_id": "REF-01",
+            "top_score": 0.5271,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-08",
+            "top_match_id": "REF-08",
+            "top_score": 0.5667,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QB-09",
+            "top_match_id": "REF-09",
+            "top_score": 0.6363,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12374.05
+          },
+          {
+            "query_id": "QB-10",
+            "top_match_id": "REF-03",
+            "top_score": 0.5166,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      },
+      "TRACK_C1": {
+        "track_name": "TRACK_C1",
+        "threshold": 0.6,
+        "total_queries": 7,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": null,
+        "mean_error_km": null,
+        "max_error_km": null,
+        "coverage_pct": 0.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 0,
+          "tn": 7,
+          "fn": 0
+        },
+        "flr_c1": 0.0,
+        "car_c1": 100.0,
+        "queries": [
+          {
+            "query_id": "QC1-01",
+            "top_match_id": "REF-03",
+            "top_score": 0.552,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC1-02",
+            "top_match_id": "REF-01",
+            "top_score": 0.5741,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC1-03",
+            "top_match_id": "REF-07",
+            "top_score": 0.5485,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC1-04",
+            "top_match_id": "REF-08",
+            "top_score": 0.541,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC1-05",
+            "top_match_id": "REF-01",
+            "top_score": 0.5539,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC1-06",
+            "top_match_id": "REF-08",
+            "top_score": 0.5573,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC1-07",
+            "top_match_id": "REF-01",
+            "top_score": 0.5583,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      },
+      "TRACK_C2": {
+        "track_name": "TRACK_C2",
+        "threshold": 0.6,
+        "total_queries": 8,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": null,
+        "mean_error_km": null,
+        "max_error_km": null,
+        "coverage_pct": 75.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 6,
+          "tn": 2,
+          "fn": 0
+        },
+        "fer_c2": 75.0,
+        "car_c2": 25.0,
+        "queries": [
+          {
+            "query_id": "QC2-01",
+            "top_match_id": "REF-08",
+            "top_score": 0.5055,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-02",
+            "top_match_id": "REF-07",
+            "top_score": 0.5864,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-03",
+            "top_match_id": "REF-01",
+            "top_score": 0.611,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-04",
+            "top_match_id": "REF-08",
+            "top_score": 0.6121,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-05",
+            "top_match_id": "REF-08",
+            "top_score": 0.6015,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-06",
+            "top_match_id": "REF-01",
+            "top_score": 0.612,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-07",
+            "top_match_id": "REF-01",
+            "top_score": 0.6276,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-08",
+            "top_match_id": "REF-01",
+            "top_score": 0.646,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      },
+      "TRACK_D": {
+        "track_name": "TRACK_D",
+        "threshold": 0.6,
+        "total_queries": 6,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": null,
+        "mean_error_km": null,
+        "max_error_km": null,
+        "coverage_pct": 0.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 0,
+          "tn": 6,
+          "fn": 0
+        },
+        "flr_adv": 0.0,
+        "car_adv": 100.0,
+        "queries": [
+          {
+            "query_id": "ADV-01",
+            "top_match_id": "REF-01",
+            "top_score": 0.5542,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "ADV-02",
+            "top_match_id": "REF-08",
+            "top_score": 0.5942,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "ADV-03",
+            "top_match_id": "REF-07",
+            "top_score": 0.5528,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "ADV-04",
+            "top_match_id": "REF-10",
+            "top_score": 0.5748,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "ADV-05",
+            "top_match_id": "REF-01",
+            "top_score": 0.5521,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "ADV-06",
+            "top_match_id": "REF-08",
+            "top_score": 0.5345,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      }
+    },
+    "ResNet18_ImageNet_Baseline": {
+      "TRACK_A": {
+        "track_name": "TRACK_A",
+        "threshold": 0.5,
+        "total_queries": 10,
+        "recall_at_1": 50.0,
+        "recall_at_5": 60.0,
+        "recall_at_10": 60.0,
+        "acc_1km": 10.0,
+        "acc_5km": 10.0,
+        "acc_25km": 10.0,
+        "acc_100km": 10.0,
+        "median_error_km": 9967.99,
+        "mean_error_km": 9091.96,
+        "max_error_km": 15200.81,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": 50.0,
+        "confusion": {
+          "tp": 5,
+          "fp": 5,
+          "tn": 0,
+          "fn": 0
+        },
+        "queries": [
+          {
+            "query_id": "QA-01",
+            "top_match_id": "REF-07",
+            "top_score": 0.6682,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5437.27
+          },
+          {
+            "query_id": "QA-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.7644,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 0.0
+          },
+          {
+            "query_id": "QA-03",
+            "top_match_id": "REF-07",
+            "top_score": 0.6716,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 15200.81
+          },
+          {
+            "query_id": "QA-04",
+            "top_match_id": "REF-04",
+            "top_score": 0.639,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14265.44
+          },
+          {
+            "query_id": "QA-05",
+            "top_match_id": "REF-10",
+            "top_score": 0.6689,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5971.87
+          },
+          {
+            "query_id": "QA-06",
+            "top_match_id": "REF-04",
+            "top_score": 0.6893,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12063.66
+          },
+          {
+            "query_id": "QA-07",
+            "top_match_id": "REF-07",
+            "top_score": 0.8611,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12807.81
+          },
+          {
+            "query_id": "QA-08",
+            "top_match_id": "REF-08",
+            "top_score": 0.7051,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4926.37
+          },
+          {
+            "query_id": "QA-09",
+            "top_match_id": "REF-09",
+            "top_score": 0.8001,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12374.05
+          },
+          {
+            "query_id": "QA-10",
+            "top_match_id": "REF-04",
+            "top_score": 0.7149,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 7872.33
+          }
+        ]
+      },
+      "TRACK_B": {
+        "track_name": "TRACK_B",
+        "threshold": 0.5,
+        "total_queries": 10,
+        "recall_at_1": 50.0,
+        "recall_at_5": 60.0,
+        "recall_at_10": 60.0,
+        "acc_1km": 10.0,
+        "acc_5km": 10.0,
+        "acc_25km": 10.0,
+        "acc_100km": 10.0,
+        "median_error_km": 9967.99,
+        "mean_error_km": 9091.96,
+        "max_error_km": 15200.81,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": 50.0,
+        "confusion": {
+          "tp": 5,
+          "fp": 5,
+          "tn": 0,
+          "fn": 0
+        },
+        "queries": [
+          {
+            "query_id": "QB-01",
+            "top_match_id": "REF-03",
+            "top_score": 0.7597,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5437.27
+          },
+          {
+            "query_id": "QB-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.7857,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 0.0
+          },
+          {
+            "query_id": "QB-03",
+            "top_match_id": "REF-04",
+            "top_score": 0.688,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 15200.81
+          },
+          {
+            "query_id": "QB-04",
+            "top_match_id": "REF-04",
+            "top_score": 0.7721,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14265.44
+          },
+          {
+            "query_id": "QB-05",
+            "top_match_id": "REF-05",
+            "top_score": 0.7448,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5971.87
+          },
+          {
+            "query_id": "QB-06",
+            "top_match_id": "REF-06",
+            "top_score": 0.7438,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12063.66
+          },
+          {
+            "query_id": "QB-07",
+            "top_match_id": "REF-07",
+            "top_score": 0.7854,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12807.81
+          },
+          {
+            "query_id": "QB-08",
+            "top_match_id": "REF-07",
+            "top_score": 0.7316,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4926.37
+          },
+          {
+            "query_id": "QB-09",
+            "top_match_id": "REF-07",
+            "top_score": 0.692,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12374.05
+          },
+          {
+            "query_id": "QB-10",
+            "top_match_id": "REF-07",
+            "top_score": 0.6697,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 7872.33
+          }
+        ]
+      },
+      "TRACK_C1": {
+        "track_name": "TRACK_C1",
+        "threshold": 0.5,
+        "total_queries": 7,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": 8826.49,
+        "mean_error_km": 7362.85,
+        "max_error_km": 12220.97,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 7,
+          "tn": 0,
+          "fn": 0
+        },
+        "flr_c1": 100.0,
+        "car_c1": 0.0,
+        "queries": [
+          {
+            "query_id": "QC1-01",
+            "top_match_id": "REF-05",
+            "top_score": 0.6817,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 8826.49
+          },
+          {
+            "query_id": "QC1-02",
+            "top_match_id": "REF-01",
+            "top_score": 0.7258,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 1109.42
+          },
+          {
+            "query_id": "QC1-03",
+            "top_match_id": "REF-04",
+            "top_score": 0.7204,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5389.68
+          },
+          {
+            "query_id": "QC1-04",
+            "top_match_id": "REF-07",
+            "top_score": 0.7677,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12220.97
+          },
+          {
+            "query_id": "QC1-05",
+            "top_match_id": "REF-07",
+            "top_score": 0.6949,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5320.09
+          },
+          {
+            "query_id": "QC1-06",
+            "top_match_id": "REF-02",
+            "top_score": 0.674,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 9724.14
+          },
+          {
+            "query_id": "QC1-07",
+            "top_match_id": "REF-01",
+            "top_score": 0.6538,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 8949.13
+          }
+        ]
+      },
+      "TRACK_C2": {
+        "track_name": "TRACK_C2",
+        "threshold": 0.5,
+        "total_queries": 8,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": null,
+        "mean_error_km": null,
+        "max_error_km": null,
+        "coverage_pct": 25.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 2,
+          "tn": 6,
+          "fn": 0
+        },
+        "fer_c2": 25.0,
+        "car_c2": 75.0,
+        "queries": [
+          {
+            "query_id": "QC2-01",
+            "top_match_id": "REF-03",
+            "top_score": 0.6252,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-02",
+            "top_match_id": "REF-08",
+            "top_score": 0.6986,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-03",
+            "top_match_id": "REF-01",
+            "top_score": 0.3361,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-04",
+            "top_match_id": "REF-03",
+            "top_score": 0.3412,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-05",
+            "top_match_id": "REF-03",
+            "top_score": 0.3435,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-06",
+            "top_match_id": "REF-01",
+            "top_score": 0.3399,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-07",
+            "top_match_id": "REF-01",
+            "top_score": 0.3997,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-08",
+            "top_match_id": "REF-04",
+            "top_score": 0.4024,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      },
+      "TRACK_D": {
+        "track_name": "TRACK_D",
+        "threshold": 0.5,
+        "total_queries": 6,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": 5451.83,
+        "mean_error_km": 4991.24,
+        "max_error_km": 8579.67,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 6,
+          "tn": 0,
+          "fn": 0
+        },
+        "flr_adv": 100.0,
+        "car_adv": 0.0,
+        "queries": [
+          {
+            "query_id": "ADV-01",
+            "top_match_id": "REF-01",
+            "top_score": 0.7317,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 340.85
+          },
+          {
+            "query_id": "ADV-02",
+            "top_match_id": "REF-03",
+            "top_score": 0.6808,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4402.93
+          },
+          {
+            "query_id": "ADV-03",
+            "top_match_id": "REF-02",
+            "top_score": 0.7896,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 8579.67
+          },
+          {
+            "query_id": "ADV-04",
+            "top_match_id": "REF-10",
+            "top_score": 0.7009,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5436.03
+          },
+          {
+            "query_id": "ADV-05",
+            "top_match_id": "REF-04",
+            "top_score": 0.7194,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5467.63
+          },
+          {
+            "query_id": "ADV-06",
+            "top_match_id": "REF-05",
+            "top_score": 0.682,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5720.37
+          }
+        ]
+      }
+    },
+    "Hybrid_Color_Spatial_1224": {
+      "TRACK_A": {
+        "track_name": "TRACK_A",
+        "threshold": 0.5,
+        "total_queries": 10,
+        "recall_at_1": 20.0,
+        "recall_at_5": 30.0,
+        "recall_at_10": 30.0,
+        "acc_1km": 10.0,
+        "acc_5km": 10.0,
+        "acc_25km": 10.0,
+        "acc_100km": 10.0,
+        "median_error_km": 8534.49,
+        "mean_error_km": 8291.48,
+        "max_error_km": 15200.81,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": 20.0,
+        "confusion": {
+          "tp": 2,
+          "fp": 8,
+          "tn": 0,
+          "fn": 0
+        },
+        "queries": [
+          {
+            "query_id": "QA-01",
+            "top_match_id": "REF-10",
+            "top_score": 0.6349,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5437.27
+          },
+          {
+            "query_id": "QA-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.6214,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 0.0
+          },
+          {
+            "query_id": "QA-03",
+            "top_match_id": "REF-07",
+            "top_score": 0.5645,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 15200.81
+          },
+          {
+            "query_id": "QA-04",
+            "top_match_id": "REF-10",
+            "top_score": 0.6403,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14265.44
+          },
+          {
+            "query_id": "QA-05",
+            "top_match_id": "REF-02",
+            "top_score": 0.6375,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 834.06
+          },
+          {
+            "query_id": "QA-06",
+            "top_match_id": "REF-02",
+            "top_score": 0.5917,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 9196.64
+          },
+          {
+            "query_id": "QA-07",
+            "top_match_id": "REF-07",
+            "top_score": 0.6285,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12807.81
+          },
+          {
+            "query_id": "QA-08",
+            "top_match_id": "REF-09",
+            "top_score": 0.6581,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4926.37
+          },
+          {
+            "query_id": "QA-09",
+            "top_match_id": "REF-07",
+            "top_score": 0.7576,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12374.05
+          },
+          {
+            "query_id": "QA-10",
+            "top_match_id": "REF-06",
+            "top_score": 0.5177,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 7872.33
+          }
+        ]
+      },
+      "TRACK_B": {
+        "track_name": "TRACK_B",
+        "threshold": 0.5,
+        "total_queries": 10,
+        "recall_at_1": 50.0,
+        "recall_at_5": 60.0,
+        "recall_at_10": 60.0,
+        "acc_1km": 10.0,
+        "acc_5km": 10.0,
+        "acc_25km": 10.0,
+        "acc_100km": 10.0,
+        "median_error_km": 9967.99,
+        "mean_error_km": 9091.96,
+        "max_error_km": 15200.81,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": 50.0,
+        "confusion": {
+          "tp": 5,
+          "fp": 5,
+          "tn": 0,
+          "fn": 0
+        },
+        "queries": [
+          {
+            "query_id": "QB-01",
+            "top_match_id": "REF-04",
+            "top_score": 0.6554,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5437.27
+          },
+          {
+            "query_id": "QB-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.5378,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 0.0
+          },
+          {
+            "query_id": "QB-03",
+            "top_match_id": "REF-03",
+            "top_score": 0.6195,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 15200.81
+          },
+          {
+            "query_id": "QB-04",
+            "top_match_id": "REF-09",
+            "top_score": 0.6455,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14265.44
+          },
+          {
+            "query_id": "QB-05",
+            "top_match_id": "REF-05",
+            "top_score": 0.616,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5971.87
+          },
+          {
+            "query_id": "QB-06",
+            "top_match_id": "REF-06",
+            "top_score": 0.6476,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12063.66
+          },
+          {
+            "query_id": "QB-07",
+            "top_match_id": "REF-10",
+            "top_score": 0.5987,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12807.81
+          },
+          {
+            "query_id": "QB-08",
+            "top_match_id": "REF-07",
+            "top_score": 0.5026,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4926.37
+          },
+          {
+            "query_id": "QB-09",
+            "top_match_id": "REF-09",
+            "top_score": 0.5773,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12374.05
+          },
+          {
+            "query_id": "QB-10",
+            "top_match_id": "REF-06",
+            "top_score": 0.603,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 7872.33
+          }
+        ]
+      },
+      "TRACK_C1": {
+        "track_name": "TRACK_C1",
+        "threshold": 0.5,
+        "total_queries": 7,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": 8826.49,
+        "mean_error_km": 9084.34,
+        "max_error_km": 14210.94,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 7,
+          "tn": 0,
+          "fn": 0
+        },
+        "flr_c1": 100.0,
+        "car_c1": 0.0,
+        "queries": [
+          {
+            "query_id": "QC1-01",
+            "top_match_id": "REF-09",
+            "top_score": 0.645,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 8826.49
+          },
+          {
+            "query_id": "QC1-02",
+            "top_match_id": "REF-04",
+            "top_score": 0.7606,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 4823.76
+          },
+          {
+            "query_id": "QC1-03",
+            "top_match_id": "REF-07",
+            "top_score": 0.6502,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5389.68
+          },
+          {
+            "query_id": "QC1-04",
+            "top_match_id": "REF-07",
+            "top_score": 0.576,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12220.97
+          },
+          {
+            "query_id": "QC1-05",
+            "top_match_id": "REF-05",
+            "top_score": 0.6376,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5320.09
+          },
+          {
+            "query_id": "QC1-06",
+            "top_match_id": "REF-10",
+            "top_score": 0.5682,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 14210.94
+          },
+          {
+            "query_id": "QC1-07",
+            "top_match_id": "REF-10",
+            "top_score": 0.5348,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12798.44
+          }
+        ]
+      },
+      "TRACK_C2": {
+        "track_name": "TRACK_C2",
+        "threshold": 0.5,
+        "total_queries": 8,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": null,
+        "mean_error_km": null,
+        "max_error_km": null,
+        "coverage_pct": 87.5,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 7,
+          "tn": 1,
+          "fn": 0
+        },
+        "fer_c2": 87.5,
+        "car_c2": 12.5,
+        "queries": [
+          {
+            "query_id": "QC2-01",
+            "top_match_id": "REF-09",
+            "top_score": 0.5592,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-02",
+            "top_match_id": "REF-09",
+            "top_score": 0.4934,
+            "abstain": true,
+            "status": "ABSTAINED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-03",
+            "top_match_id": "REF-04",
+            "top_score": 0.5318,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-04",
+            "top_match_id": "REF-05",
+            "top_score": 0.6663,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-05",
+            "top_match_id": "REF-05",
+            "top_score": 0.6667,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-06",
+            "top_match_id": "REF-04",
+            "top_score": 0.5312,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-07",
+            "top_match_id": "REF-04",
+            "top_score": 0.6886,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          },
+          {
+            "query_id": "QC2-08",
+            "top_match_id": "REF-07",
+            "top_score": 0.5297,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": "UNAVAILABLE"
+          }
+        ]
+      },
+      "TRACK_D": {
+        "track_name": "TRACK_D",
+        "threshold": 0.5,
+        "total_queries": 6,
+        "recall_at_1": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "acc_1km": null,
+        "acc_5km": null,
+        "acc_25km": null,
+        "acc_100km": null,
+        "median_error_km": 5594.0,
+        "mean_error_km": 6051.83,
+        "max_error_km": 12353.61,
+        "coverage_pct": 100.0,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 6,
+          "tn": 0,
+          "fn": 0
+        },
+        "flr_adv": 100.0,
+        "car_adv": 0.0,
+        "queries": [
+          {
+            "query_id": "ADV-01",
+            "top_match_id": "REF-04",
+            "top_score": 0.5927,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5728.09
+          },
+          {
+            "query_id": "ADV-02",
+            "top_match_id": "REF-02",
+            "top_score": 0.7171,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 1605.25
+          },
+          {
+            "query_id": "ADV-03",
+            "top_match_id": "REF-09",
+            "top_score": 0.6003,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 12353.61
+          },
+          {
+            "query_id": "ADV-04",
+            "top_match_id": "REF-06",
+            "top_score": 0.5952,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5436.03
+          },
+          {
+            "query_id": "ADV-05",
+            "top_match_id": "REF-04",
+            "top_score": 0.5923,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5467.63
+          },
+          {
+            "query_id": "ADV-06",
+            "top_match_id": "REF-08",
+            "top_score": 0.6241,
+            "abstain": false,
+            "status": "EMITTED",
+            "error_km": 5720.37
+          }
+        ]
+      }
+    },
+    "MultiEngine_Fusion_RRF": {
+      "TRACK_A": {
+        "track_name": "TRACK_A",
+        "total_queries": 10,
+        "recall_at_1": 40.0,
+        "acc_25km": 0.0,
+        "median_error_km": 12374.05,
+        "coverage_pct": 60.0,
+        "selective_accuracy_pct": 50.0,
+        "confusion": {
+          "tp": 3,
+          "fp": 3,
+          "tn": 0,
+          "fn": 4
+        },
+        "flr": 0.0
+      },
+      "TRACK_B": {
+        "track_name": "TRACK_B",
+        "total_queries": 10,
+        "recall_at_1": 50.0,
+        "acc_25km": 0.0,
+        "median_error_km": 12374.05,
+        "coverage_pct": 40.0,
+        "selective_accuracy_pct": 75.0,
+        "confusion": {
+          "tp": 3,
+          "fp": 1,
+          "tn": 0,
+          "fn": 6
+        },
+        "flr": 0.0
+      },
+      "TRACK_C1": {
+        "track_name": "TRACK_C1",
+        "total_queries": 7,
+        "recall_at_1": null,
+        "acc_25km": null,
+        "median_error_km": null,
+        "coverage_pct": 14.3,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 1,
+          "tn": 6,
+          "fn": 0
+        },
+        "flr": 14.3
+      },
+      "TRACK_C2": {
+        "track_name": "TRACK_C2",
+        "total_queries": 8,
+        "recall_at_1": null,
+        "acc_25km": null,
+        "median_error_km": null,
+        "coverage_pct": 12.5,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 1,
+          "tn": 7,
+          "fn": 0
+        },
+        "flr": 12.5
+      },
+      "TRACK_D": {
+        "track_name": "TRACK_D",
+        "total_queries": 6,
+        "recall_at_1": null,
+        "acc_25km": null,
+        "median_error_km": null,
+        "coverage_pct": 16.7,
+        "selective_accuracy_pct": null,
+        "confusion": {
+          "tp": 0,
+          "fp": 1,
+          "tn": 5,
+          "fn": 0
+        },
+        "flr": 16.7
+      }
+    }
+  },
+  "bootstrap_confidence_intervals": {
+    "TRACK_A_acc25": {
+      "mean": 0.1,
+      "ci_95_low": 0.0,
+      "ci_95_high": 0.3
+    },
+    "TRACK_B_acc25": {
+      "mean": 0.1,
+      "ci_95_low": 0.0,
+      "ci_95_high": 0.3
+    },
+    "C1_false_localization_rate": {
+      "mean": 0.143,
+      "ci_95_low": 0.0,
+      "ci_95_high": 0.429
+    },
+    "C2_false_emission_rate": {
+      "mean": 0.125,
+      "ci_95_low": 0.0,
+      "ci_95_high": 0.375
+    },
+    "Track_D_adv_false_localization": {
+      "mean": 0.167,
+      "ci_95_low": 0.0,
+      "ci_95_high": 0.5
+    }
+  }
+}

@@ -18,7 +18,7 @@
 [![Status](https://img.shields.io/badge/STATUS-OPERATIONAL-00FF66?style=for-the-badge&logo=radar&logoColor=black)](https://github.com/hound-osint/hound)
 [![Python](https://img.shields.io/badge/PYTHON-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-00F0FF?style=for-the-badge&logo=python&logoColor=black)](https://python.org)
 [![License](https://img.shields.io/badge/LICENSE-MIT-FF0055?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Tests](https://img.shields.io/badge/VALIDATION-151%2F151%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
+[![Tests](https://img.shields.io/badge/VALIDATION-157%2F157%20PASSED-00FF66?style=for-the-badge&logo=checkmarx&logoColor=black)](tests/)
 [![Architecture](https://img.shields.io/badge/ENGINE-LOCAL--FIRST%20%26%20ZERO--HALLUCINATION-FFE600?style=for-the-badge&logo=databricks&logoColor=black)](docs/HOUND_ARCHITECTURE.md)
 
 [**Key Features**](#-core-capabilities) • [**Interactive Terminal**](#-terminal-experience) • [**Scientific Engine**](#-the-science-how-hound-thinks) • [**Benchmarks**](#-ground-truth-benchmarks) • [**Quickstart**](#-quickstart-in-60-seconds) • [**Ethical Code**](#-sovereign-osint--ethical-code)
@@ -359,7 +359,28 @@ Phase 7.1 subjected HOUND to an independent scientific audit, curing index leaka
 
 > **Key Scientific Takeaway:** Foundation models (DINOv2) achieve outstanding viewpoint invariance on known landmarks ($90\%$ Recall@1 on Track B), but suffer a **$100.0\%$ false-positive rate** on unknown scenes because they lack metric classification boundaries. CosPlace margin loss ($L_{\text{margin}} = \cos(\theta) - m$) achieves **$0.0\%$ False Positive Rate** on open-set queries. Fusing AnyLoc with CosPlace confidence gating delivers robust multi-viewpoint retrieval while eliminating coordinate hallucination.
 
-**Regression Suite:** 151 unit, integration, calibration, VPR, and independent validation test cases passing deterministically across 42 test modules.
+### 6. Phase 7.2 Statistical Validation & Open-Set Reliability (41 Test Cases, 5 Tracks, Three-Way Split)
+
+Phase 7.2 established a mathematically isolated **Three-Way Partitioning Scheme** (`data/benchmarks/phase_7_2/`): Reference Index $\mathcal{R}$ ($N=10$), Calibration Set $\mathcal{D}_{\text{calib}}$ ($N=13$), and Untouched Final Test Set $\mathcal{D}_{\text{test}}$ ($N=41$). All thresholds ($\tau^* = 0.28$) and calibration models were frozen on $\mathcal{D}_{\text{calib}}$ prior to evaluating $\mathcal{D}_{\text{test}}$. Track C was permanently segregated into **C1 (Unseen Real Places)** and **C2 (Non-Place Negatives)** alongside **Track D (Adversarial Challenging Cases)**:
+
+| Evaluation Track | Model Architecture | Coverage | Sel. Acc | R@1 | Acc $\le 25\text{km}$ | $\text{FLR} / \text{FER}$ | 95% Bootstrap CI | Outcome |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Track A: Closed-Set** ($N=10$) | **CosPlace (Frozen $\tau^*=0.28$)** | **$60.0\%$** | **$66.7\%$** | **$60.0\%$** | **$10.0\%$** | N/A | $[0.0\%, 30.0\%]$ | 4 TP, 2 FP, 4 Abstained |
+| | **AnyLoc (DINOv2-S)** | $100.0\%$ | $70.0\%$ | $70.0\%$ | $20.0\%$ | N/A | $[0.0\%, 40.0\%]$ | 7 TP, 3 FP |
+| **Track B: Viewpoints** ($N=10$) | **CosPlace (Frozen $\tau^*=0.28$)** | **$40.0\%$** | **$75.0\%$** | **$70.0\%$** | **$10.0\%$** | N/A | $[0.0\%, 30.0\%]$ | 3 TP, 1 FP, 6 Abstained |
+| | **AnyLoc (DINOv2-S)** | $100.0\%$ | $90.0\%$ | $90.0\%$ | $10.0\%$ | N/A | $[0.0\%, 30.0\%]$ | 9 TP, 1 FP |
+| **Track C1: Unseen Places** ($N=7$) | **CosPlace (Frozen $\tau^*=0.28$)** | $14.3\%$ | N/A | N/A | N/A | **$14.3\%$ FLR** | $[0.0\%, 42.9\%]$ | **85.7% Correct Abstention (6/7)** |
+| | **MixVPR (ResNet-50)** | $0.0\%$ | N/A | N/A | N/A | **$0.0\%$ FLR** | $[0.0\%, 0.0\%]$ | **100.0% Correct Abstention (7/7)** |
+| | **AnyLoc (DINOv2-S)** | $100.0\%$ | N/A | N/A | N/A | **$100.0\%$ FLR** | $[100.0\%, 100.0\%]$ | Total Rejection Failure (0/7) |
+| **Track C2: Non-Places** ($N=8$) | **CosPlace (Frozen $\tau^*=0.28$)** | $12.5\%$ | N/A | N/A | N/A | **$12.5\%$ FER** | $[0.0\%, 37.5\%]$ | **87.5% Correct Abstention (7/8)** |
+| | **MixVPR (ResNet-50)** | $75.0\%$ | N/A | N/A | N/A | **$75.0\%$ FER** | $[37.5\%, 100.0\%]$ | Severe Texture Hallucination (6/8 FP) |
+| | **AnyLoc (DINOv2-S)** | $100.0\%$ | N/A | N/A | N/A | **$100.0\%$ FER** | $[100.0\%, 100.0\%]$ | Total Rejection Failure (0/8) |
+| **Track D: Adversarial** ($N=6$) | **CosPlace (Frozen $\tau^*=0.28$)** | $16.7\%$ | N/A | N/A | N/A | **$16.7\%$ FLR** | $[0.0\%, 50.0\%]$ | **83.3% Correct Abstention (5/6)** |
+| | **AnyLoc (DINOv2-S)** | $100.0\%$ | N/A | N/A | N/A | **$100.0\%$ FLR** | $[100.0\%, 100.0\%]$ | Total Decoy Vulnerability (0/6) |
+
+> **Key Scientific Discovery:** Segmenting Track C1 and C2 revealed a critical architectural insight: MixVPR exhibits $0.0\%$ false positives on unseen cities but collapses to $75.0\%$ false emissions on generic textures, while DINOv2 completely fails to reject either ($100\%$ FLR and $100\%$ FER). Margin-trained CosPlace with frozen threshold $\tau^* = 0.28$ achieves balanced rejection across unseen landmarks ($85.7\%$), textures ($87.5\%$), and adversarial decoys ($83.3\%$).
+
+**Regression Suite:** 157 unit, integration, calibration, VPR, and statistical validation test cases passing deterministically across 43 test modules.
 
 ---
 

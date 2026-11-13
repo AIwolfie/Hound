@@ -562,5 +562,53 @@
 ### Final Validation Verdict
 - **PASS**
 
+---
+
+## 2026-11-13 — Phase 7.2: Statistical Validation & Open-Set Reliability
+
+### Completed Work
+1. **Three-Way Isolated Dataset Partitioning Scheme (`data/benchmarks/phase_7_2/`):**
+   - Built `benchmarks/curate_phase7_2_dataset.py` curating 64 sanitized, EXIF-stripped photographic instances into three cryptographically disjoint partitions:
+     - **Reference Prototypes ($\mathcal{R}$):** 10 curated global landmarks (`REF-01` to `REF-10`).
+     - **Calibration Partition ($\mathcal{D}_{\text{calib}}$):** 13 queries (5 known positives, 4 unseen world landmarks, 4 non-place negative controls).
+     - **Untouched Final Test Partition ($\mathcal{D}_{\text{test}}$):** 41 queries strictly segregated into Track A (10 closed-set), Track B (10 viewpoint shifts), Track C1 (7 unseen real places), Track C2 (8 non-place negative controls), and Track D (6 adversarial challenging cases).
+   - Cryptographic verification proved pairwise zero hash overlap: $\mathcal{R} \cap \mathcal{D}_{\text{calib}} = \emptyset$, $\mathcal{R} \cap \mathcal{D}_{\text{test}} = \emptyset$, $\mathcal{D}_{\text{calib}} \cap \mathcal{D}_{\text{test}} = \emptyset$.
+2. **Open-Set Disaggregation (C1 vs C2 vs Track D):**
+   - Disentangled generic open-set into two independent evaluation tracks to eliminate misleading pooled FPR metrics:
+     - **Track C1 (Unseen Places):** Evaluates false localization against absent real-world landmarks.
+     - **Track C2 (Non-Place Negatives):** Evaluates hallucinatory emissions on generic textures, drywall, asphalt, and featureless skies.
+     - **Track D (Adversarial Challenging Cases):** Evaluates shortcut resistance on 6 real decoys: St. Paul's London dome, Ponte 25 de Abril suspension bridge, Mount Rainier stratovolcano, Paris Gare de Lyon rail catenary, Route 66 Bavaria signage, and Ludkovice brutalist underpass.
+3. **Threshold Freezing on Calibration Partition ($\tau^* = 0.28$):**
+   - Derived optimal operating threshold $\tau^* = 0.28$ exclusively on $\mathcal{D}_{\text{calib}}$ by maximizing $J(\tau) = \text{SelAcc}(\tau) - \text{FER}(\tau)$.
+   - Fitted Platt scaling parameters ($\beta = 1.5988$, $\alpha = -1.2709$) exclusively on $\mathcal{D}_{\text{calib}}$.
+   - Frozen parameters stored in `data/benchmarks/phase_7_2/reports/phase_7_2_benchmark_report.json` prior to $\mathcal{D}_{\text{test}}$ evaluation.
+4. **Empirical Benchmark Execution (`benchmarks/phase_7_2_benchmark.py`):**
+   - Evaluated 6 model configurations across all 5 tracks of $\mathcal{D}_{\text{test}}$:
+     - **CosPlace under frozen $\tau^* = 0.28$:** Track A (60.0% coverage, 66.7% selective accuracy, 10.0% $\le 25\text{ km}$), Track B (40.0% coverage, 75.0% selective accuracy, 10.0% $\le 25\text{ km}$), Track C1 (14.3% FLR, 85.7% correct abstention), Track C2 (12.5% FER, 87.5% correct abstention), Track D (16.7% FLR, 83.3% correct abstention).
+     - **AnyLoc (DINOv2 ViT-S/14):** Achieved 100% coverage but collapsed to 100% false localization on C1 (7/7 FP), 100% false emission on C2 (8/8 FP), and 100% false localization on Track D (6/6 FP) due to lack of metric classification margins.
+     - **MixVPR (ResNet-50):** Achieved 0% FLR on C1 (7/7 abstained) but suffered 75% FER on C2 (6/8 FP on textures), validating the necessity of separate C1/C2 reporting.
+5. **Statistical Uncertainty & Proper Scoring:**
+   - Evaluated 95% Bootstrap Confidence Intervals (1,000 iterations): Track A $\le 25\text{km}$ $[0.0\%, 30.0\%]$, Track B $\le 25\text{km}$ $[0.0\%, 30.0\%]$, Track C1 FLR $[0.0\%, 42.9\%]$, Track C2 FER $[0.0\%, 37.5\%]$, Track D FLR $[0.0\%, 50.0\%]$.
+   - Computed Brier Score ($BS$) and Expected Calibration Error ($ECE$). Dissected the Murphy decomposition to explain why constant base-rate predictors appear artificially favorable in low-prevalence open-set regimes.
+6. **Regression Suite (`tests/test_phase_7_2_metrics.py`):**
+   - Added 6 automated regression tests:
+     - `test_phase_7_2_three_way_split_zero_leakage`: Verifies pairwise disjointness of SHA-256 hashes across $\mathcal{R}$, $\mathcal{D}_{\text{calib}}$, $\mathcal{D}_{\text{test}}$.
+     - `test_phase_7_2_track_partition_counts`: Verifies exact counts across all 5 tracks.
+     - `test_phase_7_2_metric_calculations`: Verifies Coverage, Selective Accuracy, FLR, FER, and CAR formulas.
+     - `test_phase_7_2_threshold_freezing_and_report_integrity`: Verifies report records frozen threshold $\tau^*$ and Platt parameters from $\mathcal{D}_{\text{calib}}$.
+     - `test_phase_7_2_abstention_accounting`: Verifies abstained queries explicitly record `status == "ABSTAINED"` and `error_km == "UNAVAILABLE"` without dropping denominators.
+     - `test_phase_7_2_bootstrap_confidence_intervals`: Verifies $0 \le \text{low} \le \text{mean} \le \text{high} \le 1$.
+   - **Full regression suite:** **157 passed in 42.82s** across 43 test modules (100% pass rate).
+7. **Comprehensive Documentation Deliverables:**
+   - Published `docs/PHASE_7_2_METRIC_DEFINITIONS.md` (and root `PHASE_7_2_METRIC_DEFINITIONS.md`).
+   - Published `docs/PHASE_7_2_DATASET_SPLIT_AUDIT.md` (and root `PHASE_7_2_DATASET_SPLIT_AUDIT.md`).
+   - Published `docs/PHASE_7_2_OPEN_SET_EVALUATION.md` (and root `PHASE_7_2_OPEN_SET_EVALUATION.md`).
+   - Published `docs/PHASE_7_2_CALIBRATION_EVALUATION.md` (and root `PHASE_7_2_CALIBRATION_EVALUATION.md`).
+   - Published `docs/PHASE_7_2_STATISTICAL_REPORT.md` (and root `PHASE_7_2_STATISTICAL_REPORT.md`).
+   - Published `data/benchmarks/phase_7_2/reports/phase_7_2_benchmark_report.json`.
+
+### Final Validation Verdict
+- **PASS**
+
 ### Next Development Milestone
 - Authorized to proceed to **Phase 8: Dark-Mode Web Analyst Dashboard & Visual Investigation Interface**.

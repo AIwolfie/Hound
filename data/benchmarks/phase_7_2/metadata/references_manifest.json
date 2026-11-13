@@ -1,0 +1,52 @@
+[
+  {
+    "ref_id": "REF-01",
+    "filename": "references/REF-01.jpg",
+    "sha256": "c2de250306c5473bc5cdcf8cc7aa55417758b4e0d51e4882b8a4acc5948b0041"
+  },
+  {
+    "ref_id": "REF-02",
+    "filename": "references/REF-02.jpg",
+    "sha256": "97180d5594563153b033752affc456b094974e2be65cfe10312554f5efdbeba4"
+  },
+  {
+    "ref_id": "REF-03",
+    "filename": "references/REF-03.jpg",
+    "sha256": "3832d897339f3f368d137ad57bce07bef015dd82c57d40a6488c43dde0ca4641"
+  },
+  {
+    "ref_id": "REF-04",
+    "filename": "references/REF-04.jpg",
+    "sha256": "048ec631dc3d5c23816a1c2b6eb876b30fc2f0239b8b88773cdb45dabcf2fd82"
+  },
+  {
+    "ref_id": "REF-05",
+    "filename": "references/REF-05.jpg",
+    "sha256": "cc7dacb75d2feafbd4401aad0ff030a5eb0ea5477b86f146c2e3fe8fb1ec285c"
+  },
+  {
+    "ref_id": "REF-06",
+    "filename": "references/REF-06.jpg",
+    "sha256": "ca6fb0f1f8734db4f25209026effaf65a21905a951a6d1b450cd2b9a90111075"
+  },
+  {
+    "ref_id": "REF-07",
+    "filename": "references/REF-07.jpg",
+    "sha256": "40a1f2dadc84ed9716c2e2dbf89fa6e102bf92745e2078971b7c5870eaaf9b9d"
+  },
+  {
+    "ref_id": "REF-08",
+    "filename": "references/REF-08.jpg",
+    "sha256": "b77da43b572ce87beb68f4a00189c293171475a89ac749a8f2c1358a831c4728"
+  },
+  {
+    "ref_id": "REF-09",
+    "filename": "references/REF-09.jpg",
+    "sha256": "c486ec2f24866462ba6a623ddcc6d83cc45c91a73f157ab23060f9a5397b7982"
+  },
+  {
+    "ref_id": "REF-10",
+    "filename": "references/REF-10.jpg",
+    "sha256": "2ed9387b3d7c331ad1712849df9f16adf2c5780e06dc8c12d5ee239f436107bf"
+  }
+]
