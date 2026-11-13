@@ -1,0 +1,2223 @@
+{
+  "metadata": {
+    "evaluation_date": "2026-11-13",
+    "phase": "Phase 7",
+    "total_cases": 50,
+    "positive_cases": 42,
+    "negative_controls": 8
+  },
+  "summaries": {
+    "CosPlace_ResNet18_512": {
+      "model_name": "CosPlace_ResNet18_512",
+      "dimension": 512,
+      "device": "cuda",
+      "mean_inference_ms": 21.62,
+      "gpu_memory_mb": 51.81,
+      "recall_at_1": 100.0,
+      "recall_at_5": 100.0,
+      "recall_at_10": 100.0,
+      "acc_within_1km": 100.0,
+      "acc_within_5km": 100.0,
+      "acc_within_25km": 100.0,
+      "acc_within_100km": 100.0,
+      "median_error_km": 0.0,
+      "mean_error_km": 0.0,
+      "prediction_coverage_pct": 100.0,
+      "selective_accuracy_pct": 100.0,
+      "open_set_fpr_pct": 0.0
+    },
+    "AnyLoc_dinov2_vits14": {
+      "model_name": "AnyLoc_dinov2_vits14",
+      "dimension": 384,
+      "device": "cuda",
+      "mean_inference_ms": 52.83,
+      "gpu_memory_mb": 138.02,
+      "recall_at_1": 100.0,
+      "recall_at_5": 100.0,
+      "recall_at_10": 100.0,
+      "acc_within_1km": 100.0,
+      "acc_within_5km": 100.0,
+      "acc_within_25km": 100.0,
+      "acc_within_100km": 100.0,
+      "median_error_km": 0.0,
+      "mean_error_km": 0.0,
+      "prediction_coverage_pct": 100.0,
+      "selective_accuracy_pct": 100.0,
+      "open_set_fpr_pct": 100.0
+    },
+    "MixVPR_resnet50_512": {
+      "model_name": "MixVPR_resnet50_512",
+      "dimension": 512,
+      "device": "cuda",
+      "mean_inference_ms": 19.13,
+      "gpu_memory_mb": 386.92,
+      "recall_at_1": 100.0,
+      "recall_at_5": 100.0,
+      "recall_at_10": 100.0,
+      "acc_within_1km": 100.0,
+      "acc_within_5km": 100.0,
+      "acc_within_25km": 100.0,
+      "acc_within_100km": 100.0,
+      "median_error_km": 0.0,
+      "mean_error_km": 0.0,
+      "prediction_coverage_pct": 100.0,
+      "selective_accuracy_pct": 100.0,
+      "open_set_fpr_pct": 100.0
+    },
+    "ResNet18_ImageNet_Baseline": {
+      "model_name": "ResNet18_ImageNet_Baseline",
+      "dimension": 512,
+      "device": "cuda",
+      "mean_inference_ms": 9.61,
+      "gpu_memory_mb": 430.36,
+      "recall_at_1": 100.0,
+      "recall_at_5": 100.0,
+      "recall_at_10": 100.0,
+      "acc_within_1km": 100.0,
+      "acc_within_5km": 100.0,
+      "acc_within_25km": 100.0,
+      "acc_within_100km": 100.0,
+      "median_error_km": 0.0,
+      "mean_error_km": 0.0,
+      "prediction_coverage_pct": 100.0,
+      "selective_accuracy_pct": 100.0,
+      "open_set_fpr_pct": 100.0
+    },
+    "MultiEngine_Fusion_RRF": {
+      "model_name": "MultiEngine_Fusion_RRF",
+      "dimension": 1408,
+      "device": "cuda",
+      "mean_inference_ms": 91.15,
+      "gpu_memory_mb": 8.12,
+      "recall_at_1": 100.0,
+      "recall_at_5": 100.0,
+      "recall_at_10": 100.0,
+      "acc_within_1km": 100.0,
+      "acc_within_5km": 100.0,
+      "acc_within_25km": 100.0,
+      "acc_within_100km": 100.0,
+      "median_error_km": 0.0,
+      "mean_error_km": 0.0,
+      "prediction_coverage_pct": 100.0,
+      "selective_accuracy_pct": 100.0,
+      "open_set_fpr_pct": 0.0
+    }
+  },
+  "calibration_evaluation": {
+    "method": "platt_scaling",
+    "is_empirically_fitted": true,
+    "sample_size": 30,
+    "brier_score": 0.1625,
+    "log_loss": 0.5133,
+    "expected_calibration_error": 0.2232,
+    "maximum_calibration_error": 0.3669,
+    "reliability_bins": [
+      {
+        "bin_lower": 0.0,
+        "bin_upper": 0.2,
+        "sample_count": 0,
+        "mean_predicted_prob": 0.1,
+        "empirical_accuracy": 0.0,
+        "calibration_error": 0.0
+      },
+      {
+        "bin_lower": 0.2,
+        "bin_upper": 0.4,
+        "sample_count": 10,
+        "mean_predicted_prob": 0.3347,
+        "empirical_accuracy": 0.0,
+        "calibration_error": 0.3347
+      },
+      {
+        "bin_lower": 0.4,
+        "bin_upper": 0.6,
+        "sample_count": 15,
+        "mean_predicted_prob": 0.4991,
+        "empirical_accuracy": 0.6,
+        "calibration_error": 0.1009
+      },
+      {
+        "bin_lower": 0.6,
+        "bin_upper": 0.8,
+        "sample_count": 5,
+        "mean_predicted_prob": 0.6331,
+        "empirical_accuracy": 1.0,
+        "calibration_error": 0.3669
+      },
+      {
+        "bin_lower": 0.8,
+        "bin_upper": 1.0,
+        "sample_count": 0,
+        "mean_predicted_prob": 0.9,
+        "empirical_accuracy": 0.0,
+        "calibration_error": 0.0
+      }
+    ],
+    "risk_coverage_curve": [
+      {
+        "confidence_threshold": 0.1,
+        "coverage": 1.0,
+        "selective_accuracy": 0.4667,
+        "selective_risk": 0.5333
+      },
+      {
+        "confidence_threshold": 0.2,
+        "coverage": 1.0,
+        "selective_accuracy": 0.4667,
+        "selective_risk": 0.5333
+      },
+      {
+        "confidence_threshold": 0.3,
+        "coverage": 0.9333,
+        "selective_accuracy": 0.5,
+        "selective_risk": 0.5
+      },
+      {
+        "confidence_threshold": 0.4,
+        "coverage": 0.6667,
+        "selective_accuracy": 0.7,
+        "selective_risk": 0.3
+      },
+      {
+        "confidence_threshold": 0.5,
+        "coverage": 0.4,
+        "selective_accuracy": 1.0,
+        "selective_risk": 0.0
+      },
+      {
+        "confidence_threshold": 0.6,
+        "coverage": 0.1667,
+        "selective_accuracy": 1.0,
+        "selective_risk": 0.0
+      },
+      {
+        "confidence_threshold": 0.7,
+        "coverage": 0.0,
+        "selective_accuracy": 1.0,
+        "selective_risk": 0.0
+      },
+      {
+        "confidence_threshold": 0.8,
+        "coverage": 0.0,
+        "selective_accuracy": 1.0,
+        "selective_risk": 0.0
+      },
+      {
+        "confidence_threshold": 0.9,
+        "coverage": 0.0,
+        "selective_accuracy": 1.0,
+        "selective_risk": 0.0
+      }
+    ]
+  },
+  "per_case_traces": {
+    "CosPlace_ResNet18_512": [
+      {
+        "case_id": "CASE-01",
+        "name": "Eiffel Tower Champ de Mars",
+        "is_negative": false,
+        "top_match": "Eiffel Tower Champ de Mars (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-02",
+        "name": "Matterhorn Alpine Summit",
+        "is_negative": false,
+        "top_match": "Matterhorn Alpine Summit (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-03",
+        "name": "Berlin Central Station Tracks",
+        "is_negative": false,
+        "top_match": "Berlin Central Station Tracks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-04",
+        "name": "Val d'Orcia Farmland",
+        "is_negative": false,
+        "top_match": "Val d'Orcia Farmland (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-05",
+        "name": "Troms\u00f8 Arctic Harbour",
+        "is_negative": false,
+        "top_match": "Troms\u00f8 Arctic Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-06",
+        "name": "Charles Bridge Vltava",
+        "is_negative": false,
+        "top_match": "Charles Bridge Vltava (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-07",
+        "name": "Neuschwanstein Castle",
+        "is_negative": false,
+        "top_match": "Neuschwanstein Castle (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-08",
+        "name": "Colosseum Amphitheatre",
+        "is_negative": false,
+        "top_match": "Colosseum Amphitheatre (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-09",
+        "name": "Palace of Westminster Big Ben",
+        "is_negative": false,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-10",
+        "name": "Route 66 Seligman",
+        "is_negative": false,
+        "top_match": "Route 66 Seligman (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-11",
+        "name": "Bixby Creek Bridge Big Sur",
+        "is_negative": false,
+        "top_match": "Bixby Creek Bridge Big Sur (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-12",
+        "name": "Zabriskie Point Death Valley",
+        "is_negative": false,
+        "top_match": "Zabriskie Point Death Valley (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-13",
+        "name": "Golden Gate Bridge Vista",
+        "is_negative": false,
+        "top_match": "Golden Gate Bridge Vista (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-14",
+        "name": "Moraine Lake Banff",
+        "is_negative": false,
+        "top_match": "Moraine Lake Banff (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-15",
+        "name": "Chichen Itza El Castillo",
+        "is_negative": false,
+        "top_match": "Chichen Itza El Castillo (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-16",
+        "name": "Manhattan Skyline from Brooklyn",
+        "is_negative": false,
+        "top_match": "Manhattan Skyline from Brooklyn (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-17",
+        "name": "Grand Canyon Mather Point",
+        "is_negative": false,
+        "top_match": "Grand Canyon Mather Point (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-18",
+        "name": "Shibuya Scramble Crossing",
+        "is_negative": false,
+        "top_match": "Shibuya Scramble Crossing (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-19",
+        "name": "Taj Mahal Yamuna View",
+        "is_negative": false,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-20",
+        "name": "Marina Bay Sands Waterfront",
+        "is_negative": false,
+        "top_match": "Marina Bay Sands Waterfront (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-21",
+        "name": "Mount Fuji Lake Kawaguchi",
+        "is_negative": false,
+        "top_match": "Mount Fuji Lake Kawaguchi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-22",
+        "name": "Petra Al-Khazneh",
+        "is_negative": false,
+        "top_match": "Petra Al-Khazneh (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-23",
+        "name": "Great Wall Mutianyu",
+        "is_negative": false,
+        "top_match": "Great Wall Mutianyu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-24",
+        "name": "Pamir Highway Ak-Baital",
+        "is_negative": false,
+        "top_match": "Pamir Highway Ak-Baital (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-25",
+        "name": "Sigiriya Lion Rock",
+        "is_negative": false,
+        "top_match": "Sigiriya Lion Rock (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-26",
+        "name": "Machu Picchu Huayna Picchu",
+        "is_negative": false,
+        "top_match": "Machu Picchu Huayna Picchu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-27",
+        "name": "Iguazu Falls Devil's Throat",
+        "is_negative": false,
+        "top_match": "Iguazu Falls Devil's Throat (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-28",
+        "name": "Salar de Uyuni Salt Flats",
+        "is_negative": false,
+        "top_match": "Salar de Uyuni Salt Flats (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-29",
+        "name": "Torres del Paine Cuernos",
+        "is_negative": false,
+        "top_match": "Torres del Paine Cuernos (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-30",
+        "name": "Christ the Redeemer Corcovado",
+        "is_negative": false,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-31",
+        "name": "Table Mountain Cape Town",
+        "is_negative": false,
+        "top_match": "Table Mountain Cape Town (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-32",
+        "name": "Giza Pyramid Plateau",
+        "is_negative": false,
+        "top_match": "Giza Pyramid Plateau (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-33",
+        "name": "Victoria Falls Zambezi",
+        "is_negative": false,
+        "top_match": "Victoria Falls Zambezi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-34",
+        "name": "Great Mosque of Djenn\u00e9",
+        "is_negative": false,
+        "top_match": "Great Mosque of Djenn\u00e9 (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-35",
+        "name": "Mount Kilimanjaro Kibo Peak",
+        "is_negative": false,
+        "top_match": "Mount Kilimanjaro Kibo Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-36",
+        "name": "Atlas Mountains High Pass",
+        "is_negative": false,
+        "top_match": "Atlas Mountains High Pass (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-37",
+        "name": "Sydney Opera House Harbour",
+        "is_negative": false,
+        "top_match": "Sydney Opera House Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-38",
+        "name": "Twelve Apostles Port Campbell",
+        "is_negative": false,
+        "top_match": "Twelve Apostles Port Campbell (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-39",
+        "name": "Uluru Sandstone Monolith",
+        "is_negative": false,
+        "top_match": "Uluru Sandstone Monolith (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-40",
+        "name": "Milford Sound Mitre Peak",
+        "is_negative": false,
+        "top_match": "Milford Sound Mitre Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-41",
+        "name": "McMurdo Station Coastal Apron",
+        "is_negative": false,
+        "top_match": "McMurdo Station Coastal Apron (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-42",
+        "name": "Lemaire Channel Glacial Peaks",
+        "is_negative": false,
+        "top_match": "Lemaire Channel Glacial Peaks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-43",
+        "name": "Windowless Meeting Room",
+        "is_negative": true,
+        "top_match": "Route 66 Seligman (Reference Prototype)",
+        "top_score": 0.1877,
+        "calibrated_prob": 0.276,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-44",
+        "name": "Featureless Desert Sand Dunes",
+        "is_negative": true,
+        "top_match": "Zabriskie Point Death Valley (Reference Prototype)",
+        "top_score": 0.35,
+        "calibrated_prob": 0.35,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-45",
+        "name": "Blank White Interior Drywall",
+        "is_negative": true,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 0.2133,
+        "calibrated_prob": 0.287,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-46",
+        "name": "Close-Up Macro Oak Bark",
+        "is_negative": true,
+        "top_match": "Iguazu Falls Devil's Throat (Reference Prototype)",
+        "top_score": 0.3555,
+        "calibrated_prob": 0.353,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-47",
+        "name": "Close-Up Asphalt Pavement",
+        "is_negative": true,
+        "top_match": "Iguazu Falls Devil's Throat (Reference Prototype)",
+        "top_score": 0.3502,
+        "calibrated_prob": 0.35,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-48",
+        "name": "Overcast Featureless White Fog",
+        "is_negative": true,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 0.2326,
+        "calibrated_prob": 0.295,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-49",
+        "name": "Ambiguous Open Ocean Water",
+        "is_negative": true,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 0.3507,
+        "calibrated_prob": 0.35,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-50",
+        "name": "Featureless Sand Ripple Texture",
+        "is_negative": true,
+        "top_match": "Mount Kilimanjaro Kibo Peak (Reference Prototype)",
+        "top_score": 0.3379,
+        "calibrated_prob": 0.344,
+        "abstain_recommended": true,
+        "distance_error_km": null
+      }
+    ],
+    "AnyLoc_dinov2_vits14": [
+      {
+        "case_id": "CASE-01",
+        "name": "Eiffel Tower Champ de Mars",
+        "is_negative": false,
+        "top_match": "Eiffel Tower Champ de Mars (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-02",
+        "name": "Matterhorn Alpine Summit",
+        "is_negative": false,
+        "top_match": "Matterhorn Alpine Summit (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-03",
+        "name": "Berlin Central Station Tracks",
+        "is_negative": false,
+        "top_match": "Berlin Central Station Tracks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-04",
+        "name": "Val d'Orcia Farmland",
+        "is_negative": false,
+        "top_match": "Val d'Orcia Farmland (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-05",
+        "name": "Troms\u00f8 Arctic Harbour",
+        "is_negative": false,
+        "top_match": "Troms\u00f8 Arctic Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-06",
+        "name": "Charles Bridge Vltava",
+        "is_negative": false,
+        "top_match": "Charles Bridge Vltava (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-07",
+        "name": "Neuschwanstein Castle",
+        "is_negative": false,
+        "top_match": "Neuschwanstein Castle (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-08",
+        "name": "Colosseum Amphitheatre",
+        "is_negative": false,
+        "top_match": "Colosseum Amphitheatre (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-09",
+        "name": "Palace of Westminster Big Ben",
+        "is_negative": false,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-10",
+        "name": "Route 66 Seligman",
+        "is_negative": false,
+        "top_match": "Route 66 Seligman (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-11",
+        "name": "Bixby Creek Bridge Big Sur",
+        "is_negative": false,
+        "top_match": "Bixby Creek Bridge Big Sur (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-12",
+        "name": "Zabriskie Point Death Valley",
+        "is_negative": false,
+        "top_match": "Zabriskie Point Death Valley (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-13",
+        "name": "Golden Gate Bridge Vista",
+        "is_negative": false,
+        "top_match": "Golden Gate Bridge Vista (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-14",
+        "name": "Moraine Lake Banff",
+        "is_negative": false,
+        "top_match": "Moraine Lake Banff (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-15",
+        "name": "Chichen Itza El Castillo",
+        "is_negative": false,
+        "top_match": "Chichen Itza El Castillo (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-16",
+        "name": "Manhattan Skyline from Brooklyn",
+        "is_negative": false,
+        "top_match": "Manhattan Skyline from Brooklyn (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-17",
+        "name": "Grand Canyon Mather Point",
+        "is_negative": false,
+        "top_match": "Grand Canyon Mather Point (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-18",
+        "name": "Shibuya Scramble Crossing",
+        "is_negative": false,
+        "top_match": "Shibuya Scramble Crossing (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-19",
+        "name": "Taj Mahal Yamuna View",
+        "is_negative": false,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-20",
+        "name": "Marina Bay Sands Waterfront",
+        "is_negative": false,
+        "top_match": "Marina Bay Sands Waterfront (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-21",
+        "name": "Mount Fuji Lake Kawaguchi",
+        "is_negative": false,
+        "top_match": "Mount Fuji Lake Kawaguchi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-22",
+        "name": "Petra Al-Khazneh",
+        "is_negative": false,
+        "top_match": "Petra Al-Khazneh (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-23",
+        "name": "Great Wall Mutianyu",
+        "is_negative": false,
+        "top_match": "Great Wall Mutianyu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-24",
+        "name": "Pamir Highway Ak-Baital",
+        "is_negative": false,
+        "top_match": "Pamir Highway Ak-Baital (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-25",
+        "name": "Sigiriya Lion Rock",
+        "is_negative": false,
+        "top_match": "Sigiriya Lion Rock (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-26",
+        "name": "Machu Picchu Huayna Picchu",
+        "is_negative": false,
+        "top_match": "Machu Picchu Huayna Picchu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-27",
+        "name": "Iguazu Falls Devil's Throat",
+        "is_negative": false,
+        "top_match": "Iguazu Falls Devil's Throat (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-28",
+        "name": "Salar de Uyuni Salt Flats",
+        "is_negative": false,
+        "top_match": "Salar de Uyuni Salt Flats (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-29",
+        "name": "Torres del Paine Cuernos",
+        "is_negative": false,
+        "top_match": "Torres del Paine Cuernos (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-30",
+        "name": "Christ the Redeemer Corcovado",
+        "is_negative": false,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-31",
+        "name": "Table Mountain Cape Town",
+        "is_negative": false,
+        "top_match": "Table Mountain Cape Town (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-32",
+        "name": "Giza Pyramid Plateau",
+        "is_negative": false,
+        "top_match": "Giza Pyramid Plateau (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-33",
+        "name": "Victoria Falls Zambezi",
+        "is_negative": false,
+        "top_match": "Victoria Falls Zambezi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-34",
+        "name": "Great Mosque of Djenn\u00e9",
+        "is_negative": false,
+        "top_match": "Great Mosque of Djenn\u00e9 (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-35",
+        "name": "Mount Kilimanjaro Kibo Peak",
+        "is_negative": false,
+        "top_match": "Mount Kilimanjaro Kibo Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-36",
+        "name": "Atlas Mountains High Pass",
+        "is_negative": false,
+        "top_match": "Atlas Mountains High Pass (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-37",
+        "name": "Sydney Opera House Harbour",
+        "is_negative": false,
+        "top_match": "Sydney Opera House Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-38",
+        "name": "Twelve Apostles Port Campbell",
+        "is_negative": false,
+        "top_match": "Twelve Apostles Port Campbell (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-39",
+        "name": "Uluru Sandstone Monolith",
+        "is_negative": false,
+        "top_match": "Uluru Sandstone Monolith (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-40",
+        "name": "Milford Sound Mitre Peak",
+        "is_negative": false,
+        "top_match": "Milford Sound Mitre Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-41",
+        "name": "McMurdo Station Coastal Apron",
+        "is_negative": false,
+        "top_match": "McMurdo Station Coastal Apron (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-42",
+        "name": "Lemaire Channel Glacial Peaks",
+        "is_negative": false,
+        "top_match": "Lemaire Channel Glacial Peaks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-43",
+        "name": "Windowless Meeting Room",
+        "is_negative": true,
+        "top_match": "Shibuya Scramble Crossing (Reference Prototype)",
+        "top_score": 0.8916,
+        "calibrated_prob": 0.63,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-44",
+        "name": "Featureless Desert Sand Dunes",
+        "is_negative": true,
+        "top_match": "Val d'Orcia Farmland (Reference Prototype)",
+        "top_score": 0.9269,
+        "calibrated_prob": 0.647,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-45",
+        "name": "Blank White Interior Drywall",
+        "is_negative": true,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 0.8886,
+        "calibrated_prob": 0.628,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-46",
+        "name": "Close-Up Macro Oak Bark",
+        "is_negative": true,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 0.9326,
+        "calibrated_prob": 0.65,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-47",
+        "name": "Close-Up Asphalt Pavement",
+        "is_negative": true,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 0.9319,
+        "calibrated_prob": 0.65,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-48",
+        "name": "Overcast Featureless White Fog",
+        "is_negative": true,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 0.8943,
+        "calibrated_prob": 0.631,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-49",
+        "name": "Ambiguous Open Ocean Water",
+        "is_negative": true,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 0.9394,
+        "calibrated_prob": 0.653,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-50",
+        "name": "Featureless Sand Ripple Texture",
+        "is_negative": true,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 0.8612,
+        "calibrated_prob": 0.615,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      }
+    ],
+    "MixVPR_resnet50_512": [
+      {
+        "case_id": "CASE-01",
+        "name": "Eiffel Tower Champ de Mars",
+        "is_negative": false,
+        "top_match": "Eiffel Tower Champ de Mars (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-02",
+        "name": "Matterhorn Alpine Summit",
+        "is_negative": false,
+        "top_match": "Matterhorn Alpine Summit (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-03",
+        "name": "Berlin Central Station Tracks",
+        "is_negative": false,
+        "top_match": "Berlin Central Station Tracks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-04",
+        "name": "Val d'Orcia Farmland",
+        "is_negative": false,
+        "top_match": "Val d'Orcia Farmland (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-05",
+        "name": "Troms\u00f8 Arctic Harbour",
+        "is_negative": false,
+        "top_match": "Troms\u00f8 Arctic Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-06",
+        "name": "Charles Bridge Vltava",
+        "is_negative": false,
+        "top_match": "Charles Bridge Vltava (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-07",
+        "name": "Neuschwanstein Castle",
+        "is_negative": false,
+        "top_match": "Neuschwanstein Castle (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-08",
+        "name": "Colosseum Amphitheatre",
+        "is_negative": false,
+        "top_match": "Colosseum Amphitheatre (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-09",
+        "name": "Palace of Westminster Big Ben",
+        "is_negative": false,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-10",
+        "name": "Route 66 Seligman",
+        "is_negative": false,
+        "top_match": "Route 66 Seligman (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-11",
+        "name": "Bixby Creek Bridge Big Sur",
+        "is_negative": false,
+        "top_match": "Bixby Creek Bridge Big Sur (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-12",
+        "name": "Zabriskie Point Death Valley",
+        "is_negative": false,
+        "top_match": "Zabriskie Point Death Valley (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-13",
+        "name": "Golden Gate Bridge Vista",
+        "is_negative": false,
+        "top_match": "Golden Gate Bridge Vista (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-14",
+        "name": "Moraine Lake Banff",
+        "is_negative": false,
+        "top_match": "Moraine Lake Banff (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-15",
+        "name": "Chichen Itza El Castillo",
+        "is_negative": false,
+        "top_match": "Chichen Itza El Castillo (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-16",
+        "name": "Manhattan Skyline from Brooklyn",
+        "is_negative": false,
+        "top_match": "Manhattan Skyline from Brooklyn (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-17",
+        "name": "Grand Canyon Mather Point",
+        "is_negative": false,
+        "top_match": "Grand Canyon Mather Point (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-18",
+        "name": "Shibuya Scramble Crossing",
+        "is_negative": false,
+        "top_match": "Shibuya Scramble Crossing (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-19",
+        "name": "Taj Mahal Yamuna View",
+        "is_negative": false,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-20",
+        "name": "Marina Bay Sands Waterfront",
+        "is_negative": false,
+        "top_match": "Marina Bay Sands Waterfront (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-21",
+        "name": "Mount Fuji Lake Kawaguchi",
+        "is_negative": false,
+        "top_match": "Mount Fuji Lake Kawaguchi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-22",
+        "name": "Petra Al-Khazneh",
+        "is_negative": false,
+        "top_match": "Petra Al-Khazneh (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-23",
+        "name": "Great Wall Mutianyu",
+        "is_negative": false,
+        "top_match": "Great Wall Mutianyu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-24",
+        "name": "Pamir Highway Ak-Baital",
+        "is_negative": false,
+        "top_match": "Pamir Highway Ak-Baital (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-25",
+        "name": "Sigiriya Lion Rock",
+        "is_negative": false,
+        "top_match": "Sigiriya Lion Rock (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-26",
+        "name": "Machu Picchu Huayna Picchu",
+        "is_negative": false,
+        "top_match": "Machu Picchu Huayna Picchu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-27",
+        "name": "Iguazu Falls Devil's Throat",
+        "is_negative": false,
+        "top_match": "Iguazu Falls Devil's Throat (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-28",
+        "name": "Salar de Uyuni Salt Flats",
+        "is_negative": false,
+        "top_match": "Salar de Uyuni Salt Flats (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-29",
+        "name": "Torres del Paine Cuernos",
+        "is_negative": false,
+        "top_match": "Torres del Paine Cuernos (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-30",
+        "name": "Christ the Redeemer Corcovado",
+        "is_negative": false,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-31",
+        "name": "Table Mountain Cape Town",
+        "is_negative": false,
+        "top_match": "Table Mountain Cape Town (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-32",
+        "name": "Giza Pyramid Plateau",
+        "is_negative": false,
+        "top_match": "Giza Pyramid Plateau (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-33",
+        "name": "Victoria Falls Zambezi",
+        "is_negative": false,
+        "top_match": "Victoria Falls Zambezi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-34",
+        "name": "Great Mosque of Djenn\u00e9",
+        "is_negative": false,
+        "top_match": "Great Mosque of Djenn\u00e9 (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-35",
+        "name": "Mount Kilimanjaro Kibo Peak",
+        "is_negative": false,
+        "top_match": "Mount Kilimanjaro Kibo Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-36",
+        "name": "Atlas Mountains High Pass",
+        "is_negative": false,
+        "top_match": "Atlas Mountains High Pass (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-37",
+        "name": "Sydney Opera House Harbour",
+        "is_negative": false,
+        "top_match": "Sydney Opera House Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-38",
+        "name": "Twelve Apostles Port Campbell",
+        "is_negative": false,
+        "top_match": "Twelve Apostles Port Campbell (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-39",
+        "name": "Uluru Sandstone Monolith",
+        "is_negative": false,
+        "top_match": "Uluru Sandstone Monolith (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-40",
+        "name": "Milford Sound Mitre Peak",
+        "is_negative": false,
+        "top_match": "Milford Sound Mitre Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-41",
+        "name": "McMurdo Station Coastal Apron",
+        "is_negative": false,
+        "top_match": "McMurdo Station Coastal Apron (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-42",
+        "name": "Lemaire Channel Glacial Peaks",
+        "is_negative": false,
+        "top_match": "Lemaire Channel Glacial Peaks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-43",
+        "name": "Windowless Meeting Room",
+        "is_negative": true,
+        "top_match": "Route 66 Seligman (Reference Prototype)",
+        "top_score": 0.6031,
+        "calibrated_prob": 0.48,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-44",
+        "name": "Featureless Desert Sand Dunes",
+        "is_negative": true,
+        "top_match": "Val d'Orcia Farmland (Reference Prototype)",
+        "top_score": 0.6473,
+        "calibrated_prob": 0.503,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-45",
+        "name": "Blank White Interior Drywall",
+        "is_negative": true,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 0.8147,
+        "calibrated_prob": 0.591,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-46",
+        "name": "Close-Up Macro Oak Bark",
+        "is_negative": true,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 0.828,
+        "calibrated_prob": 0.598,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-47",
+        "name": "Close-Up Asphalt Pavement",
+        "is_negative": true,
+        "top_match": "Salar de Uyuni Salt Flats (Reference Prototype)",
+        "top_score": 0.8331,
+        "calibrated_prob": 0.601,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-48",
+        "name": "Overcast Featureless White Fog",
+        "is_negative": true,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 0.8118,
+        "calibrated_prob": 0.59,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-49",
+        "name": "Ambiguous Open Ocean Water",
+        "is_negative": true,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 0.8044,
+        "calibrated_prob": 0.586,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-50",
+        "name": "Featureless Sand Ripple Texture",
+        "is_negative": true,
+        "top_match": "Sigiriya Lion Rock (Reference Prototype)",
+        "top_score": 0.8183,
+        "calibrated_prob": 0.593,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      }
+    ],
+    "ResNet18_ImageNet_Baseline": [
+      {
+        "case_id": "CASE-01",
+        "name": "Eiffel Tower Champ de Mars",
+        "is_negative": false,
+        "top_match": "Eiffel Tower Champ de Mars (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-02",
+        "name": "Matterhorn Alpine Summit",
+        "is_negative": false,
+        "top_match": "Matterhorn Alpine Summit (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-03",
+        "name": "Berlin Central Station Tracks",
+        "is_negative": false,
+        "top_match": "Berlin Central Station Tracks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-04",
+        "name": "Val d'Orcia Farmland",
+        "is_negative": false,
+        "top_match": "Val d'Orcia Farmland (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-05",
+        "name": "Troms\u00f8 Arctic Harbour",
+        "is_negative": false,
+        "top_match": "Troms\u00f8 Arctic Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-06",
+        "name": "Charles Bridge Vltava",
+        "is_negative": false,
+        "top_match": "Charles Bridge Vltava (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-07",
+        "name": "Neuschwanstein Castle",
+        "is_negative": false,
+        "top_match": "Neuschwanstein Castle (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-08",
+        "name": "Colosseum Amphitheatre",
+        "is_negative": false,
+        "top_match": "Colosseum Amphitheatre (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-09",
+        "name": "Palace of Westminster Big Ben",
+        "is_negative": false,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-10",
+        "name": "Route 66 Seligman",
+        "is_negative": false,
+        "top_match": "Route 66 Seligman (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-11",
+        "name": "Bixby Creek Bridge Big Sur",
+        "is_negative": false,
+        "top_match": "Bixby Creek Bridge Big Sur (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-12",
+        "name": "Zabriskie Point Death Valley",
+        "is_negative": false,
+        "top_match": "Zabriskie Point Death Valley (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-13",
+        "name": "Golden Gate Bridge Vista",
+        "is_negative": false,
+        "top_match": "Golden Gate Bridge Vista (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-14",
+        "name": "Moraine Lake Banff",
+        "is_negative": false,
+        "top_match": "Moraine Lake Banff (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-15",
+        "name": "Chichen Itza El Castillo",
+        "is_negative": false,
+        "top_match": "Chichen Itza El Castillo (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-16",
+        "name": "Manhattan Skyline from Brooklyn",
+        "is_negative": false,
+        "top_match": "Manhattan Skyline from Brooklyn (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-17",
+        "name": "Grand Canyon Mather Point",
+        "is_negative": false,
+        "top_match": "Grand Canyon Mather Point (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-18",
+        "name": "Shibuya Scramble Crossing",
+        "is_negative": false,
+        "top_match": "Shibuya Scramble Crossing (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-19",
+        "name": "Taj Mahal Yamuna View",
+        "is_negative": false,
+        "top_match": "Taj Mahal Yamuna View (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-20",
+        "name": "Marina Bay Sands Waterfront",
+        "is_negative": false,
+        "top_match": "Marina Bay Sands Waterfront (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-21",
+        "name": "Mount Fuji Lake Kawaguchi",
+        "is_negative": false,
+        "top_match": "Mount Fuji Lake Kawaguchi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-22",
+        "name": "Petra Al-Khazneh",
+        "is_negative": false,
+        "top_match": "Petra Al-Khazneh (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-23",
+        "name": "Great Wall Mutianyu",
+        "is_negative": false,
+        "top_match": "Great Wall Mutianyu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-24",
+        "name": "Pamir Highway Ak-Baital",
+        "is_negative": false,
+        "top_match": "Pamir Highway Ak-Baital (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-25",
+        "name": "Sigiriya Lion Rock",
+        "is_negative": false,
+        "top_match": "Sigiriya Lion Rock (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-26",
+        "name": "Machu Picchu Huayna Picchu",
+        "is_negative": false,
+        "top_match": "Machu Picchu Huayna Picchu (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-27",
+        "name": "Iguazu Falls Devil's Throat",
+        "is_negative": false,
+        "top_match": "Iguazu Falls Devil's Throat (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-28",
+        "name": "Salar de Uyuni Salt Flats",
+        "is_negative": false,
+        "top_match": "Salar de Uyuni Salt Flats (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-29",
+        "name": "Torres del Paine Cuernos",
+        "is_negative": false,
+        "top_match": "Torres del Paine Cuernos (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-30",
+        "name": "Christ the Redeemer Corcovado",
+        "is_negative": false,
+        "top_match": "Christ the Redeemer Corcovado (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-31",
+        "name": "Table Mountain Cape Town",
+        "is_negative": false,
+        "top_match": "Table Mountain Cape Town (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-32",
+        "name": "Giza Pyramid Plateau",
+        "is_negative": false,
+        "top_match": "Giza Pyramid Plateau (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-33",
+        "name": "Victoria Falls Zambezi",
+        "is_negative": false,
+        "top_match": "Victoria Falls Zambezi (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-34",
+        "name": "Great Mosque of Djenn\u00e9",
+        "is_negative": false,
+        "top_match": "Great Mosque of Djenn\u00e9 (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-35",
+        "name": "Mount Kilimanjaro Kibo Peak",
+        "is_negative": false,
+        "top_match": "Mount Kilimanjaro Kibo Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-36",
+        "name": "Atlas Mountains High Pass",
+        "is_negative": false,
+        "top_match": "Atlas Mountains High Pass (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-37",
+        "name": "Sydney Opera House Harbour",
+        "is_negative": false,
+        "top_match": "Sydney Opera House Harbour (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-38",
+        "name": "Twelve Apostles Port Campbell",
+        "is_negative": false,
+        "top_match": "Twelve Apostles Port Campbell (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-39",
+        "name": "Uluru Sandstone Monolith",
+        "is_negative": false,
+        "top_match": "Uluru Sandstone Monolith (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-40",
+        "name": "Milford Sound Mitre Peak",
+        "is_negative": false,
+        "top_match": "Milford Sound Mitre Peak (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-41",
+        "name": "McMurdo Station Coastal Apron",
+        "is_negative": false,
+        "top_match": "McMurdo Station Coastal Apron (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-42",
+        "name": "Lemaire Channel Glacial Peaks",
+        "is_negative": false,
+        "top_match": "Lemaire Channel Glacial Peaks (Reference Prototype)",
+        "top_score": 1.0,
+        "calibrated_prob": 0.682,
+        "abstain_recommended": false,
+        "distance_error_km": 0.0
+      },
+      {
+        "case_id": "CASE-43",
+        "name": "Windowless Meeting Room",
+        "is_negative": true,
+        "top_match": "Sydney Opera House Harbour (Reference Prototype)",
+        "top_score": 0.6255,
+        "calibrated_prob": 0.492,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-44",
+        "name": "Featureless Desert Sand Dunes",
+        "is_negative": true,
+        "top_match": "Val d'Orcia Farmland (Reference Prototype)",
+        "top_score": 0.6972,
+        "calibrated_prob": 0.53,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-45",
+        "name": "Blank White Interior Drywall",
+        "is_negative": true,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 0.5912,
+        "calibrated_prob": 0.473,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-46",
+        "name": "Close-Up Macro Oak Bark",
+        "is_negative": true,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 0.7189,
+        "calibrated_prob": 0.541,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-47",
+        "name": "Close-Up Asphalt Pavement",
+        "is_negative": true,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 0.7079,
+        "calibrated_prob": 0.535,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-48",
+        "name": "Overcast Featureless White Fog",
+        "is_negative": true,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 0.5925,
+        "calibrated_prob": 0.474,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-49",
+        "name": "Ambiguous Open Ocean Water",
+        "is_negative": true,
+        "top_match": "Palace of Westminster Big Ben (Reference Prototype)",
+        "top_score": 0.7277,
+        "calibrated_prob": 0.546,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      },
+      {
+        "case_id": "CASE-50",
+        "name": "Featureless Sand Ripple Texture",
+        "is_negative": true,
+        "top_match": "Giza Pyramid Plateau (Reference Prototype)",
+        "top_score": 0.5633,
+        "calibrated_prob": 0.459,
+        "abstain_recommended": false,
+        "distance_error_km": null
+      }
+    ]
+  }
+}
