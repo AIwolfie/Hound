@@ -1,0 +1,112 @@
+[
+  {
+    "ref_id": "REF-01",
+    "name": "Eiffel Tower Champ de Mars",
+    "country": "France",
+    "region": "\u00cele-de-France",
+    "target_lat": 48.8584,
+    "target_lon": 2.2945,
+    "tolerance_km": 15.0,
+    "filename": "REF-01.jpg",
+    "sha256": "f8d9fc4b76e9991d8991376b3ca98d84ed6598c7f9c0a74dc9bd3d00c452caf7"
+  },
+  {
+    "ref_id": "REF-02",
+    "name": "Matterhorn Alpine Summit",
+    "country": "Switzerland",
+    "region": "Valais",
+    "target_lat": 45.9765,
+    "target_lon": 7.7491,
+    "tolerance_km": 25.0,
+    "filename": "REF-02.jpg",
+    "sha256": "1b4d8eb18bef54f90cc8132ff8b695e290bac4bda1588f9e308c916e4781a9b0"
+  },
+  {
+    "ref_id": "REF-03",
+    "name": "Sydney Opera House Harbour",
+    "country": "Australia",
+    "region": "New South Wales",
+    "target_lat": -33.8568,
+    "target_lon": 151.2153,
+    "tolerance_km": 15.0,
+    "filename": "REF-03.jpg",
+    "sha256": "8bfc181fb5d593cdd83fb17d4d2f6e33b506515ea2753eabd3aa8085dff23cd6"
+  },
+  {
+    "ref_id": "REF-04",
+    "name": "Shibuya Scramble Crossing",
+    "country": "Japan",
+    "region": "Tokyo",
+    "target_lat": 35.6595,
+    "target_lon": 139.7005,
+    "tolerance_km": 15.0,
+    "filename": "REF-04.jpg",
+    "sha256": "15f173ad441f416d166dfe2f2bf2ea1d21f64007608bf589e5f050421bef78fd"
+  },
+  {
+    "ref_id": "REF-05",
+    "name": "Berlin Central Station Tracks",
+    "country": "Germany",
+    "region": "Berlin",
+    "target_lat": 52.5251,
+    "target_lon": 13.3694,
+    "tolerance_km": 10.0,
+    "filename": "REF-05.jpg",
+    "sha256": "ab3eebfeb624675a1a2eae2686a260bb999fac210a3a1b42f7366532b7867f4b"
+  },
+  {
+    "ref_id": "REF-06",
+    "name": "Historic Route 66 Seligman Arizona",
+    "country": "United States",
+    "region": "Arizona",
+    "target_lat": 35.3255,
+    "target_lon": -112.8753,
+    "tolerance_km": 25.0,
+    "filename": "REF-06.jpg",
+    "sha256": "e4e388d0a0335da1a2f53fe6b1ef0dfb4664fd1a9b7ced0c5ed768ac04d4e1a6"
+  },
+  {
+    "ref_id": "REF-07",
+    "name": "Bixby Creek Bridge Big Sur",
+    "country": "United States",
+    "region": "California",
+    "target_lat": 36.3714,
+    "target_lon": -121.9018,
+    "tolerance_km": 15.0,
+    "filename": "REF-07.jpg",
+    "sha256": "126d9212b9493b8ce9706b288f807865ba626c5fbb2c737754d0893a85efabae"
+  },
+  {
+    "ref_id": "REF-08",
+    "name": "Val d'Orcia Farmland",
+    "country": "Italy",
+    "region": "Tuscany",
+    "target_lat": 43.0642,
+    "target_lon": 11.6083,
+    "tolerance_km": 30.0,
+    "filename": "REF-08.jpg",
+    "sha256": "7c7112816a2efc5644137b0e88077e063ac741970f0c55ebb43d9d78c978a71b"
+  },
+  {
+    "ref_id": "REF-09",
+    "name": "Zabriskie Point Death Valley",
+    "country": "United States",
+    "region": "California",
+    "target_lat": 36.4208,
+    "target_lon": -116.8122,
+    "tolerance_km": 35.0,
+    "filename": "REF-09.jpg",
+    "sha256": "4443a1268bd4d2a94df4b1908f175428908db528439683f626e013f9eac245b6"
+  },
+  {
+    "ref_id": "REF-10",
+    "name": "Tromso Arctic Port & Mountains",
+    "country": "Norway",
+    "region": "Troms",
+    "target_lat": 69.6492,
+    "target_lon": 18.9553,
+    "tolerance_km": 25.0,
+    "filename": "REF-10.jpg",
+    "sha256": "7e1f167f9490eaa2949841731120432b1425819e6242e5a697389884597ef690"
+  }
+]

@@ -1,0 +1,352 @@
+{
+  "QA-01": {
+    "query_id": "QA-01",
+    "track": "TRACK_A",
+    "name": "Eiffel Tower (Independent View)",
+    "target_ref_id": "REF-01",
+    "target_lat": 48.8584,
+    "target_lon": 2.2945,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QA-02": {
+    "query_id": "QA-02",
+    "track": "TRACK_A",
+    "name": "Matterhorn from Riffelsee (Independent View)",
+    "target_ref_id": "REF-02",
+    "target_lat": 45.9765,
+    "target_lon": 7.7491,
+    "tolerance_km": 25.0,
+    "is_negative_control": false
+  },
+  "QA-03": {
+    "query_id": "QA-03",
+    "track": "TRACK_A",
+    "name": "Sydney Opera House (Independent View)",
+    "target_ref_id": "REF-03",
+    "target_lat": -33.8568,
+    "target_lon": 151.2153,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QA-04": {
+    "query_id": "QA-04",
+    "track": "TRACK_A",
+    "name": "Shibuya Crossing (Independent View)",
+    "target_ref_id": "REF-04",
+    "target_lat": 35.6595,
+    "target_lon": 139.7005,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QA-05": {
+    "query_id": "QA-05",
+    "track": "TRACK_A",
+    "name": "Berlin Central Station (Independent Exterior)",
+    "target_ref_id": "REF-05",
+    "target_lat": 52.5251,
+    "target_lon": 13.3694,
+    "tolerance_km": 10.0,
+    "is_negative_control": false
+  },
+  "QA-06": {
+    "query_id": "QA-06",
+    "track": "TRACK_A",
+    "name": "Route 66 Seligman (Independent View)",
+    "target_ref_id": "REF-06",
+    "target_lat": 35.3255,
+    "target_lon": -112.8753,
+    "tolerance_km": 25.0,
+    "is_negative_control": false
+  },
+  "QA-07": {
+    "query_id": "QA-07",
+    "track": "TRACK_A",
+    "name": "Bixby Creek Bridge (Independent View)",
+    "target_ref_id": "REF-07",
+    "target_lat": 36.3714,
+    "target_lon": -121.9018,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QA-08": {
+    "query_id": "QA-08",
+    "track": "TRACK_A",
+    "name": "Val d'Orcia in Autumn (Independent View)",
+    "target_ref_id": "REF-08",
+    "target_lat": 43.0642,
+    "target_lon": 11.6083,
+    "tolerance_km": 30.0,
+    "is_negative_control": false
+  },
+  "QA-09": {
+    "query_id": "QA-09",
+    "track": "TRACK_A",
+    "name": "Zabriskie Point (Independent View)",
+    "target_ref_id": "REF-09",
+    "target_lat": 36.4208,
+    "target_lon": -116.8122,
+    "tolerance_km": 35.0,
+    "is_negative_control": false
+  },
+  "QA-10": {
+    "query_id": "QA-10",
+    "track": "TRACK_A",
+    "name": "Tromso Harbour Panorama (Independent View)",
+    "target_ref_id": "REF-10",
+    "target_lat": 69.6492,
+    "target_lon": 18.9553,
+    "tolerance_km": 25.0,
+    "is_negative_control": false
+  },
+  "QB-01": {
+    "query_id": "QB-01",
+    "track": "TRACK_B",
+    "name": "Eiffel Tower (Night & Pont Alexandre III)",
+    "target_ref_id": "REF-01",
+    "target_lat": 48.8584,
+    "target_lon": 2.2945,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QB-02": {
+    "query_id": "QB-02",
+    "track": "TRACK_B",
+    "name": "Matterhorn (Winter Summit March)",
+    "target_ref_id": "REF-02",
+    "target_lat": 45.9765,
+    "target_lon": 7.7491,
+    "tolerance_km": 25.0,
+    "is_negative_control": false
+  },
+  "QB-03": {
+    "query_id": "QB-03",
+    "track": "TRACK_B",
+    "name": "Sydney Opera House (Vivid Light Festival)",
+    "target_ref_id": "REF-03",
+    "target_lat": -33.8568,
+    "target_lon": 151.2153,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QB-04": {
+    "query_id": "QB-04",
+    "track": "TRACK_B",
+    "name": "Shibuya Crossing (Rain & Umbrellas)",
+    "target_ref_id": "REF-04",
+    "target_lat": 35.6595,
+    "target_lon": 139.7005,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QB-05": {
+    "query_id": "QB-05",
+    "track": "TRACK_B",
+    "name": "Berlin Central Station (Interior Tracks)",
+    "target_ref_id": "REF-05",
+    "target_lat": 52.5251,
+    "target_lon": 13.3694,
+    "tolerance_km": 10.0,
+    "is_negative_control": false
+  },
+  "QB-06": {
+    "query_id": "QB-06",
+    "track": "TRACK_B",
+    "name": "Route 66 Seligman (Gold Wing Motorcycle Sign)",
+    "target_ref_id": "REF-06",
+    "target_lat": 35.3255,
+    "target_lon": -112.8753,
+    "tolerance_km": 25.0,
+    "is_negative_control": false
+  },
+  "QB-07": {
+    "query_id": "QB-07",
+    "track": "TRACK_B",
+    "name": "Bixby Creek Bridge (Dense Morning Fog)",
+    "target_ref_id": "REF-07",
+    "target_lat": 36.3714,
+    "target_lon": -121.9018,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QB-08": {
+    "query_id": "QB-08",
+    "track": "TRACK_B",
+    "name": "Val d'Orcia (Isolated Cypress Ring S. Quirico)",
+    "target_ref_id": "REF-08",
+    "target_lat": 43.0642,
+    "target_lon": 11.6083,
+    "tolerance_km": 30.0,
+    "is_negative_control": false
+  },
+  "QB-09": {
+    "query_id": "QB-09",
+    "track": "TRACK_B",
+    "name": "Zabriskie Point (Ridge Shadows Telephoto)",
+    "target_ref_id": "REF-09",
+    "target_lat": 36.4208,
+    "target_lon": -116.8122,
+    "tolerance_km": 35.0,
+    "is_negative_control": false
+  },
+  "QB-10": {
+    "query_id": "QB-10",
+    "track": "TRACK_B",
+    "name": "Tromso Harbour (Ship Hull in Arctic Harbour)",
+    "target_ref_id": "REF-10",
+    "target_lat": 69.6492,
+    "target_lon": 18.9553,
+    "tolerance_km": 25.0,
+    "is_negative_control": false
+  },
+  "QC-01": {
+    "query_id": "QC-01",
+    "track": "TRACK_C",
+    "name": "Taj Mahal Yamuna View",
+    "target_ref_id": null,
+    "target_lat": 27.1751,
+    "target_lon": 78.0421,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QC-02": {
+    "query_id": "QC-02",
+    "track": "TRACK_C",
+    "name": "Colosseum Amphitheatre",
+    "target_ref_id": null,
+    "target_lat": 41.8902,
+    "target_lon": 12.4922,
+    "tolerance_km": 10.0,
+    "is_negative_control": false
+  },
+  "QC-03": {
+    "query_id": "QC-03",
+    "track": "TRACK_C",
+    "name": "Neuschwanstein Castle",
+    "target_ref_id": null,
+    "target_lat": 47.5576,
+    "target_lon": 10.7498,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QC-04": {
+    "query_id": "QC-04",
+    "track": "TRACK_C",
+    "name": "Great Wall of China Mutianyu",
+    "target_ref_id": null,
+    "target_lat": 40.4319,
+    "target_lon": 116.5704,
+    "tolerance_km": 20.0,
+    "is_negative_control": false
+  },
+  "QC-05": {
+    "query_id": "QC-05",
+    "track": "TRACK_C",
+    "name": "Christ the Redeemer Corcovado",
+    "target_ref_id": null,
+    "target_lat": -22.9519,
+    "target_lon": -43.2105,
+    "tolerance_km": 15.0,
+    "is_negative_control": false
+  },
+  "QC-06": {
+    "query_id": "QC-06",
+    "track": "TRACK_C",
+    "name": "Mount Fuji Lake Kawaguchiko",
+    "target_ref_id": null,
+    "target_lat": 35.3606,
+    "target_lon": 138.7274,
+    "tolerance_km": 25.0,
+    "is_negative_control": false
+  },
+  "QC-07": {
+    "query_id": "QC-07",
+    "track": "TRACK_C",
+    "name": "Golden Gate Bridge Vista",
+    "target_ref_id": null,
+    "target_lat": 37.8199,
+    "target_lon": -122.4783,
+    "tolerance_km": 10.0,
+    "is_negative_control": false
+  },
+  "QC-08": {
+    "query_id": "QC-08",
+    "track": "TRACK_C",
+    "name": "Windowless Corporate Meeting Room",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  },
+  "QC-09": {
+    "query_id": "QC-09",
+    "track": "TRACK_C",
+    "name": "Featureless Desert Sand Ripples",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  },
+  "QC-10": {
+    "query_id": "QC-10",
+    "track": "TRACK_C",
+    "name": "Blank White Interior Drywall",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  },
+  "QC-11": {
+    "query_id": "QC-11",
+    "track": "TRACK_C",
+    "name": "Close-Up Macro Oak Bark",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  },
+  "QC-12": {
+    "query_id": "QC-12",
+    "track": "TRACK_C",
+    "name": "Close-Up Asphalt Pavement",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  },
+  "QC-13": {
+    "query_id": "QC-13",
+    "track": "TRACK_C",
+    "name": "Overcast Featureless White Fog",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  },
+  "QC-14": {
+    "query_id": "QC-14",
+    "track": "TRACK_C",
+    "name": "Ambiguous Open Ocean Water",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  },
+  "QC-15": {
+    "query_id": "QC-15",
+    "track": "TRACK_C",
+    "name": "Featureless Sand Ripple Texture",
+    "target_ref_id": null,
+    "target_lat": null,
+    "target_lon": null,
+    "tolerance_km": 0.0,
+    "is_negative_control": true
+  }
+}

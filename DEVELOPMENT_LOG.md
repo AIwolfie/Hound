@@ -520,4 +520,47 @@
 - **PASS**
 
 ### Next Development Milestone
-- Proceed to **Phase 8: Dark-Mode Web Analyst Dashboard & Visual Investigation Interface**.
+- Proceed to **Phase 7.1: Independent Benchmark Validation & Scientific Audit**.
+
+---
+
+## 2026-11-13 — Phase 7.1: Independent Benchmark Validation & Scientific Audit
+
+### Completed Work
+1. **Reference Index Leakage Audit (`benchmarks/audit_phase7_leakage.py`):**
+   - Conducted cryptographic and perceptual audit across all query images and reference index entries in Phase 7.
+   - Identified that in `benchmarks/phase_7_benchmark.py`, all 42 positive query images were loaded from the exact same filepaths (`data/benchmarks/phase_7/images/CASE-xx.jpg`) as the reference index.
+   - Cryptographic proof: **42/42 positive query cases (100.0%) were exact byte-for-byte SHA-256 duplicates** of their corresponding reference database entries.
+   - Explained the reported 100% Recall@1 and 0.0 km median error: querying an exact vector against itself yields cosine similarity $1.000000$ and geodetic error $0.0\text{ km}$ by mathematical identity.
+   - Identified **1,184 perceptual near-duplicate collisions** (Hamming distance $\le 5$) caused by synthetic in-memory RGB canvases using an identical 3-band layout across 38 cases.
+2. **Three-Track Geographic Generalization Protocol (`data/benchmarks/phase_7_1/`):**
+   - Built `benchmarks/curate_phase7_1_dataset.py` curating 35 genuine Creative Commons photographs strictly segregated across three evaluation tracks:
+     - **Track A (Closed-Set Independent):** 10 distinct, independent camera photographs of the 10 reference landmarks (different photographer, day, framing, and distinct SHA-256).
+     - **Track B (Unseen Viewpoints):** 10 extreme condition shifts (night illumination, winter snow, rainy reflection, dense fog, and platform interior).
+     - **Track C (Geographic Open-Set):** 15 queries completely absent from the reference database (7 unindexed world landmarks + 8 deceptive non-place negative controls).
+   - Enforced strict ground-truth isolation (`ground_truth/ground_truth.json`). All EXIF and camera metadata stripped.
+   - Cryptographic verification confirmed zero hash overlap: $\text{SHA-256}(\text{Query}) \cap \text{SHA-256}(\text{Reference}) = \emptyset$.
+3. **Multi-Engine Model Re-Evaluation (`benchmarks/phase_7_1_benchmark.py`):**
+   - Evaluated CosPlace, AnyLoc, MixVPR, ImageNet ResNet-18, Legacy Hybrid Color-Spatial, and Multi-Engine Fusion across all three tracks independently:
+     - **Track A (Closed-Set Independent):** AnyLoc achieved **$70.0\%$ Recall@1**, CosPlace achieved **$60.0\%$ Recall@1**, MixVPR achieved $20.0\%$, ResNet-18 achieved $50.0\%$, Multi-Engine Fusion achieved **$60.0\%$ Recall@1** with **$100.0\%$ selective accuracy**.
+     - **Track B (Unseen Viewpoints):** AnyLoc achieved **$90.0\%$ Recall@1** (high semantic invariance across lighting and weather), CosPlace achieved **$70.0\%$ Recall@1**, MixVPR achieved **$70.0\%$**, Multi-Engine Fusion achieved **$70.0\%$ Recall@1** with **$100.0\%$ selective accuracy**.
+     - **Track C (Open-Set & Negatives):** AnyLoc suffered **$100.0\%$ False Positive Rate** (semantic foundation tokens match nearest textures without margin classification boundaries). MixVPR had $66.7\%$ FPR, ResNet-18 had $60.0\%$ FPR. CosPlace achieved **$0.0\%$ False Positive Rate** and **$100.0\%$ honest abstention** (CosFace margin loss over 41M cells forces non-places to $< 0.40$). Multi-Engine Fusion combined AnyLoc's structural invariance with CosPlace's margin gating to achieve **$0.0\%$ False Positive Rate** on Track C.
+4. **Empirical Calibration Audit (`benchmarks/audit_phase7_calibration.py`):**
+   - Discovered that the Phase 7 Brier score ($0.2240$) and ECE ($12.28\%$) were evaluated on synthetic linearly spaced floats, not real test predictions.
+   - Evaluated calibration on empirical test predictions: raw cosine similarities exhibited an ECE of **$30.03\%$**, while cross-validated Platt scaling reduced ECE to **$13.53\%$** with smooth probabilistic monotonicity.
+   - Verified that physical falsification overrides strictly zero candidate probability ($P = 0.000$) whenever active contradictions are detected.
+5. **Test Suite Expansion (`tests/test_phase_7_1_validation.py`):**
+   - Added 3 regression tests verifying zero hash leakage, track structural segregation, and ground-truth isolation.
+   - **Full regression suite:** **151 passed in 49.78s** across 42 test modules (100% pass rate).
+6. **Documentation Deliverables:**
+   - Published `docs/PHASE_7_1_LEAKAGE_AUDIT.md` (and root `PHASE_7_1_LEAKAGE_AUDIT.md`).
+   - Published `docs/PHASE_7_1_GEOGRAPHIC_GENERALIZATION.md` (and root `PHASE_7_1_GEOGRAPHIC_GENERALIZATION.md`).
+   - Published `docs/PHASE_7_1_MODEL_REEVALUATION.md` (and root `PHASE_7_1_MODEL_REEVALUATION.md`).
+   - Published `docs/PHASE_7_1_CALIBRATION_AUDIT.md` (and root `PHASE_7_1_CALIBRATION_AUDIT.md`).
+   - Published `data/benchmarks/phase_7_1/reports/phase_7_1_benchmark_report.json`.
+
+### Final Validation Verdict
+- **PASS**
+
+### Next Development Milestone
+- Authorized to proceed to **Phase 8: Dark-Mode Web Analyst Dashboard & Visual Investigation Interface**.
